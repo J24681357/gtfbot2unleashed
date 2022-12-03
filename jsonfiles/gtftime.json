@@ -1,0 +1,26 @@
+{
+  "sunrise": {
+    "name": "Sunrise",
+    "emoji": "🌅",
+    "min": 6,
+    "max": 7
+  },
+  "day": {
+    "name": "Day",
+    "emoji": "☀",
+    "min": 8,
+    "max": 18
+  },
+  "sunset": {
+    "name": "Sunset",
+    "emoji": "🌇",
+    "min": 19,
+    "max": 20
+  },
+  "night": {
+    "name": "Night",
+    "emoji": "🌙",
+    "min": 21,
+    "max": 5
+  }
+}

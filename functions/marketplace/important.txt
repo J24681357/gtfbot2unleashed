@@ -1,0 +1,1 @@
+var oldpart = require(gtffile.PARTS).find({"name":item["name"],"type":type1})[0]

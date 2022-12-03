@@ -1,0 +1,79 @@
+{
+  "1": { "exp": 0, "rewards": [ "None" ] },
+  "2": { "exp": 350, "rewards": [ "None" ] },
+  "3": { "exp": 526, "rewards": [ "None" ] },
+  "4": { "exp": 961, "rewards": [ "None" ] },
+  "5": {
+    "exp": 1513,
+    "rewards": [
+      "Career Mode - Amateur",
+      "Career Mode - ⭐ Kart",
+      "Arcade Mode - Amateur",
+      "Drift Trial - Beginner",
+      "Level 5 Car Reward"
+    ]
+  },
+  "6": { "exp": 2170, "rewards": [ "Car Setups"] },
+  "7": { "exp": 2927, "rewards": [ "Special Stage Route X - Top Speed Run" ] },
+  "8": { "exp": 3777, "rewards": [ "Lobby Matchmaking" ] },
+  "9": { "exp": 4718, "rewards": [ "None" ] },
+  "10": {
+    "exp": 5744,
+    "rewards": [ "Career Mode - IC League",  "Accent Color - GT6", "Level 10 Car Reward" ]
+  },
+  "11": { "exp": 9138, "rewards": [ "GTF Course Maker" ] },
+  "12": { "exp": 10725, "rewards": [ "None" ] },
+  "13": { "exp": 12416, "rewards": [ "Seasonal Events" ] },
+  "14": { "exp": 14209, "rewards": [ "None" ] },
+  "15": {
+    "exp": 16101,
+    "rewards": [
+      "Career Mode - IB League",
+      "Career Mode - ⭐ Rally",
+      "Drift Trial - Professional",
+      "Level 15 Car Reward"
+    ]
+  },
+  "16": { "exp": 18090, "rewards": [ "None" ] },
+  "17": { "exp": 20174, "rewards": [ "None" ] },
+  "18": { "exp": 22352, "rewards": [ "None" ] },
+  "19": { "exp": 24621, "rewards": [ "None" ] },
+  "20": {
+    "exp": 26980,
+    "rewards": [
+      "Career Mode - IA League",
+      "Arcade Mode - Professional",
+      "Level 20 Car Reward"
+    ]
+  },
+  "21": { "exp": 44141, "rewards": [ "None" ] },
+  "22": { "exp": 47943, "rewards": [ "None" ] },
+  "23": { "exp": 51874, "rewards": [ "None" ] },
+  "24": { "exp": 78242, "rewards": [ "None" ] },
+  "25": {"exp":  117530,"rewards": [ "Career Mode - S League", "Arcade Mode - Endurance","Level 25 Car Reward" ]},
+  "26": { "exp": 128567, "rewards": [ "None" ] },
+  "27": { "exp": 140146, "rewards": [ "Career Mode - ⭐ Formula" ] },
+  "28": { "exp": 152273, "rewards": [ "None" ] },
+  "29": { "exp": 164951, "rewards": [ "None" ] },
+  "30": { "exp": 178185, "rewards": [ "Level 30 Car Reward" ] },
+  "31": { "exp": 191977, "rewards": [ "None" ] },
+  "32": { "exp": 206332, "rewards": [ "None" ] },
+  "33": { "exp": 221254, "rewards": [ "None" ] },
+  "34": { "exp": 236746, "rewards": [ "None" ] },
+  "35": { "exp": 252812, "rewards": [ "Custom Races" ] },
+  "36": { "exp": 269455, "rewards": [ "None" ] },
+  "37": { "exp": 286679, "rewards": [ "None" ] },
+  "38": { "exp": 304486, "rewards": [ "None" ] },
+  "39": { "exp": 322881, "rewards": [ "None" ] },
+  "40": { "exp": 350000, "rewards": [ "Level 40 Car Reward" ] },
+  "41": { "exp": 400000, "rewards": [ "None" ] },
+  "42": { "exp": 450000, "rewards": [ "None" ] },
+  "43": { "exp": 500000, "rewards": [ "None" ] },
+  "44": { "exp": 550000, "rewards": [ "None" ] },
+  "45": { "exp": 600000, "rewards": [ "None" ] },
+  "46": { "exp": 650000, "rewards": [ "None" ] },
+  "47": { "exp": 700000, "rewards": [ "None" ] },
+  "48": { "exp": 800000, "rewards": [ "None" ] },
+  "49": { "exp": 900000, "rewards": [ "None" ] },
+  "50": { "exp": 1000000, "rewards": [ "Level 50 Car Reward" ] }
+}

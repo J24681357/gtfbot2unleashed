@@ -1,0 +1,273 @@
+{
+  "gloss": [
+    {
+      "type": "Gloss",
+      "name": "Light Red",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Red",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Red",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Light Orange",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Orange",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Orange",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Light Yellow",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Yellow",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Yellow",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Light Green",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Green",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Green",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Light Blue",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Blue",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Blue",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Light Purple",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Purple",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Purple",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Pink",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Light Brown",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Brown",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Brown",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "White",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Light Grey",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Grey",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Dark Grey",
+      "cost": 500
+    },
+    {
+      "type": "Gloss",
+      "name": "Black",
+      "cost": 500
+    }
+  ],
+  "metallic": [
+  { "type": "Metallic", "name": "Light Red", "cost": 1000 },
+  { "type": "Metallic", "name": "Red", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Red", "cost": 1000 },
+  { "type": "Metallic", "name": "Light Orange", "cost": 1000 },
+  { "type": "Metallic", "name": "Orange", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Orange", "cost": 1000 },
+  { "type": "Metallic", "name": "Light Yellow", "cost": 1000 },
+  { "type": "Metallic", "name": "Yellow", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Yellow", "cost": 1000 },
+  { "type": "Metallic", "name": "Light Green", "cost": 1000 },
+  { "type": "Metallic", "name": "Green", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Green", "cost": 1000 },
+  { "type": "Metallic", "name": "Light Blue", "cost": 1000 },
+  { "type": "Metallic", "name": "Blue", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Blue", "cost": 1000 },
+  { "type": "Metallic", "name": "Light Purple", "cost": 1000 },
+  { "type": "Metallic", "name": "Purple", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Purple", "cost": 1000 },
+  { "type": "Metallic", "name": "Pink", "cost": 1000 },
+  { "type": "Metallic", "name": "Light Brown", "cost": 1000 },
+  { "type": "Metallic", "name": "Brown", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Brown", "cost": 1000 },
+  { "type": "Metallic", "name": "White", "cost": 1000 },
+  { "type": "Metallic", "name": "Light Grey", "cost": 1000 },
+  { "type": "Metallic", "name": "Grey", "cost": 1000 },
+  { "type": "Metallic", "name": "Dark Grey", "cost": 1000 },
+  { "type": "Metallic", "name": "Black", "cost": 1000 }
+],"pearl": [
+  { "type": "Pearl", "name": "Light Red", "cost": 3000 },
+  { "type": "Pearl", "name": "Red", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Red", "cost": 3000 },
+  { "type": "Pearl", "name": "Light Orange", "cost": 3000 },
+  { "type": "Pearl", "name": "Orange", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Orange", "cost": 3000 },
+  { "type": "Pearl", "name": "Light Yellow", "cost": 3000 },
+  { "type": "Pearl", "name": "Yellow", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Yellow", "cost": 3000 },
+  { "type": "Pearl", "name": "Light Green", "cost": 3000 },
+  { "type": "Pearl", "name": "Green", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Green", "cost": 3000 },
+  { "type": "Pearl", "name": "Light Blue", "cost": 3000 },
+  { "type": "Pearl", "name": "Blue", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Blue", "cost": 3000 },
+  { "type": "Pearl", "name": "Light Purple", "cost": 3000 },
+  { "type": "Pearl", "name": "Purple", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Purple", "cost": 3000 },
+  { "type": "Pearl", "name": "Pink", "cost": 3000 },
+  { "type": "Pearl", "name": "Light Brown", "cost": 3000 },
+  { "type": "Pearl", "name": "Brown", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Brown", "cost": 3000 },
+  { "type": "Pearl", "name": "White", "cost": 3000 },
+  { "type": "Pearl", "name": "Light Grey", "cost": 3000 },
+  { "type": "Pearl", "name": "Grey", "cost": 3000 },
+  { "type": "Pearl", "name": "Dark Grey", "cost": 3000 },
+  { "type": "Pearl", "name": "Black", "cost": 3000 }
+],
+  "chrome": [
+  { "type": "Chrome", "name": "Light Red", "cost": 5000 },
+  { "type": "Chrome", "name": "Red", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Red", "cost": 5000 },
+  { "type": "Chrome", "name": "Light Orange", "cost": 5000 },
+  { "type": "Chrome", "name": "Orange", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Orange", "cost": 5000 },
+  { "type": "Chrome", "name": "Light Yellow", "cost": 5000 },
+  { "type": "Chrome", "name": "Yellow", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Yellow", "cost": 5000 },
+  { "type": "Chrome", "name": "Light Green", "cost": 5000 },
+  { "type": "Chrome", "name": "Green", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Green", "cost": 5000 },
+  { "type": "Chrome", "name": "Light Blue", "cost": 5000 },
+  { "type": "Chrome", "name": "Blue", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Blue", "cost": 5000 },
+  { "type": "Chrome", "name": "Light Purple", "cost": 5000 },
+  { "type": "Chrome", "name": "Purple", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Purple", "cost": 5000 },
+  { "type": "Chrome", "name": "Pink", "cost": 5000 },
+  { "type": "Chrome", "name": "Light Brown", "cost": 5000 },
+  { "type": "Chrome", "name": "Brown", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Brown", "cost": 5000 },
+  { "type": "Chrome", "name": "White", "cost": 5000 },
+  { "type": "Chrome", "name": "Light Grey", "cost": 5000 },
+  { "type": "Chrome", "name": "Grey", "cost": 5000 },
+  { "type": "Chrome", "name": "Dark Grey", "cost": 5000 },
+  { "type": "Chrome", "name": "Black", "cost": 5000 }
+], 
+"matte": [
+  { "type": "Matte", "name": "Light Red", "cost": 5000 },
+  { "type": "Matte", "name": "Red", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Red", "cost": 5000 },
+  { "type": "Matte", "name": "Light Orange", "cost": 5000 },
+  { "type": "Matte", "name": "Orange", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Orange", "cost": 5000 },
+  { "type": "Matte", "name": "Light Yellow", "cost": 5000 },
+  { "type": "Matte", "name": "Yellow", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Yellow", "cost": 5000 },
+  { "type": "Matte", "name": "Light Green", "cost": 5000 },
+  { "type": "Matte", "name": "Green", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Green", "cost": 5000 },
+  { "type": "Matte", "name": "Light Blue", "cost": 5000 },
+  { "type": "Matte", "name": "Blue", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Blue", "cost": 5000 },
+  { "type": "Matte", "name": "Light Purple", "cost": 5000 },
+  { "type": "Matte", "name": "Purple", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Purple", "cost": 5000 },
+  { "type": "Matte", "name": "Pink", "cost": 5000 },
+  { "type": "Matte", "name": "Light Brown", "cost": 5000 },
+  { "type": "Matte", "name": "Brown", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Brown", "cost": 5000 },
+  { "type": "Matte", "name": "White", "cost": 5000 },
+  { "type": "Matte", "name": "Light Grey", "cost": 5000 },
+  { "type": "Matte", "name": "Grey", "cost": 5000 },
+  { "type": "Matte", "name": "Dark Grey", "cost": 5000 },
+  { "type": "Matte", "name": "Black", "cost": 5000 }
+  ],
+  "special": [
+  { "type": "Special", "name": "GT 15th Anniversary Blue", "cost": 6000 },
+{ "type": "Special", "name": "5727cc", "cost": 10000 },
+    {
+      "type": "Livery",
+      "name": "Type 1",
+      "cost": 0
+    },
+      {
+      "type": "Livery",
+      "name": "Type 2",
+      "cost": 0
+    },
+      {
+      "type": "Livery",
+      "name": "Type 3",
+      "cost": 0
+    }
+]
+}

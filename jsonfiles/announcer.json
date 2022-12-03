@@ -1,0 +1,33 @@
+{
+"race-conditions": {
+  "Clear": ["the weather (sverbtobe) nice", "the weather (sverbtobe) sunny", "we see that the weather (sverbtobe) fantastic", "not bad of weather we're having", "the weather (sverbtobe) clear", "it is perfect weather"],
+  "Partly Cloudy":["the weather (sverbtobe) partly cloudy", "I see a few clouds in the sky", "it (sverbtobe) a little cloudy"],
+  "Overcast":["there (sverbtobe) an overcast", "the weather (sverbtobe) cloudy", "there (pverbtobe) a lot of clouds"],
+  "Rain": ["the weather (sverbtobe) cold and rainy", "the weather (sverbtobe) chilly and rainy", "the weather (sverbtobe) pretty cold", "there (sverbtobe) plentiful of rain"],
+  "Storm": ["there (sverbtobe) heavy rain pouring", "there (sverbtobe) a lot of rain"],
+  "Hail": ["there (sverbtobe) hail falling", "hail appears"]
+},
+"race-timeconditions": {
+},
+"race-overtake-1st": ["(1) (sverbtobe) now in the lead", "Wow! (1) now takes in the lead", "(1) overtakes for 1st place", "(1) takes the lead", "And (1) takes the lead", "(1) overtakes to 1st place"],
+"race-gap-1st": ["(1) (sverbtobe) just dominating this race"],
+"race-overtake-fast": ["Looks like (1) (sverbtobe) gaining in the pack", "(1) (sverbtobe) speeding pass through some opponents", "(1) (sverbtobe) focusing hard through the grid", "We have to keep a look out of (1) on track", "What a great move from (1)", "There's some nice moves from (1)",  "(1) is doing some amazing driving"],
+"race-overtake-bad": ["And oh! (1) had made a mistake that may had costed him", "(1) drove too slow on that corner", "(1) is not going to be so happy about that", "(1) does not look so confident"],
+"race-results": [],
+"race-start": ["And the race begins", "And off we go", "Green light", "All green lights", "The race begins"],
+"race-results-winner": {
+  "winner": ["And (1) takes it for the win", "(1) finishes the line", "(1) crosses the line", "(1) takes first place", "(1) is the winner", "Well done, (1)", "Congrats, (1)"]
+},
+"race-results-comments": {
+  "Good": ["What (adjgood) race we had during this time"],
+  "Bad": ["What (adjbad) race we had during this time"]
+},
+"pre-race-comments": ["This is going to be (adjgood) race", "(adjgood) day to race", "This will be (adjgood) race today", "(adjgood) time to race"]
+,
+"race-comments": {
+  "Good": ["This is a (1) race!", "(1) day to race!"]
+},
+"special-event-kart": ["Hello, my name is Igor Fraga. I started my career through karting in 2004 at the Biwako SL Series, up to Formula 3. For many F1 drivers, their first career path is through racing karts and I hope yours is too!"],
+"special-event-rally": [],
+"special-event-formula": ["Hello driver! I'm Lewis Hamilton, known as one of the top stars of Formula 1. I've heard that you've been racing with many types of cars. But.. Formula 1 defines my heart, strength, and soul. By completing these hardcore races, you will understand the significance of F1 throughout motorsport history."]
+}

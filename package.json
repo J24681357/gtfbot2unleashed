@@ -1,0 +1,54 @@
+{
+  "name": "gtfitness",
+  "version": "4.0.0",
+  "main": "index.js",
+  "restart": {
+    "include": [
+      ".js$",
+      ".json$"
+    ]
+  },
+  "scripts": {
+    "start": "forever index.js"
+  },
+  "engines": {
+    "node": "v17.9.0",
+    "npm": "8.1.2"
+  },
+  "dependencies": {
+    "@discordjs/rest": "latest",
+    "@napi-rs/canvas": "latest",
+    "deta": "^1.1.0",
+    "discord.js": "latest",
+    "discord.js-rate-limiter": "^1.2.2",
+    "ejs": "^3.1.8",
+    "express": "latest",
+    "express-fileupload": "^1.4.0",
+    "forever": "latest",
+    "json-format": "^1.0.1",
+    "mongodb": "latest",
+    "node-random-name": "^1.0.1",
+    "package.json": "^2.0.1",
+    "random-normal": "^1.0.0",
+    "replit-dis-uniter": "^1.11.11",
+    "seedrandom": "^3.0.5",
+    "shelljs": "^0.8.4",
+    "undici": "latest",
+    "yy-random": "^1.10.2"
+  },
+  "devDependencies": {
+    "node": "^17.9.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/J24681357/gtfbot.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/J24681357/gtfbot/issues"
+  },
+  "homepage": "https://github.com/J24681357/gtfbot#readme",
+  "description": ""
+}

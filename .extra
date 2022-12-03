@@ -1,0 +1,13 @@
+
+{
+  "bbs": 
+    {
+      "name": "BBS",
+      "level": 5,
+      "type": "Rims",
+      "require": ["BBS"],
+      "levels": 1,
+      "percent": 5,
+      "bonus": "credits"
+    }
+}

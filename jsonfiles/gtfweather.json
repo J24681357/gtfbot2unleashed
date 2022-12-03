@@ -1,0 +1,38 @@
+{
+  "Clear": {
+    "name": "Clear",
+    "emoji": "🔆",
+    "chance": 0.5,
+    "weatherchange": 0, "wet": false
+  },
+  "Partly Cloudy": {
+    "name": "Partly Cloudy",
+    "emoji": "⛅",
+    "chance": 0.15,
+    "weatherchange": 0, "wet": false
+  },
+    "Overcast": {
+    "name": "Overcast",
+    "emoji": "☁",
+    "chance": 0.1,
+    "weatherchange": 0, "wet": false
+  },
+    "Rain": {
+    "name": "Rain",
+    "emoji": "🌧",
+    "chance": 0.1,
+    "weatherchange": 0, "wet": true
+  },
+  "Storm": {
+    "name": "Storm",
+    "emoji": "🌧",
+    "chance": 0.1,
+    "weatherchange": 0, "wet": true
+  },
+  "Hail": {
+    "name": "Hail",
+    "emoji": "⛈",
+    "chance": 0.05,
+    "weatherchange": 0, "wet": true
+  }
+}

@@ -1,0 +1,314 @@
+npm init -y && npm i --save-dev node@17 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH && rm -rf ./node_modules
+
+curl -I https://discordapp.com/api/v7/gateway
+
+client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({
+  data: {
+    "name": "update",
+    "description": "🏁 Updates your GTF save data to the latest version.",
+    "options": [
+        ]
+  }
+})
+
+ /*
+async function a() {
+var Canvas = require("@napi-rs/canvas");
+var colornames = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Grey"] 
+for (var i = 0; i < colornames.length; i++) {
+  var colorname = colornames[i]
+var colorimage = "./images/gtauto/paint/" + colorname + ".png"
+
+var width = 100
+var height = 100
+var canvas = await Canvas.createCanvas(width, height);
+var context = await canvas.getContext('2d');
+
+
+  /*
+   context.fillStyle = "white";
+   context.fillRect(0, 0, width, height);
+   context.globalAlpha = 0.5;
+   */
+ 
+   context.fillStyle = "black";
+   context.fillRect(0, 0, width, height);
+   context.globalAlpha = 0.5;
+
+    
+  
+context.drawImage(await Canvas.loadImage(colorimage), 0, 0, width, height);
+  context.globalAlpha = 1;
+        
+  var file = await canvas.encode('png')
+  console.log("Saved")
+    fs.writeFile("./images/gtauto/paint/Dark " + colornames[i] + ".png", file, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+}
+}
+a()
+
+ "timetrial": {
+    "name": "timetrial",
+    "description": "N/A: Participate in time trials.",
+    "options": [{
+      "name": "options",
+      "description": "Select an option.",
+      "type": 3,
+      "required": true,
+      "choices": [{
+            "name": "❗ Menu",
+            "value": "list"
+      },
+      {
+            "name": "Select Time Trial",
+            "value": "select"
+      },
+      {
+            "name": "Time Trial 1 Leaderboards",
+            "value": "view1"
+      },
+      {
+            "name": "Time Trial 2 Leaderboards",
+            "value": "view2"
+      },
+      {
+            "name": "Time Trial 3 Leaderboards",
+            "value": "view3"
+      }]
+      },{
+      "name": "number",
+      "description": "Pick a number associated with the list in the menu.",
+      "type": 4,
+      "required": false
+      }]
+},
+
+client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({
+  data: {
+    "name": "freerun",
+    "description": "N/A",
+    "options": [{
+      "name": "options",
+      "description": "Select an option",
+      "type": 3,
+      "required": true,
+      "choices": [
+         {
+            "name": "❗ Menu",
+            "value": "list"
+        },
+         {
+            "name": "Location Select",
+            "value": "select"
+        }
+        ],
+      },
+      {
+      "name": "number",
+      "description": "Pick a number associated with the list in the menu.",
+      "type": 3,
+      "required": false
+      }]
+}
+})
+
+client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({
+  data: {
+    "name": "discover",
+    "description": "Return search results of GTS liveries. Fetched from https://gtswiki.gt-beginners.net/decal/",
+    "options": [{
+      "name": "type",
+      "description": "Select the type of livery.",
+      "type": 3,
+      "required": true,
+      "choices": [
+      {
+            "name": "Decal",
+            "value": "decal"
+        },
+        {
+            "name": "Car Livery",
+            "value": "car"
+        },
+        {
+            "name": "Suit Livery",
+            "value": "suit"
+        }, 
+         {
+            "name": "Helmet Livery",
+            "value": "helmet"
+        }]
+      },{
+      "name": "message",
+      "description": "What do you want to search?",
+      "type": 3,
+      "required": true
+      }]
+}
+})
+
+client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({
+  data: {
+    name: 'freerun',
+    description: 'N/A Interactively drive your current car in free run locations.',
+    options: [{
+      "name": "options",
+      "description": "Select an option",
+      "type": 3,
+      "required": true,
+      "choices": [
+         {
+            "name": "❗ Menu",
+            "value": "list"
+        },
+         {
+            "name": "Location Select",
+            "value": "select"
+        }
+        ],
+      },
+      {
+      "name": "number",
+      "description": "Pick a number associated with the list in the menu.",
+      "type": 3,
+      "required": false
+      }]
+}
+})
+
+
+"sponsors": {
+    "name": "sponsors",
+    "description": "N/A",
+    "options": [{
+      "name": "options",
+      "description": "N/A",
+      "type": 3,
+      "required": true,
+      "choices": [
+          {
+            "name": "❗ Menu",
+            "value": "list"
+      },
+      
+          {
+            "name": "Car Manufacturers",
+            "value": "1"
+      },
+          {
+            "name": "Wheel Manufacturers",
+            "value": "2"
+      },
+          {
+            "name": "Paint",
+            "value": "3"
+      }]
+      },
+      {
+      "name": "number",
+      "description": "N/A",
+      "type": 4,
+      "required": false
+      }
+      ]
+},
+
+/*
+ var index = 1
+var a = [0]
+var json = {
+  "1": { "exp": 0, "rewards": [ "None" ] },
+  "2": { "exp": 350, "rewards": [ "None" ] },
+  "3": { "exp": 791, "rewards": [ "None" ] },
+  "4": { "exp": 1325, "rewards": [ "None" ] },
+  "5": { "exp": 1954,"rewards": [
+      "Career Mode - Amateur",
+      "Arcade Mode - Amateur",
+      "Drift Trial - Beginner",
+      "Level 5 Car Reward"
+    ]
+  },
+  "6": { "exp": 2680, "rewards": [ "Accent Color - GT6" ] },
+  "7": { "exp": 3505, "rewards": [ "None" ] },
+  "8": {
+    "exp": 4431,
+    "rewards": [ "Special Stage Route X - Top Speed Run" ]
+  },
+  "9": { "exp": 5460, "rewards": [ "None" ] },
+  "10": {
+    "exp": 6594,
+    "rewards": [ "Career Mode - IC League", "Level 10 Car Reward" ]
+  },
+  "11": { "exp": 7835, "rewards": [ "None" ] },
+  "12": { "exp": 9185, "rewards": [ "None" ] },
+  "13": { "exp": 10646, "rewards": [ "None" ] },
+  "14": { "exp": 12220, "rewards": [ "None" ] },
+  "15": { "exp": 13909,
+  "rewards":  [
+    "Career Mode - IB League",
+  "Drift Trial - Professional",
+  "Level 15 Car Reward"
+  ] },
+  "16": { "exp": 15715, "rewards": [ "Seasonal Events" ] },
+  "17": { "exp": 17640, "rewards": [ "None" ] },
+  "18": { "exp": 19686, "rewards": [ "None" ] },
+  "19": { "exp": 21855, "rewards": [ "None" ] },
+  "20": {"exp": 24149, "rewards": ["Career Mode - IA League","Arcade Mode - Professional", "Level 20 Car Reward"]},
+  "21": { "exp": 26570, "rewards": [ "None" ] },
+  "22": { "exp": 29120, "rewards": [ "None" ] },
+  "23": { "exp": 31801, "rewards": [ "None" ] },
+  "24": { "exp": 34615, "rewards": [ "None" ] },
+  "25": { "exp": 37564, "rewards": [ "Career Mode - S League", "Level 25 Car Reward"] },
+  "26": { "exp": 40650, "rewards": [ "None" ] },
+  "27": { "exp": 43875, "rewards": [ "None" ] },
+  "28": { "exp": 47241, "rewards": [ "None" ] },
+  "29": { "exp": 50750, "rewards": [ "None" ] },
+  "30": { "exp": 54404, "rewards": [ "Level 30 Car Reward" ] },
+  "31": { "exp": 58205, "rewards": [ "None" ] },
+  "32": { "exp": 62155, "rewards": [ "None" ] },
+  "33": { "exp": 66256, "rewards": [ "None" ] },
+  "34": { "exp": 70510, "rewards": [ "None" ] },
+  "35": { "exp": 74919, "rewards": [ "None" ] },
+  "36": { "exp": 79485, "rewards": [ "None" ] },
+  "37": { "exp": 84210, "rewards": [ "None" ] },
+  "38": { "exp": 89096, "rewards": [ "None" ] },
+  "39": { "exp": 94145, "rewards": [ "None" ] },
+  "40": { "exp": 99359, "rewards": [ "Level 40 Car Reward" ] },
+  "41": { "exp": 104740, "rewards": [ "None" ] },
+  "42": { "exp": 110290, "rewards": [ "None" ] },
+  "43": { "exp": 116011, "rewards": [ "None" ] },
+  "44": { "exp": 121905, "rewards": [ "None" ] },
+  "45": { "exp": 127974, "rewards": [ "None" ] },
+  "46": { "exp": 134220, "rewards": [ "None" ] },
+  "47": { "exp": 140645, "rewards": [ "None" ] },
+  "48": { "exp": 147251, "rewards": [ "None" ] },
+  "49": { "exp": 154040, "rewards": [ "None" ] },
+  "50": { "exp": 161014, "rewards": [ "Level 50 Car Reward" ] }
+}
+var divider = 4
+for (index; index < 50; index++) {
+  if (index == 1) {
+    json[(index+1).toString()]["exp"] = 350
+ } else if (index >= 23)  {
+   divider = 5
+   if (index >= 24) {
+     json[(index+1).toString()]["exp"] = Math.round( ((1.2*(Math.pow(index,1.2)) * (450 * index) + 350) / divider) )
+   } else {
+   json[(index+1).toString()]["exp"] = Math.round( ((1.2*(Math.pow(index,1.1)) * (450 * index) + 350) / divider) )
+   }
+} else {
+   if ((index+1) % 10 == 1) {
+     divider--
+     if (divider == 0) {
+       divider = 1
+     }
+   }
+json[(index+1).toString()]["exp"] = Math.round( (1.2*(Math.pow(index,0.7))* (450 * index) + 350) / divider)
+}
+}
+console(json)
+*/

@@ -1,0 +1,129 @@
+var dir = "../"
+var stats = require(dir + "functions/profile/f_stats");
+var emote = require(dir + "index");
+var gtftools = require(dir + "functions/misc/f_tools");
+
+const {  Client, Intents, Discord, MessageEmbed, MessageActionRow, MessageAttachment, MessageButton, MessageSelectMenu } = require("discord.js");
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+var gtf = require(dir + "files/directories");
+////////////////////////////////////////////////////
+
+module.exports = {
+  name: "freerun",
+  title: "GTF Free Run",
+  cooldown: 3,
+  level: 15,
+  aliases: ["gtffreeroam", "gtfreeroam", "freeroam", "fr"],
+  channels: ["testing"],
+
+  delete: false,
+  availinmaint: false,
+  requireuserdata: true,
+  requirecar: true,
+  usedduringrace: false,
+  usedinlobby: false,
+  description: [
+    '',
+  ],
+  execute(msg, query, userdata) {
+    /* Setup */
+    const embed = new MessageEmbed();
+    embed.setColor(0x0151b0);
+    var user = msg.guild.members.cache.get(userdata["id"]).user.username;
+    embed.setAuthor(user, msg.guild.members.cache.get(userdata["id"]).user.displayAvatarURL());
+    var args = "";
+    var page = 0;
+    var results = "";
+    if (Object.keys(query).length == 0) query = {"options":"list"}
+    var pageargs = {
+      text: "",
+      list: "",
+      query: query,
+      selector: "",
+      command: __filename.split("/").splice(-1)[0].split(".")[0],
+      rows: 10,
+      page: 0,
+      numbers: true,
+      buttons: true,
+      carselectmessage: false,
+      footer: "**❓ Select an event from the list above using the numbers associated or the reactions.\nThis is an interative commands where you drive your car around different locations using buttons. You are able to have duels against other cars on the track.**",
+      image: "",
+      special: "",
+      other: "",
+    };
+
+    /* Setup */
+      var league = 0;
+
+      if (query.length == 0) {
+        query["options"] = "list";
+      } 
+
+      var results2 = " ";
+      var ready = false;
+      var racesettings;
+      var mode = "FREERUN";
+      var racedetails = "";
+
+      if (league == 1) {
+        var ready = true;
+      }
+      embed.setTitle("🏁" + " __GTF Free Run - Location Select__");
+
+      var tracks = require(gtf.FREEROAMTRACKS).list("names");
+      var number = query["number"];
+      if (!gtftools.betweenInt(number, 1, Object.keys(tracks).length)) {
+        if (number !== undefined) {     
+          require(gtf.EMBED).alert({ name: "⚠ Warning", description: "This event does not exist.", embed: embed, seconds: 3 }, msg, userdata);
+        }
+      }
+      if (gtftools.betweenInt(number, 1, Object.keys(tracks).length)) {
+        var key = Object.keys(require(gtf.LISTS).gtffreerunlist)[number-1]
+
+        location = require(gtf.LISTS).gtffreerunlist[key]
+        var car = stats.currentcar(userdata);
+        var ocar = require(gtf.CARS).get({ make: [car["make"]], fullname: [car["name"]], year: [car["year"]] })
+        if (ocar["type"] != "Production") {
+          require(gtf.EMBED).alert({ name: "❌ Production Cars Only", description: "Production cars are only allowed for free runs.", embed: "", seconds: 3 }, msg, userdata);
+          return
+        }
+        require(gtf.FREEROAM).startsession(location, msg, embed, userdata)
+        return
+      } else {
+        delete query["number"]
+      delete pageargs["query"]["number"]
+        var results2 = "";
+        var ids = Object.keys(tracks);
+        var list = []
+        for (var t = 0; t < ids.length; t++) {
+          var event = tracks[ids[t]]
+          list.push(event)
+        }
+
+        pageargs["list"] = list;
+        pageargs["selector"] = "number"
+        pageargs["text"] = gtftools.formpage(pageargs, embed, msg, userdata);
+        gtftools.formpages(pageargs, embed, msg, userdata);
+        return;
+      }
+
+      function asyncrace(event) {
+        if (event == "Invalid") {
+          return;
+        }
+
+        var ready = true;
+        var raceprep = {
+          mode: mode,
+          modearg: "",
+          carselect: "GARAGE",
+          car: stats.currentcar(userdata),
+          trackselect: "N/A",
+          track: {},
+          racesettings: event,
+          other: [],
+        };
+        require(gtf.RACE).raceprep(raceprep, embed, msg, userdata);
+      }
+  },
+};

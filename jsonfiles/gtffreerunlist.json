@@ -1,0 +1,24 @@
+{
+  "1": {
+    "name": "Tokyo Expressway",
+    "length": 0,
+    "turns_prob": 0.10,
+    "type": "City",
+    "tracks": ["Tokyo Expressway - Central Inner Loop","Tokyo Expressway - Central Outer Loop", "Tokyo Expressway - East Inner Loop", "Tokyo Expressway - East Outer Loop", "Tokyo Expressway - South Inner Loop", "Tokyo Expressway - South Outer Loop"],
+    "background_1": ["🚧"],
+    "background_2": ["🏢","🏢","🏣","🏤","🌲"],
+    "barrier": ["⬜"],
+    "options": []
+},
+"2": {
+    "name": "Willow Springs",
+    "length": 0,
+    "turns_prob": 0.05,
+    "type": "Real",
+    "tracks": ["Willow Springs (Big Willow)","Willow Springs (Horse Thief Mile)", "Willow Springs (Horse Thief Mile) II", "Willow Springs (Streets of Willow)", "Willow Springs (Streets of Willow) II"],
+    "background_1": ["🌵"],
+    "background_2": ["🌵"],
+    "barrier": [""],
+    "options": []
+}
+}

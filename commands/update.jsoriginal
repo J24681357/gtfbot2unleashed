@@ -1,0 +1,58 @@
+var dir = "../"
+var stats = require(dir + "functions/profile/f_stats");
+var emote = require(dir + "index");
+var gtftools = require(dir + "functions/misc/f_tools");
+
+const { Client, GatewayIntentBits, Partials, Discord, EmbedBuilder } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+var gtf = require(dir + "files/directories");
+////////////////////////////////////////////////////
+var gtfuser = require(dir + "index");
+
+module.exports = {
+  name: "update",
+  title: "GTF Updater",
+  cooldown: 3,
+  level: 0,
+  channels: ["testing", "gtf-mode", "gtf-mode"],
+
+  delete: false,
+  availinmaint: false,
+  requirecar: false,
+  usedduringrace: false,
+  usedinlobby: false,
+  description: ["!update - Updates your profile to the latest version."],
+  execute(msg, query, userdata) {
+    /* Setup */
+    const embed = new EmbedBuilder();
+    embed.setColor(userdata["settings"]["PROGRESSBAR"][2]);
+
+    var user = msg.guild.members.cache.get(userdata["id"]).user.username;
+    embed.setAuthor(user, msg.guild.members.cache.get(userdata["id"]).user.displayAvatarURL());
+    var args = "";
+    var results = "";
+    //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
+    /* Setup */
+
+    if (userdata["version"] >= require(gtf.MAIN).bot["version"]) {
+      require(gtf.EMBED).alert({ name: "❌ Up to Date", description: "Your save is already up to the latest version.", embed: "", seconds: 0 }, msg, userdata);
+      return;
+    }
+    userdata["racemulti"] = 1
+    userdata["level"] = 1
+    userdata["seasonalcheck"] = ""
+    delete userdata["racelengthmulti"]
+    for (var i = 0; i < stats.garage(userdata).length; i++) {
+      userdata["garage"][i]["clean"] = 100
+      userdata["garage"][i]["totalmileage"] = [0,0]
+    }
+    
+    if (userdata["version"] === undefined) {
+      userdata["version"] = require(gtf.MAIN).bot["version"];
+    } else {
+      userdata["version"] = require(gtf.MAIN).bot["version"]
+    }
+    require(gtf.EMBED).alert({ name: "✅ Success", description: "Update Complete!", embed: "", seconds: 3 }, msg, userdata);
+    return;
+  },
+};

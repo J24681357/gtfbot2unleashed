@@ -1,0 +1,98 @@
+{
+  "title": "Seasonal Event 1 🎉",
+  "eventid": "seasonal-1",
+  "date": "662022",
+  "positions": [
+    {
+      "place": "1st",
+      "credits": 18000
+    },
+    {
+      "place": "2nd",
+      "credits": 15000
+    },
+    {
+      "place": "3rd",
+      "credits": 12000
+    },
+    {
+      "place": "4th",
+      "credits": 10000
+    },
+    {
+      "place": "5th",
+      "credits": 8000
+    },
+    {
+      "place": "6th",
+      "credits": 4000
+    },
+    {
+      "place": "7th",
+      "credits": 2000
+    },
+    {
+      "place": "8th",
+      "credits": 1000
+    },
+    {
+      "place": "9th",
+      "credits": 0
+    },
+      {
+      "place": "10th",
+      "credits": 0
+    }
+  ],
+  "tracks": [
+      [
+        1,
+        "Circuit de Sainte-Croix - B",
+        5
+      ],
+        [
+        2,
+        "Sardegna - Road Track - A",
+        4
+      ],
+      [
+        3,
+        "Nürburgring Nordschleife",
+        2
+      ]
+  ],
+  "time": [
+    "R"
+  ],
+  "type": "LAPS",
+  "weather": ["R"],
+  "tires": "Sports",
+  "bop": false,
+  "championship": false,
+  "grid": 16,
+  "difficulty": 50,
+  "fpplimit": 570,
+  "upperfpp": 570,
+  "lowerfpp": 300,
+  "upperpower": 9999,
+  "lowerpower": 0,
+  "upperweight": 9999,
+  "lowerweight": 0,
+  "countries": [],
+  "makes": ["Porsche"],
+  "models": [],
+  "drivetrains": [],
+  "types": ["Production", "Aftermarket"],
+  "prize": [
+    "RANDOMCAR",
+    {
+      "id": -1,
+      "make": [
+        "Porsche"
+      ],
+      "fullname": [
+        "Porsche 911 GT3 RS (992) 2023"
+      ]
+    }
+  ]
+}
