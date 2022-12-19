@@ -8,87 +8,165 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
-module.exports.setracesettings = function (raceprep) {
+module.exports.setracesettings = function (raceprep, gtfcar, embed, msg, userdata) {
+
+    var carselect = raceprep["car"] == "GARAGE" ? gtfcar : stats.addcar(require(gtf.CARS).find({fullname: [raceprep["car"]] })[0], "LOAN")
+
+  if (typeof raceprep["track"] == "string") {
+    var track = require(gtf.TRACKS).find({ name: [raceprep["track"]] })[0];
+    var km = track["length"]
+  } else {
+    if (typeof raceprep["track"]["layout"] === 'undefined') {
+    var track = require(gtf.TRACKS).random(raceprep["track"], 1)[0];
+    var km = track["length"];
+    } else {
+      var track = raceprep["track"]
+      var km = track["lengthkm"]
+    }
+  }
+
+  if (Object.keys(raceprep["racesettings"]).length != 0) {
+    racesettings = raceprep["racesettings"];
+    racesettings["time"] = require(gtf.TIME).random({ name: racesettings["time"], timeprogression: racesettings["timeprogression"] }, 1)[0];
+    racesettings["weather"] = require(gtf.WEATHER).random({ name: racesettings["weather"], weatherchange: racesettings["weatherchange"]}, 1)[0];
+    racesettings["track"] = track
+    racesettings["image"] = track["image"]
+    racesettings["driver"] = {name: msg.guild.members.cache.get(userdata["id"]).user.username, car: carselect, otires: carselect["perf"]["tires"]["current"].slice(), tirechange: true}
+      if (racesettings["type"] == "TIME") {
+      racesettings["distance"] = {km: "N/A", mi: "N/A"}
+      } 
+      else if (racesettings["type"] == "TIMETRIAL") {
+          var km = require(gtf.MATH).round(track.length * (parseFloat(racesettings["laps"].split("%")[0]) / 100), 3)
+      racesettings["distance"] = {km: km, mi: require(gtf.MATH).round(km / 1.609, 2)}
+        } else {    
+      racesettings["distance"] = {km: Math.round(1000 * (racesettings["laps"] * km)) / 1000, mi: Math.round(100 * ((racesettings["laps"] * km) / 1.609)) / 100}
+      }
+    return racesettings
+  } else {
+  var racesettings = {
+    title: "",
+    eventid: "",
+    raceid: 1,
+    image: track["image"],
+    mode: raceprep["mode"],
+    type: "",
+    
+    bop: false,
+    championship: false,
+    damage: false,
+    
+    grid: 1,
+    gridstart: "STANDING",
+    startposition: 1,
+    positions: [],
+    car: raceprep["car"],
+    driver: {name: msg.guild.members.cache.get(userdata["id"]).user.username, 
+             car: carselect, 
+             otires: carselect["perf"]["tires"]["current"].slice(), tirechange: true},
+    
+    time: {},
+    timeprogression: 1,
+    weather: {},
+    weatherchange: 0,
+    track: track,
+    laps: 0,
+    distance: {km:0, mi: 0},
+    
+    regulations: {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [],
+      "makes": [],
+      "models": [],
+      "engines": [],
+      "drivetrains": [],
+      "types": [],
+      "special": [],
+      "prohibited": []
+    },
+    difficulty: 100
+  }
+  }
+  
+  
   if (raceprep["mode"] == "ARCADE") {
     if (raceprep["modearg"] == "beginner") {
-      var title = "Arcade Mode - Beginner";
-      var type = "LAPS";
-      var limit = 10.0;
-      var time = require(gtf.TIME).random({}, 1)[0];
-      var weather = require(gtf.WEATHER).random({}, 1)[0];
-
-      var grid = ["8", "9", "10", "11", "12"];
-
-   
-      var chance = 90;
+      var limit = 8.0;
+      racesettings["title"] = "Single Race - Beginner";
+      racesettings["type"] = "LAPS";
+      racesettings["grid"] = gtftools.randomInt(8, 12)
+      racesettings["difficulty"] = 90;
     } 
     else if (raceprep["modearg"] == "amateur") {
-      var title = "Arcade Mode - Amateur";
-      var type = "LAPS";
       var limit = 15.0;
-      var time = require(gtf.TIME).random({}, 1)[0];
-      var weather = require(gtf.WEATHER).random({}, 1)[0];
-      var grid = ["10", "11", "12", "13", "14", "15", "16"];
-    
-      var chance = 70;
+      racesettings["title"] = "Single Race - Amateur";
+      racesettings["type"] = "LAPS";
+      racesettings["grid"] = gtftools.randomInt(10, 16)
+      racesettings["difficulty"] = 70;
     } 
-    else if (raceprep["modearg"] == "professional" || raceprep["modearg"] == "pro") {
-      var title = "Arcade Mode - Professional";
-      var type = "LAPS";
+    else if (raceprep["modearg"] == "professional" || raceprep["modearg"] == "pro")    {
       var limit = 25.0;
-      var time = require(gtf.TIME).random({}, 1)[0];
-      var weather = require(gtf.WEATHER).random({}, 1)[0];
-      var grid = ["12", "13", "14", "15", "16", "17", "18", "19", "20"];
- 
-      var chance = 50;
+      racesettings["title"] = "Single Race - Professional";
+      racesettings["type"] = "LAPS";
+      racesettings["grid"] = gtftools.randomInt(14, 20)
+      racesettings["difficulty"] = 50;
     }
     else if (raceprep["modearg"] == "endurance") {
-      var type = "TIME";
-      var km = 0;
-      var limit = ["30m", "45m", "60m", "120m"];
+      var limit = ["30m", "45m", "60m", "90m", "120m"];
       limit = limit[Math.floor(Math.random() * limit.length)];
-      var time = require(gtf.TIME).random({}, 1)[0];
-      var weather = require(gtf.WEATHER).random({}, 1)[0];
-      var grid = ["24"];
-       
-      var chance = 40;
-    } 
+      racesettings["type"] = "TIME";
+      racesettings["grid"] = 24
+      racesettings["difficulty"] = 40;
+      racesettings["title"] = "Single Race - " + limit + " of " + track["name"];
+  }
     else if (raceprep["modearg"].includes("custom")) {
       var difficulty = parseInt(raceprep["modearg"].split("_")[1])
       raceprep["racesettings"]["difficulty"] = difficulty
       return raceprep["racesettings"]
     }
-  }
+    
+  } 
   else if (raceprep["mode"] == "DRIFT") {
     if (raceprep["modearg"] == "driftbeginner") {
-      var title = "Drift Trial - Beginner";
-      var type = "LAPS";
-      var limit = 1;
-      var time = require(gtf.TIME).random({}, 1)[0];
-      var weather = require(gtf.WEATHER).random({}, 1)[0];
-      var grid = ["1"];
-      var chance = 50;
+
+      var limit = 1.0;
+      racesettings["title"] = "Drift Trial - Beginner";
+      racesettings["type"] = "LAPS";
+      racesettings["grid"] = 1
+      racesettings["difficulty"] = 50;
+      
+    racesettings["originalsectors"] = 3;
+    racesettings["sectors"] = 3;
+    racesettings["current"] = 0;
+    racesettings["points"] = 0;
     }
     if (raceprep["modearg"] == "driftprofessional") {
-      var title = "Drift Trial - Professional";
-      var type = "LAPS";
-      var limit = 1;
-      var time = require(gtf.TIME).random({}, 1)[0];
-      var weather = require(gtf.WEATHER).random({}, 1)[0];
-      var grid = ["1"];
+      var limit = 2.0;
+      racesettings["title"] = "Drift Trial - Professional";
+      racesettings["type"] = "LAPS";
+      racesettings["grid"] = 1
+      racesettings["difficulty"] = 50;
       
-      var chance = 50;
+    racesettings["originalsectors"] = 6;
+    racesettings["sectors"] = 6;
+    racesettings["current"] = 0;
+    racesettings["points"] = 0;
     }
   }
   else if (raceprep["mode"] == "SSRX") {
-    var title = "Special Stage Route X - " + raceprep["modearg"] + "m Top Speed Run";
-    var type = "LAPS";
     var limit = 0.01;
-    var time = require(gtf.TIME).random({}, 1)[0];
-    var weather = require(gtf.WEATHER).random({}, 1)[0];
-    var grid = ["1"];
-    var category = ["CUSTOM"];
-    var chance = 50;
+    racesettings["title"] ="Special Stage Route X - " + gtftools.numFormat(raceprep["modearg"]) + "m Top Speed Run";
+      racesettings["type"] = "LAPS";
+      racesettings["grid"] = 1
+  racesettings["difficulty"] = 100;
   }
   else if (raceprep["mode"] == "DUEL") {
     var title = "1 Lap Duel - " + raceprep["players"][0]["name"]
@@ -123,87 +201,50 @@ module.exports.setracesettings = function (raceprep) {
     var chance = 50;
   }
 
-  if (raceprep["mode"] == "CAREER") {
-    racesettings = raceprep["racesettings"];
-    racesettings["time"] =  require(gtf.TIME).random({ name: racesettings["time"], timeprogression: racesettings["timeprogression"] }, 1)[0];
-    racesettings["weather"] = require(gtf.WEATHER).random({ name: racesettings["weather"], weatherchange: racesettings["weatherchange"]}, 1)[0];
-    return racesettings;
-  }
-  if (raceprep["trackselect"] == "RANDOM") {
-    var track = require(gtf.TRACKS).random(raceprep["track"], 1)[0];
-    var km = track["length"];
-  }
-  if (raceprep["trackselect"] == "SELECT") {
-    var track = raceprep["track"];
-    var km = track["length"];
-  }
 
   if (track["options"].includes("sprint")) {
-      limit = 0.1
+      limit = 0.01
   }
 
-  if (raceprep["modearg"] == "endurance") {
-    title = "Arcade Mode - " + limit + " of " + track["name"];
-  }
   if (!isNaN(limit)) {
     var distance = require(gtf.RACE).lapcalc(km, limit);
   } else {
     distance = [limit, "N/A", "N/A"];
   }
-  grid = grid[Math.floor(Math.random() * grid.length)];
 
-  
-  var racesettings = {
-    title: title,
-    image: track["image"],
-    mode: raceprep["mode"],
-    grid: grid,
-    carselect: "",
-    time: time,
-    timeprogression: 1,
-    weather: weather,
-    weatherchange: 0,
-    positions: [],
-    track: track,
-    tires: "Racing",
-    bop: false,
-    difficulty: chance,
-    type: type,
-    laps: distance[0],
-    km: distance[1],
-    mi: distance[2],
-  };
+  racesettings["laps"] = distance[0]
+  racesettings["distance"] = {km:distance[1], mi:distance[2]}
+  racesettings["time"] = require(gtf.TIME).random({}, 1)[0];
+  racesettings["weather"] = require(gtf.WEATHER).random({}, 1)[0];
+
+  if (racesettings["mode"] == "SSRX") {
+    
+    
+    racesettings["distance"] = {
+      km:parseInt(raceprep["modearg"]) / 1000,
+      mi:Math.round(100 * ((parseInt(raceprep["modearg"]) / 1000)/ 1.609)) / 100}
+  }
+
+
+racesettings["regulations"]["types"] = [require(gtf.CARS).find({ makes: [carselect["make"]], fullname: [carselect["name"]] })[0]["type"].split(":")[0]]
+racesettings["regulations"]["upperfpp"] = carselect["fpp"] + 30
+racesettings["regulations"]["lowerfpp"] = carselect["fpp"] -50
+ 
   racesettings["positions"] = require(gtf.RACE).calculatecredits(racesettings, raceprep)
-  
-
-  if (raceprep["modearg"] == "driftbeginner") {
-    racesettings["originalsectors"] = 3;
-    racesettings["sectors"] = 3;
-    racesettings["current"] = 0;
-    racesettings["points"] = 0;
-  }
-  if (raceprep["modearg"] == "driftprofessional") {
-    racesettings["originalsectors"] = 6;
-    racesettings["sectors"] = 6;
-    racesettings["current"] = 0;
-    racesettings["points"] = 0;
-  }
   return racesettings;
 };
 
-module.exports.raceprep = function (raceprep, embed, msg, userdata) {
+module.exports.raceprep = function (raceprep, gtfcar, embed, msg, userdata) {
   var embed = new EmbedBuilder();
   raceprep["modearg"] = raceprep["modearg"].toString();
- 
-  if ((raceprep["mode"] == "ARCADE" || raceprep["mode"] == "DRIFT" || raceprep["mode"] == "SSRX" || raceprep["mode"] == "DUEL" || raceprep["mode"] == "TIMETRIAL")) {
-    var racesettings = require(gtf.RACE).setracesettings(raceprep);
-
-  } else if (raceprep["mode"] == "CAREER") {
-    embed.fields = [];
-    var racesettings = require(gtf.RACE).setracesettings(raceprep);
-    var loading = racesettings["misc"]["loading"];
+  var racesettings = require(gtf.RACE).setracesettings(raceprep, gtfcar, embed, msg, userdata);
   
-  } else if (raceprep["mode"] == "ONLINE") {
+  var carname = racesettings["driver"]["car"]["name"]
+ 
+ if (raceprep["mode"] == "CAREER") {
+    embed.fields = [];
+  } 
+ else if (raceprep["mode"] == "ONLINE") {
     embed.fields = [];
 
     var racesettings = raceprep["racesettings"];
@@ -218,108 +259,40 @@ module.exports.raceprep = function (raceprep, embed, msg, userdata) {
   { place: '6th', credits: 300 },
   { place: '7th', credits: 200 },
   { place: '8th', credits: 100 }]
-    racesettings["misc"] = { loading: racesettings["title"] };
+    racesettings["driver"] = { loading: racesettings["title"] };
   }
 
-  if (raceprep["carselect"] == "GARAGE") {
-    var carname = raceprep["car"]["name"];
-    var tirechange = raceprep["mode"] != "DRIFT" ? true : false
-    
-    racesettings["misc"] = { otires: raceprep["car"]["tires"]["current"].slice(), tirechange: tirechange, tirechange: true, car: raceprep["car"] };
-  } else {
-    if (raceprep["mode"] != "ONLINE") {
-    var carname =  racesettings["misc"]["car"]["name"]
-    }
-  }
-
-    if (raceprep["mode"] == "CAREER") {
-      var condition = "CUSTOM"
-
-      if (racesettings["bop"]) {
-        condition = "BOP"
-      }
-
-      var args = {
-        mode: racesettings["mode"],
-        makes: racesettings["makes"],
-        models: racesettings["models"],
-        types: racesettings["types"],
-        countries: racesettings["countries"],
-        drivetrains: racesettings["drivetrains"],
-        engines: racesettings["engines"],
-        special: racesettings["special"],
-        prohibited: racesettings["prohibited"],
-        upperfpp: racesettings["upperfpp"],
-        lowerfpp: racesettings["lowerfpp"],
-        upperpower: racesettings["upperpower"],
-        lowerpower: racesettings["lowerpower"],
-        upperweight: racesettings["upperweight"],
-        lowerweight: racesettings["lowerweight"],
-        condition: condition,
-        gtscarclass: "",
-      };
-  
-      var finalgrid = require(gtf.RACE).creategrid(args, racesettings["misc"]["car"], racesettings["grid"]);
-    
-      var grid = racesettings["grid"];
-    } else if (raceprep["mode"] == "ARCADE" || raceprep["mode"] == "SSRX" || raceprep["mode"] == "DUEL" || raceprep["mode"] == "DRIFT" || raceprep["mode"] == "TIMETRIAL") {
-      var grid = racesettings["grid"];
-      var car = racesettings["misc"]["car"];
-      racesettings["category"] = ["CUSTOM"];
-      var args = {
-        mode: raceprep["mode"],
-        makes: [],
-        models: [],
-        types: [require(gtf.CARS).find({ make: [car["make"]], fullname: [car["name"]], year: [car["year"]] })[0]["type"].split(":")[0]],
-        engines: [],
-        drivetrains: [],
-        countries: [],
-        upperfpp: racesettings["misc"]["car"]["fpp"] + 30,
-        lowerfpp: racesettings["misc"]["car"]["fpp"] - 50,
-        upperpower: 9999,
-        lowerpower: 0,
-        upperweight: 9999,
-        lowerweight: 0,
-        special: [],
-        prohibited: [],
-        condition: "CUSTOM",
-        drivetrains: [],
-      };
-      if (raceprep["modearg"].includes("custom")) {
-        
-        var finalgrid = raceprep["players"] 
-      } else { 
-        var finalgrid = require(gtf.RACE).creategrid(args, racesettings["misc"]["car"], racesettings["grid"]);
-          }
-    }
+  var finalgrid = require(gtf.RACE).creategrid(racesettings, "");
 
   if (raceprep["mode"] == "DUEL") {
     var finalgrid = raceprep["players"]
     racesettings["fpplimit"] = raceprep["fpplimit"]
     racesettings["upperfpp"] = raceprep["fpplimit"]
     racesettings["locationid"] = raceprep["locationid"]
-  } else if (raceprep["mode"] == "ONLINE" || raceprep["mode"] == "TIMETRIAL") {
+  } else if (raceprep["mode"] == "ONLINE") {
     var finalgrid = raceprep["players"]
   }
-
- 
   
   var prerace = require(gtf.RACE).preracedetails(racesettings, embed, msg, userdata)
 
   var results = prerace[0]
   var racedetails = prerace[1]
   var msgjson = prerace[2]
-  
+
+  if (racesettings["type"] == "TIMETRIAL") {
+
+require(gtf.RACEEX).timetrialracelength(racesettings, racedetails, finalgrid, true, 50 - (racesettings["difficulty"]/2), embed, msg, userdata);
+    
+    var prizemoney = [emote.goldmedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][0]["time"] * 1000) ,emote.silvermedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][1]["time"] * 1000), emote.bronzemedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][2]["time"] * 1000)]
+  } else {
   var prizemoney = racesettings["positions"].slice(0, 3).map(function (x) {
     var credits = gtftools.numFormat(x["credits"])
     return x["place"] + " " + credits + emote.credits;
   });
-
-  if (raceprep["mode"] == "CAREER") {
-    loading = require(gtf.GTF).loadingscreen(loading, "");
-  } else {
-    loading = require(gtf.GTF).loadingscreen("**" + racesettings["track"]["name"] + "\n" + prizemoney.join(" ") + "**", carname);
   }
+  
+  loading = require(gtf.GTF).loadingscreen("__**" + racesettings["title"] + "**__" + "\n" + 
+"**" + racesettings["track"]["name"] + "\n" + prizemoney.join(" ") + "**", carname);
   
   embed.setDescription(loading);
   var screen = true
@@ -363,45 +336,8 @@ module.exports.raceprep = function (raceprep, embed, msg, userdata) {
   */
   var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
   if (racesettings["mode"] != "ONLINE" && racesettings["type"] != "TIMETRIAL" && !racesettings["track"]["type"].includes("Dirt") && !racesettings["track"]["type"].includes("Snow") && raceprep["carselect"] == "GARAGE") {
-  var tireslist = racesettings["misc"]["car"]["tires"]["list"].filter(function(tire) {
-  if (racesettings["tires"].includes("Comfort")) {
-    if (tire.includes("Comfort")) {
-        return true
-      } else {
-        return false
-    }
-  }
-  if (racesettings["tires"].includes("Sports")) {
-    if (tire.includes("Sports") || tire.includes("Comfort")) {
-        return true
-      } else {
-        return false
-    }
-  }
-
-  if (racesettings["tires"].includes("Racing")) {
-    if (tire.includes("Sports") || tire.includes("Comfort") || tire.includes("Racing")) {
-        return true
-      } else {
-        return false
-    }
-  }
-
-  if (racesettings["track"]["type"].includes("Dirt")) {
-    if (tire.includes("Dirt")) {
-      return true
-    } else {
-      return false
-    }
-  }
-  if (racesettings["track"]["type"].includes("Snow")) {
-    if (tire.includes("Snow")) {
-      return true
-    } else {
-      return false
-    }
-  }
-    return true
+  var tireslist = racesettings["driver"]["car"]["perf"]["tires"]["list"].filter(function(tire) {
+  return require(gtf.GTF).checktireregulations(racesettings["driver"]["car"], {tires:tire}, "", embed, msg, userdata)[0]
   }).sort()
   var tmenulist = tireslist.map(function (tire, index) {
           return {
@@ -412,35 +348,50 @@ module.exports.raceprep = function (raceprep, embed, msg, userdata) {
             }
   })
   var temojilist = []
-var menu = gtftools.preparemenu("Change Tires " + "(" + racesettings["misc"]["car"]["tires"]["current"] + ")" , tmenulist, temojilist, msg, userdata);
+var menu = gtftools.preparemenu("Change Tires " + "(" + racesettings["driver"]["car"]["perf"]["tires"]["current"] + ")" , tmenulist, temojilist, msg, userdata);
 buttons.unshift(menu)
   }
-
-  embed.setColor(userdata["settings"]["PROGRESSBAR"][2])
-    
+  embed.setColor(userdata["settings"]["COLOR"])
   var user = msg.guild.members.cache.get(userdata["id"]).user.username;
-  embed.setAuthor({name: user, iconURL: msg.guild.members.cache.get(userdata["id"]).user.displayAvatarURL()});
+ embed.setAuthor({name: user, iconURL: msg.guild.members.cache.get(userdata["id"]).user.displayAvatarURL()});
 
+  ////DEBUG
+  ////DEBUG
+  
 require(gtf.DISCORD).send(msg, msgjson, preracefunc)
   function preracefunc(msg) {
     var results2 = ""
     setTimeout(function () {
       embed.setDescription(results + racedetails);
-      if (racesettings["mode"] != "ONLINE" && racesettings["mode"] != "TIMETRIAL" ) {
-      embed.setFields([{name:stats.main(userdata), value: "🚘 " + racesettings["misc"]["car"]["name"]}]);
+      if (racesettings["mode"] != "ONLINE") {
+        embed.setFields([{
+          name:stats.main(userdata),
+          value: require(gtf.CARS).shortname(racesettings["driver"]["car"]["name"]) + 
+" " + "**" + racesettings["driver"]["car"]["fpp"] + emote.fpp + "**"}]);
       }
 
       msg.edit({embeds: [embed],  components: buttons}).then(msg => {
-        userdata["raceinprogress"] = {active:false, messageid: "", channelid: "", expire:undefined, gridhistory:[],msghistory:[], tirehistory: [], timehistory:[], weatherhistory:[]}
+        userdata["raceinprogress"] = {active:false, 
+                                      messageid: "", 
+                                      channelid: "", 
+                                      expire: undefined, 
+                                      gridhistory:[], 
+                                      msghistory:[], 
+                                      tirehistory: [], 
+                                      timehistory:[], weatherhistory:[], championshipnum:0}
 
         function flagstartrace() {
           if (userdata["raceinprogress"]["active"]) {
           require(dir + "commands/status").execute(msg, {options:"exit"}, userdata);
-          } else {
-        var user = msg.guild.members.cache.get(userdata["id"]).toString();      
+          } else {      
           embed.spliceFields(0, 1);
-          
-          require(dir + "functions/races/f_races_2").readysetgob(user, racedetails, racesettings, finalgrid, embed, msg, args, [false, null], userdata);
+            try {
+          require(dir + "functions/races/f_races_2").startsession(racesettings, racedetails, finalgrid, [false, null], embed, msg, userdata);
+            } catch (error) {
+              embed = new EmbedBuilder();
+      require(gtf.EMBED).alert({ name: "❌ Unexpected Error", description: "Oops, an unexpected error has occurred.\n" + "**" + error + "**", embed: "", seconds: 0 }, msg, userdata);
+      console.error(error);
+            }
           return
         }
         }
@@ -449,9 +400,9 @@ require(gtf.DISCORD).send(msg, msgjson, preracefunc)
             screen = false
              var griddd = finalgrid.slice().map(function (x) {
                   if (x["user"]) {
-                    return "**" + x["position"] + ". " + x["name"] + "**" + " `" + x["drivername"] + "`";
+                    return "**" + x["position"] + ". " + require(gtf.CARS).shortname(x["name"]) + "**" + " `" + x["drivername"] + "`";
                   } else {
-                    return x["position"] + ". " + x["name"] + " `" + x["drivername"] + "`";
+                    return x["position"] + ". " + require(gtf.CARS).shortname(x["name"])  + " `" + x["drivername"] + "`";
                   }
             })
           if (griddd.length >= 10) {
@@ -461,24 +412,14 @@ require(gtf.DISCORD).send(msg, msgjson, preracefunc)
           if (racesettings["bop"]) {
             bop = " " + emote.bop
           }
-          if (raceprep["carselect"] == "GARAGE" || raceprep["mode"] == "DRIFT") {
             results2 =
-              "__Starting Grid | " +
-              racesettings["grid"] +
-              " cars" +
-              "__" + bop +
-              "\n" +
-              griddd.join("\n");
-          } else {
-            results2 =
-              "__Starting Grid" +
+              "__**Starting Grid" +
               " | " +
               racesettings["grid"] +
-              " cars" +
-              "__" + bop +
+              " Cars" +
+              "**__" + bop +
               "\n" +
               griddd.join("\n");
-          }
 
           embed.setDescription(results2);
           msg.edit({embeds: [embed], components:buttons});
@@ -489,14 +430,14 @@ require(gtf.DISCORD).send(msg, msgjson, preracefunc)
           }
         }
         function tirechangen() {
-          if (racesettings["misc"]["tirechange"]) {
-          racesettings["misc"]["tirechange"] = false
+          if (racesettings["driver"]["tirechange"]) {
+          racesettings["driver"]["tirechange"] = false
           emojilist[2]["name"] = "Optimal Tire Usage | Off"
           buttons = gtftools.preparebuttons(emojilist.filter(x=> typeof x["menu_id"] === "undefined"), msg, userdata);
           buttons.unshift(menu)
           msg.edit({embeds: [embed], components:buttons});
           } else {
-          racesettings["misc"]["tirechange"] = true
+          racesettings["driver"]["tirechange"] = true
           emojilist[2]["name"] = "Optimal Tire Usage | On"
           buttons = gtftools.preparebuttons(emojilist.filter(x=> typeof x["menu_id"] === "undefined"), msg, userdata);
           buttons.unshift(menu)
@@ -514,8 +455,8 @@ if (racesettings["mode"] != "ONLINE" && racesettings["type"] != "TIMETRIAL" && !
 var functionlist2 = []
         for (var j = 0; j < tmenulist.length; j++) {
       functionlist2.push(function(int) {
-        racesettings["misc"]["car"]["tires"]["current"] = tireslist[int] 
-        racesettings["misc"]["otires"] = tireslist[int] 
+        racesettings["driver"]["car"]["perf"]["tires"]["current"] = tireslist[int] 
+        racesettings["driver"]["otires"] = tireslist[int] 
       })
       }
     emojilist = emojilist.concat(temojilist)
@@ -540,81 +481,114 @@ if (racesettings["mode"] == "TIMETRIAL") {
   }
 }
 
-module.exports.creategrid = function (args, car, amount) {
-
-  var mode = args["mode"]
-  var makes = args["makes"];
-  var models = args["models"];
-  var types = args["types"];
-  var countries = args["countries"];
-  var drivetrains = args["drivetrains"];
-  var engines = args["engines"];
-  var upperfpp = args["upperfpp"];
-  var lowerfpp = args["lowerfpp"];
-  var upperpower = args["upperpower"];
-  var lowerpower = args["lowerpower"];
-  var upperweight = args["upperweight"];
-  var lowerweight = args["lowerweight"];
-  var condition = args["condition"];
-  var gtscarclass = args["gtscarclass"];
-  var special = args["special"]
-  var prohibited = args["prohibited"]
+module.exports.creategrid = function (racesettings, special) {
+  var amount = racesettings["grid"]
+  var car = racesettings["driver"]["car"]
+  var username =racesettings["driver"]["name"]
+  var bop = racesettings["bop"]
+  var regulations = racesettings["regulations"]
+  var mode = racesettings["mode"]
+  
+  var makes = regulations["makes"];
+  var models = regulations["models"];
+  var types = regulations["types"];
+  var countries = regulations["countries"];
+  var drivetrains = regulations["drivetrains"];
+  var engines = regulations["engines"];
+  var upperfpp = regulations["upperfpp"];
+  var lowerfpp = regulations["lowerfpp"];
+  var upperpower = regulations["upperpower"];
+  var lowerpower = regulations["lowerpower"];
+  var upperweight = regulations["upperweight"];
+  var lowerweight = regulations["lowerweight"];
+  
+  var special = regulations["special"]
+  var prohibited = regulations["prohibited"]
   var grid = [];
-  if (args["mode"] == "SSRX" || args["mode"] == "DUEL" || amount == 1) {
+  
+  if (amount == 1) {
     fpp = require(gtf.PERF).perf(car, "GARAGE")["fpp"]
-    var finalgrid = [{ place: 1, position: 1, drivername: "Player", name: car["name"], user: true, fpp: fpp, oscore: 0, score: 0, points: 0 }];
+    var finalgrid = [{ place: 1, position: 1, drivername: username, name: car["name"], damage: 0, user: true, fpp: fpp, oscore: 0, score: 0, points: 0, laps: [] }];
   
     return finalgrid;
   }
 
-  if (condition != "") {
-    if (args["mode"] == "ARCADE") {
-      var test = require(gtf.CARS).find({ make: makes, name: models, drivetrains: drivetrains, engines: engines, types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight, special: special, prohibited:prohibited})
+ 
+    if (racesettings["mode"] == "ARCADE") {
+      var test = require(gtf.CARS).find({ makes: makes, name: models, drivetrains: drivetrains, engines: engines, types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight, special: special, prohibited:prohibited})
       while (lowerfpp >= 0) {
         if (test.length == 1 || test.length == 0) {
         upperfpp = upperfpp + 30
         lowerfpp = lowerfpp - 50
-        test = require(gtf.CARS).find({ make: makes, name: models, drivetrains: drivetrains,engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight,  special: special, prohibited:prohibited })
+        test = require(gtf.CARS).find({ makes: makes, name: models, drivetrains: drivetrains,engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight,  special: special, prohibited:prohibited })
         }
         if (test.length >= 2) {
           break;
         }
       }
     }
-
-    if (args["mode"] == "CAREER") {
-      var test = require(gtf.CARS).find({ make: makes, name: models, drivetrains: drivetrains, engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight,  special: special, prohibited:prohibited })
+    if (racesettings["mode"] == "CAREER") {
+      var test = require(gtf.CARS).find({ makes: makes, name: models, drivetrains: drivetrains, engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight,  special: special, prohibited:prohibited })
       while (lowerfpp >= 0) {
         if (test.length >= 1) {
           break;
         }
         if (test.length == 0) {
         lowerfpp = lowerfpp - 50
-        test = require(gtf.CARS).find({ make: makes, name: models, drivetrains: drivetrains, engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight,  special: special, prohibited:prohibited })
+        test = require(gtf.CARS).find({ makes: makes, name: models, drivetrains: drivetrains, engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight,  special: special, prohibited:prohibited })
         }
       }
     }
-    var randomcars = require(gtf.CARS).random({ make: makes, name: models, drivetrains: drivetrains, engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight, special: special, prohibited:prohibited }, amount);
+    
+    var randomcars = require(gtf.CARS).random({ makes: makes, name: models, drivetrains: drivetrains, engines: engines,types: types, countries: countries, upperfpp: upperfpp, lowerfpp: lowerfpp, upperpower: upperpower, lowerpower: lowerpower, upperweight: upperweight, lowerweight: lowerweight, special: special, prohibited:prohibited }, amount);
 
     var finalgrid = [];
     var index = 0;
+  if (racesettings["startposition"] == 0) {
     var position = gtftools.randomInt(2, amount - 1);
+  } else {
+    var position = racesettings["startposition"]
+  }
     var fpp = 0
+  if (racesettings["gridstart"] == "ROLLINGSTART") {
+    var score = randomcars.length * 800
+  } else {
     var score = randomcars.length * 400
+  }
     while (index < randomcars.length) {
-      if (position == amount && condition != "AIONLY") {
+      if (position == amount && special != "AI") {
         fpp = require(gtf.PERF).perf(car, "GARAGE")["fpp"]
-        finalgrid.push({ place: index + 1, position: index + 1, drivername: "Player", name: car["name"], user: true, fpp: fpp, oscore: score, score:score, points: 0 });
+        finalgrid.push({ place: index + 1, 
+                        position: index + 1,
+                        drivername: username, 
+                        name: car["name"], 
+                        user: true, 
+                        fpp: fpp, 
+                        damage: 0,
+                        oscore: score, 
+                        score: score, 
+                        points: 0,
+                       laps: []});
         index++;
       }
       fpp = require(gtf.PERF).perf(randomcars[index], "DEALERSHIP")["fpp"];
-      finalgrid.push({ place: index + 1, position: index + 1, name: randomcars[index]["name"] + " " + randomcars[index]["year"], drivername: require(gtf.GTF).randomdriver(), user: false, fpp: fpp, oscore: score, score: score, points: 0 });
+      finalgrid.push({ place: index + 1,
+                      position: index + 1,
+                      drivername: require(gtf.GTF).randomdriver(), 
+                      name: randomcars[index]["name"] + " " + randomcars[index]["year"], 
+                      user: false,
+                      fpp: fpp, 
+                      damage: 0,
+                      oscore: score, 
+                      score: score, 
+                      points: 0, 
+                     laps: []});
       amount--;
       score = score - 400
       index++;
     }
-    if (condition == "BOP") {
-      var fppmed = median(finalgrid.slice().map(x => x["fpp"]))
+    if (bop) {
+      var fppmed = require(gtf.MATH).median(finalgrid.slice().map(x => x["fpp"]))
 
     finalgrid.forEach(function (x) {
     if (x["fpp"] > fppmed + 10) {
@@ -627,22 +601,6 @@ module.exports.creategrid = function (args, car, amount) {
     }
 
     return finalgrid;
-  }
-
-  function median(numbers) {
-    var median = 0, numsLen = numbers.length;
-    numbers.sort();
- 
-    if (
-        numsLen % 2 === 0 
-    ) {
-        median = (numbers[numsLen / 2 - 1] + numbers[numsLen / 2]) / 2;
-    } else { 
-        median = numbers[(numsLen - 1) / 2];
-    }
- 
-    return median;
-}
 };
 
 module.exports.lapcalc = function (km, limit) {
@@ -665,9 +623,32 @@ module.exports.lapcalc = function (km, limit) {
   return [laps, totalkm, totalmi];
 };
 
-module.exports.calculatecredits = function (racesettings, raceprep, finalgrid) {
+module.exports.calculatecredits = function (racesettings, raceprep) {
+  var positions = racesettings["positions"]
 
-  if (racesettings["mode"] == "ARCADE") {
+  if (racesettings["mode"] == "CAREER") {
+    var startcredits = parseInt(positions[0]["credits"])
+    var positions = []
+    var percentagecut = 1
+    for (var x = 0; x < 30; x++) {
+    var temp = {}
+    if (x % 10 == 0 && x + 1 != 11) {
+      temp["place"] = (x + 1) + "st"
+    } else if (x % 10 == 1 && x + 1 != 12) {
+      temp["place"] = (x + 1) + "nd"
+      percentagecut = percentagecut * (0.65)
+    } else if (x % 10 == 2 && x + 1 != 13) {
+      temp["place"] = (x + 1) + "rd"
+      percentagecut = percentagecut * (0.77)
+    } else {
+      temp["place"] = (x + 1) + "th"
+      percentagecut = percentagecut * (0.90)
+    }
+    temp["credits"] = startcredits * percentagecut
+    temp["credits"] = Math.ceil(temp["credits"] / 10) * 10;
+      positions.push(temp)
+    }
+  } else if (racesettings["mode"] == "ARCADE") {
     if (raceprep["modearg"] == "beginner") {
       var positions = [{ place: '1st', credits: 1000 },
   { place: '2nd', credits: 800 },
@@ -743,29 +724,27 @@ module.exports.calculatecredits = function (racesettings, raceprep, finalgrid) {
     } 
     else if (raceprep["modearg"].includes("custom")) {
       var positions = customcalc(racesettings, raceprep)
-      return positions
+      return
     }
-    ///////
     for (var x = 0; x < positions.length; x++) {
     if (racesettings["type"] == "TIME") {
-      var fpp = require(gtf.PERF).perf(racesettings["misc"]["car"], "GARAGE")["fpp"];
+      var fpp = require(gtf.PERF).perf(racesettings["driver"]["car"], "GARAGE")["fpp"];
   var numx = gtftools.lengthalpha(fpp, "0%", racesettings["track"]);
-  var speed111 = require(gtf.PERF).speedcalc(numx, racesettings["misc"]["car"]);
+  var speed111 = require(gtf.PERF).speedcalc(numx, racesettings["driver"]["car"]);
   speed111[1] = Math.round(speed111[0] / 1.4)
-  var km = Math.round((parseInt(racesettings["laps"].split("m")[0]) /60) * speed111[1])
-      position["x"]["credits"] = Math.round(parseFloat(positions[x]["credits"] * (km / 120)));
+  var km = Math.round((parseInt(racesettings["laps"].split("m")[0])/60) * speed111[1])
+      positions[x]["credits"] = Math.round(parseFloat(positions[x]["credits"] * (km / 120)));
     } else {
       if (racesettings["laps"] <= 1) {
-      positions[x]["credits"] = Math.round(parseFloat(positions[x]["credits"] * (racesettings["km"] / 10)));
+      positions[x]["credits"] = Math.round(parseFloat(positions[x]["credits"] * (racesettings["distance"]["km"] / 10)));
       } else {
   
-      positions[x]["credits"] = Math.round(parseFloat(positions[x]["credits"] + positions[x]["credits"] * (racesettings["km"] / 50)));
+      positions[x]["credits"] = Math.round(parseFloat(positions[x]["credits"] + positions[x]["credits"] * (racesettings["distance"]["km"] / 50)));
         
         
       }
     }
   }
-    return positions
   } 
   else if (racesettings["mode"] == "DRIFT") {
     if (raceprep["modearg"] == "driftbeginner") {
@@ -782,17 +761,15 @@ module.exports.calculatecredits = function (racesettings, raceprep, finalgrid) {
     }
 
     for (var x = 0; x < positions.length; x++) {
-      positions[x]["credits"] = Math.round(parseFloat(positions[x]["credits"] * (racesettings["km"] / 2)));
+      positions[x]["credits"] = Math.round(parseFloat(positions[x]["credits"] * (racesettings["distance"]["km"] / 2)));
     }
-    return positions
-} else if (racesettings["mode"] == "SSRX") {
+} 
+  else if (racesettings["mode"] == "SSRX") {
     var positions = [{place:"1st", credits: 0}];
-    return positions
   }
-
-  return [{place:"1st", credits: 0}]
   
 return positions
+  //216,000 - (216,000 * 0.30)
   function customcalc(racesettings, raceprep) {
     var credits = ((100 - racesettings["difficulty"]) * 105) + ( racesettings["grid"]-8) * 200
   var positions = []
@@ -809,18 +786,18 @@ return positions
     }
     
     if (racesettings["type"] == "TIME") {
-      var fpp = require(gtf.PERF).perf(racesettings["misc"]["car"], "GARAGE")["fpp"];
+      var fpp = require(gtf.PERF).perf(racesettings["driver"]["car"], "GARAGE")["fpp"];
   var numx = gtftools.lengthalpha(fpp, "0%", racesettings["track"]);
-  var speed111 = require(gtf.PERF).speedcalc(numx, racesettings["misc"]["car"]);
+  var speed111 = require(gtf.PERF).speedcalc(numx, racesettings["driver"]["car"]);
   speed111[1] = Math.round(speed111[0] / 1.4)
   var km = Math.round((parseInt(racesettings["laps"].split("m")[0]) /60) * speed111[1])
       temp["credits"] = Math.round(parseFloat(credits * (km / 80)));
     } else {
       if (racesettings["laps"] <= 1) {
 
-      temp["credits"] = Math.round(parseFloat(credits * (racesettings["km"] / 10)));
+      temp["credits"] = Math.round(parseFloat(credits * (racesettings["distance"]["km"] / 10)));
       } else {
-    var fpp = require(gtf.PERF).perf(racesettings["misc"]["car"], "GARAGE")["fpp"];
+    var fpp = require(gtf.PERF).perf(racesettings["driver"]["car"], "GARAGE")["fpp"];
 
     var percentage = (1 - (fpp/700)) / 5
     if (percentage <= 0) {
@@ -838,7 +815,7 @@ return positions
      if (percentage <= 0.5) {
        percentage = 0.5
      }
-      temp["credits"] = Math.round(parseFloat(credits + credits * (racesettings["km"] / 60)) * percentage);
+      temp["credits"] = Math.round(parseFloat(credits + credits * (racesettings["distance"]["km"] / 60)) * percentage);
       }
     }
     positions.push(temp)
@@ -850,18 +827,21 @@ return positions
 }
 //////////////////////////////////////
 module.exports.startssrx = function ([speedkmh, speedmph], racesettings, racedetails, finalgrid, user, userdata) {
-  stats.updatecurrentcarclean(userdata)
-  stats.addmileage(racesettings["km"], racesettings["mi"], userdata);
-  stats.addtotalmileage(racesettings["km"], racesettings["mi"], userdata);
-  stats.addtotalmileagecar(racesettings["km"], racesettings["mi"], userdata);
-  var speeduser = [speedkmh + "kmh", speedmph + "mph"]
-  speeduser = speeduser[userdata["settings"]["MILEAGE"]]
+
+/*  stats.updatecurrentcarclean(userdata)
+*/
+  stats.addmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addtotalmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addtotalmileagecar(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
   
-  var results2 = "**Top Speed:** " + speeduser + "\n" + "**Car:** " + racesettings["misc"]["car"]["name"] + " **" + racesettings["misc"]["car"]["fpp"] + emote.fpp + "**";
+  var speeduser = [speedkmh + "kmh", speedmph + "mph"]
+  speeduser = speeduser[userdata["settings"]["UNITS"]]
+  
+  var results2 = "**Top Speed:** " + speeduser + "\n" + "**Car:** " + racesettings["driver"]["car"]["name"] + " **" + racesettings["driver"]["car"]["fpp"] + emote.fpp + "**";
   return results2;
 };
 
-module.exports.start = function (racesettings, racedetails, finalgrid, user, userdata) {
+module.exports.start = function (racesettings, racedetails, finalgrid, userdata) {
   var score;
   var positions = [...racesettings["positions"]];
   var position;
@@ -877,7 +857,7 @@ module.exports.start = function (racesettings, racedetails, finalgrid, user, use
 
   //////CAREER/////
    if (racesettings["mode"] == "CAREER") {
-  if (racesettings["championship"][0]) {
+  if (racesettings["championship"]) {
   finalgrid = finalgrid.map(function(x, index) {
     if (index >= championshippoints.length) {
       x["points"] = x["points"] + 0
@@ -904,50 +884,41 @@ finalgrid.slice().sort(function(a,b) {
   var position = user["position"]
 
    if (racesettings["mode"] == "CAREER") {
-  if (racesettings["championship"][0]) {
+  if (racesettings["championship"]) {
   championship = "\n" + "__Total Points__" + "\n" + 
   "**" + championshippos[1] + " Place: **" + "`" + user["points"] + "pts`"
 
   userdata["raceinprogress"]["championshipnum"]++
 
-  if (userdata["raceinprogress"]["championshipnum"] >= racesettings["championship"][1]) {
+  if (userdata["raceinprogress"]["championshipnum"] >= racesettings["eventlength"]) {
     userdata["raceinprogress"]["championshipnum"] = "DONE"
-    for (var i = 0; i < racesettings["championship"][1]; i++) {
-    stats.updatecareerrace(racesettings["raceid"].split("-").slice(0,2).join("-") + "-" + (i+1), championshippos[1], userdata);
-    }
-    prize = positions[championshippos[0]]["credits"];
-  } else {
-    prize = 0
-  }
-  } else if (typeof positions[position-1] === 'undefined') {
-    prize = 0
-  } else {
-    prize = positions[position-1]["credits"];
-  }
-  } else if (typeof positions[position-1] === 'undefined') {
-    prize = 0
-  } else {
-    prize = positions[position-1]["credits"];
-  }
-
-/*
-  if (racesettings["mode"] == "ARCADE") {
-    if (racesettings["type"] == "TIME") {
-      prize = Math.round(parseFloat(prize * (racesettings["km"] / 120)));
+    stats.updatecareerrace(racesettings, championshippos[1], userdata);
+    if (typeof positions[championshippos[0]] == "undefined") {
+      prize = 0
     } else {
-      if (racesettings["laps"] <= 1) {
-      prize = Math.round(parseFloat(prize * (racesettings["km"] / 60)));
-      } else {
-      prize = Math.round(parseFloat(prize + prize * (racesettings["km"] / 60)));
-      }
+    prize = positions[championshippos[0]]["credits"];
     }
+  } else {
+    prize = 0
   }
-  */
+    
+  } else if (typeof positions[position-1] === 'undefined') {
+    prize = 0
+  } else {
+    prize = positions[position-1]["credits"];
+  }
+     
+  } else if (typeof positions[position-1] === 'undefined') {
+    prize = 0
+  } else {
+    prize = positions[position-1]["credits"];
+  }
 
-  var exp = Math.round(prize / 10);
+
+  var exp = Math.round(prize / 20);
   //////CAREER/////
   if (racesettings["mode"] == "CAREER") {
-    exp = Math.round(Math.round(prize / 10) * 1.6);
+    exp = Math.round(Math.round(prize / 20) * 1.6);
   }
 
   if (stats.racemulti(userdata) > 1) {
@@ -959,56 +930,54 @@ finalgrid.slice().sort(function(a,b) {
     racemultibonus = ""
   }
 
-  sprize = require(gtf.SPONSORS).creditbonus(prize, racesettings["misc"]["car"], userdata)
+  sprize = require(gtf.SPONSORS).creditbonus(prize, racesettings["driver"]["car"], userdata)
   if (sprize > 0) {
     sponsorbonus = "\n" + "`" + userdata["sponsor"]["name"] + " Sponsor Bonus:` " + "**" + gtftools.numFormat(sprize) + "**" + emote.credits
   }
+  if (racesettings["damage"]) {
+  stats.updatedamage(racesettings, user, userdata)
+  }
 
-  stats.updatecurrentcarclean(racesettings["km"], userdata)
-  //stats.updatecurrentcaroil(racesettings["km"], userdata)
+   if (position == 0) {
+    userdata["stats"]["numwins"]++
+  }
+  userdata["stats"]["numraces"]++
+  
   stats.addcredits(prize + sprize, userdata);
-  stats.addmileage(racesettings["km"], racesettings["mi"], userdata);
-  stats.addtotalmileage(racesettings["km"], racesettings["mi"], userdata);
-  stats.addtotalmileagecar(racesettings["km"], racesettings["mi"], userdata);
+  stats.addmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addtotalmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addtotalmileagecar(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
   stats.addexp(exp, userdata);
 
   if (racesettings["mode"] == "CAREER") {
-    if (!racesettings["championship"][0]) {
-    stats.updatecareerrace(racesettings["raceid"], positionlist[position-1], userdata);
+    if (!racesettings["championship"]) {
+    stats.updatecareerrace(racesettings, positionlist[position-1], userdata);
     }
   }
-  return "__**" + [emote.goldmedal + " 1st", emote.silvermedal + " 2nd", emote.bronzemedal + " 3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th","21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th"][position-1] + " Place**__ " + "**+" + gtftools.numFormat(prize) + emote.credits + racemultibonus + " +" + gtftools.numFormat(exp)+ emote.exp + "**" + sponsorbonus + championship;
+  return [emote.goldmedal + " __**1st", emote.silvermedal + " __**2nd", emote.bronzemedal + " __**3rd", "__**4th", "__**5th", "__**6th", "__**7th", "__**8th", "__**9th", "__**10th", "__**11th", "__**12th", "__**13th", "__**14th", "__**15th", "__**16th", "__**17th", "__**18th", "__**19th", "__**20th","21st", "__**22nd", "__**23rd", "__**24th", "__**25th", "__**26th", "__**27th", "__**28th", "__**29th", "__**30th"][position-1] + " Place**__ " + "**+" + gtftools.numFormat(prize) + emote.credits + racemultibonus + " +" + gtftools.numFormat(exp)+ emote.exp + "**" + sponsorbonus + championship;
 };
 ///////////////CAREER/////////////////
 
-module.exports.careerevent = function (races, query, embed, msg, callback, userdata) {
-  
-  if (races === undefined) {
-    return;
-  }  
-  var screen = false
-  var number = query["number"]
-  
-  if (!gtftools.betweenInt(number, 1, Object.keys(races).length)) {
-    return;
-  }
-  var event = races[Object.keys(races)[number - 1]];
-  
-  if (stats.currentcarmain(userdata) == "No car.") {
-    require(gtf.EMBED).alert({ name: "❌ Error", description: "You do not have a current car.", embed: "", seconds: 0 }, msg, userdata);
-    return;
-  }
+module.exports.careerraceselect = function (event, query, callback, embed, msg, userdata) {
 
-    var currentcar = stats.currentcar(userdata);
+  var screen = false
+  var gtfcar = stats.currentcar(userdata);
+
+  if (event["car"] != "GARAGE") {
+    continuee()
+    return
+  } else {
+  require(gtf.GTF).checkregulations(gtfcar, event["regulations"], checktires, embed, msg, userdata);
+  }
 
   function checktires() {
-    currentcar = stats.currentcar(userdata);
-    embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}])
-    require(gtf.GTF).checktireregulations(currentcar, {tires:event["tires"]}, continuee, "", msg, embed, userdata);  
-  }
+    gtfcar = stats.currentcar(userdata);
 
+    embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}])
+    require(gtf.GTF).checktireregulations(gtfcar, event["regulations"], continuee, embed, msg, userdata);  
+  }
   function continuee() {
-  embed.setColor(userdata["settings"]["PROGRESSBAR"][2]);
+  embed.setColor(userdata["settings"]["COLOR"]);
   var results = "";
   
   var tracks = event["tracks"];
@@ -1020,23 +989,24 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
       func(parseInt(query["track"]) - 1)
       return
   }
-  event["championship"][1] = tracks.length
-
+    
+  event["mode"] = "CAREER"
+  event["positions"] = require(gtf.RACE).calculatecredits(event)
   for (var j = 0; j < tracks.length; j++) {
-    var raceid = event["eventid"] + "-" + (j + 1).toString();
+    var raceid = j + 1
     var lapsx = tracks[j][2] + " Laps"
     if (typeof tracks[j][2] === 'string') {
       lapsx = tracks[j][2].replace("m", " Minutes")
     }
     var trackname = Object.assign({}, tracks[j][1]);
     if (typeof tracks[j][1] !== 'string') {
-      if (raceid.match(/rally/ig)) {
+      if (event["eventid"].match(/rally/ig)) {
       trackname = "Stage Route " + (j+1)
       }
     } else {
       trackname = tracks[j][1]
     }
-    results = results + numberlist[j] + " " + trackname + " **" + lapsx + "** " + stats.checkcareerrace(raceid, userdata) + "\n";
+    results = results + numberlist[j] + " " + trackname + " **" + lapsx + "** " + stats.getraceprogress(event, raceid, userdata) + "\n";
   }
     if (event["type"] == "TIMETRIAL") {
       var prizemoney = ["**" + emote.goldmedal + " " + require(gtf.DATETIME).getFormattedLapTime(event["positions"][0]["time"] * 1000), emote.silvermedal + " " + require(gtf.DATETIME).getFormattedLapTime(event["positions"][1]["time"] * 1000) + " ", emote.bronzemedal + " " + require(gtf.DATETIME).getFormattedLapTime(event["positions"][2]["time"] * 1000) + "**"]
@@ -1048,11 +1018,11 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
   });
     }
     
-  if (event["prize"][0] == "RANDOMCAR") {
+  if (event["prize"]["type"] == "RANDOMCAR") {
     var prizename = "Mystery Car";
   }
-  if (event["prize"][0] == "CREDITS") {
-    var prizename = "**" + gtftools.numFormat(event["prize"][1]["item"]) + "**" + emote.credits;
+  if (event["prize"]["type"] == "CREDITS") {
+    var prizename = "||" + "**" + gtftools.numFormat(event["prize"]["item"]) + "**" + emote.credits + "||";
   }
   var bop = ""
   var weather = ""
@@ -1064,19 +1034,17 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
   if (event["weatherchange"] > 0) {
     weather = "\n" + emote.weather + " **There is ~" + event["weatherchange"] + "%" + " of weather changeability in this event.**"  
   }
-  if (event["championship"][0]){
+  if (event["championship"]){
     championship = "\n" + "🏆" + " **This championship must be fully completed in order to reward credits. Due to bot limitations, do not stay in the race results too long or you will lose your progress.**"
   }
   if (event["type"] == "TIMETRIAL") {
     timetrial = "\n" + "⌛ **Multiple laps will be recorded in real time. The time trial ends after a certain amount of laps or the lap time succeed with a gold medal.**"
-  }
-    if (event["type"] == "TIMETRIAL") {
-      var limits = "🚘 **" + event["car"] + "**"
-    } else {
+    var limits = "🚘 **" + event["car"] + "**"
+  } else {
   var limits = "**" +
-            event["fpplimit"].toString().replace("9999", "--") + emote.fpp + " " + 
-            event["upperpower"].toString().replace("9999", "--") + " hp" + " " +     gtftools.numFormat(event["upperweight"].toString().replace("9999", "--")) + " Lbs" + " " +
-            emote.tire  + event["tires"] +
+            event["regulations"]["fpplimit"].toString().replace("9999", "--") + emote.fpp + " " + 
+            event["regulations"]["upperpower"].toString().replace("9999", "--") + " hp" + " " +     gtftools.numFormat(event["regulations"]["upperweight"].toString().replace("9999", "--")) + " Lbs" + " " +
+            emote.tire  + event["regulations"]["tires"] +
             "**"
     }
 
@@ -1097,7 +1065,7 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
   ////
   var index = 0
     for (index; index < tracks.length; index++) {
-      if (event["championship"][0]) {
+      if (event["championship"]) {
       emojilist.push({
         emoji: numberlist[index], 
         emoji_name: numberlist[index],
@@ -1106,7 +1074,7 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
         button_id: index
       })
     index++
-      break
+      break;
       }
       emojilist.push({
         emoji: numberlist[index], 
@@ -1135,9 +1103,9 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
 
 /////
 
-    function func(index) {
+function func(index) {
       var trackname = tracks[index][1];
-      currentcar = stats.currentcar(userdata)
+      gtfcar = stats.currentcar(userdata)
       if (typeof trackname !== 'string') {
         var t = require(gtf.COURSEMAKER).trackparams(trackname);
         var track = require(gtf.COURSEMAKER).drawtrack(t, bcallback)
@@ -1145,8 +1113,9 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
         track["name"] = "Route " + (index + 1) 
         track["options"] = ["Drift"];
         track["author"] = "GTFITNESS";
-        var racesettings = require(gtf.RACE).setcareerrace(event, track, currentcar, index);
-      racesettings["misc"]["loading"] =
+        //var racesettings = require(gtf.RACE).setcareerrace(event, track, gtfcar, index);
+          /*
+      racesettings["driver"]["loading"] =
         "__**Race " +
         (index + 1) +
         " - " +
@@ -1156,29 +1125,29 @@ module.exports.careerevent = function (races, query, embed, msg, callback, userd
         "\n\n" +
         "🚘 " +
         "**" +
-        currentcar["name"] +
+        gtfcar["name"] +
         " " +
-        currentcar["fpp"] +
+        gtfcar["fpp"] +
         emote.fpp +
         emote.tire +
-        currentcar["tires"]["current"]
+        gtfcar["perf"]["tires"]["current"]
           .split(" ")
           .map(x => x[0])
           .join("") +
-        "**";
-         callback(racesettings);
+        "**";*/
+
+      event["title"] = event["name"] + " - Race " + (index + 1)
+    event["raceid"] = event["tracks"][index][0]
+    event["eventlength"] = event["tracks"].length
+         callback(event);
         }
       } else {
-        
-if (event["type"] == "TIMETRIAL") {
-  currentcar = stats.addcar(require(gtf.CARS).find({fullname: [event["car"]] })[0], "LOAN") 
-}
-        
-  var track = require(gtf.TRACKS).find({ name: [trackname] })[0];
-    
- var racesettings = require(gtf.RACE).setcareerrace(event, track, currentcar, index);
-   
-      racesettings["misc"]["loading"] =
+    event["laps"] = tracks[index][2]
+    event["title"] = event["title"] + " - Race " + (index + 1)
+    event["raceid"] = event["tracks"][index][0]
+    event["eventlength"] = event["tracks"].length
+   /*
+      racesettings["driver"]["loading"] =
         "__**Race " +
         (index + 1) +
         " - " +
@@ -1188,18 +1157,19 @@ if (event["type"] == "TIMETRIAL") {
         "\n\n" +
         "🚘 " +
         "**" +
-        currentcar["name"] +
+        gtfcar["name"] +
         " " +
-        currentcar["fpp"] +
+        gtfcar["fpp"] +
         emote.fpp +
         emote.tire +
-        currentcar["tires"]["current"]
+        gtfcar["perf"]["tires"]["current"]
           .split(" ")
           .map(x => x[0])
           .join("") +
         "**";
-        
-         callback(racesettings);
+        */
+        event["track"] = trackname
+         callback(event);
       }
     }
 
@@ -1208,6 +1178,13 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
 
   require(gtf.DISCORD).send(msg, { embeds: [embed], components: buttons }, nextfunc)
   function nextfunc(msg) {
+     setTimeout(function() {
+       var complete = stats.checkcareerevent(event, "1st", userdata);
+                if (complete) {
+            stats.completeevent(event, userdata);
+              stats.redeemgift(emote.goldmedal + " Congrats! Completed " + event["title"] + " " + emote.goldmedal, event["prize"], embed, msg, userdata);
+                }
+     }, 3000)
     function creditrewards() {
       //////
       if (screen == true) {
@@ -1243,7 +1220,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
   //////
     index = 0
     for (index; index < tracks.length; index++) {
-      if (event["championship"][0]) {
+      if (event["championship"]) {
       functionlist.push(func)
       break;
       }     
@@ -1262,63 +1239,9 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
     gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
   }
 }
-  console.log(event["car"] != "GARAGE")
-  if (event["car"] != "GARAGE") {
-    continuee()
-    return
-  } else {
-  var regulations = require(gtf.GTF).checkregulations(currentcar, event, checktires, "", msg, embed,userdata);
-  }
+ 
 };
 
-module.exports.setcareerrace = function (event, track, currentcar, index) {
-  var title = event["type"] == "TIMETRIAL" ? event["title"] : event["title"] + " - " + "Race " + (index + 1)
-  
-  var racesettings = {
-    title: title,
-    image: track["image"],
-    grid: event["grid"],
-    type: event["type"],
-    category: event["category"],
-    time: event["time"],
-    timeprogression: event["timeprogression"],
-    weather: event["weather"],
-    weatherchange: event["weatherchange"],
-    positions: event["positions"],
-    track: track,
-    cleanbonus: 3,
-    difficulty: event["difficulty"],
-    laps: event["tracks"][index][2],
-    km: Math.round(1000 * track["length"] * event["tracks"][index][2]) / 1000,
-    mi: Math.round(100 * ((track["length"] * event["tracks"][index][2]) / 1.609)) / 100,
-
-    mode: "CAREER",
-    raceid: event["eventid"] + "-" + event["tracks"][index][0],
-    eventlength: event["tracks"].length,
-
-    models: event["models"],
-    makes: event["makes"],
-    types: event["types"],
-    countries: event["countries"],
-    tires: event["tires"],
-    drivetrains: event["drivetrains"],
-    engines: event["engines"],
-    special: event["special"],
-    prohibited: event["prohibited"],
-    bop: event["bop"],
-    championship: event["championship"],
-    fpplimit: event["fpplimit"],
-    upperfpp: event["upperfpp"],
-    lowerfpp: event["lowerfpp"],
-    upperpower: event["upperpower"],
-    lowerpower: event["lowerpower"],
-    upperweight: event["upperweight"],
-    lowerweight: event["lowerweight"],
-    prize: event["prize"],
-    misc: { otires: currentcar["tires"]["current"].slice(), tirechange: true, car: currentcar },
-  };
-  return racesettings;
-};
 
 module.exports.startonline = function (racesettings, racedetails, finalgrid, user, userdata) {
 
@@ -1329,12 +1252,12 @@ module.exports.startonline = function (racesettings, racedetails, finalgrid, use
   var finalgridwinners = racesettings["players"];
 
   if (racesettings["type"] == "TIME") {
-      prize = Math.round(parseFloat(prize * (racesettings["km"] / 120))) 
+      prize = Math.round(parseFloat(prize * (racesettings["distance"]["km"] / 120))) 
   } else {
       if (racesettings["laps"] <= 1) {
-      prize = Math.round(parseFloat(prize + prize * (racesettings["km"] / 60)));
+      prize = Math.round(parseFloat(prize + prize * (racesettings["distance"]["km"] / 60)));
     } else {
-      prize = Math.round(parseFloat(prize + prize * (racesettings["km"] / 60)));
+      prize = Math.round(parseFloat(prize + prize * (racesettings["distance"]["km"] / 60)));
       }
   }
 
@@ -1363,9 +1286,9 @@ module.exports.startonline = function (racesettings, racedetails, finalgrid, use
     position = positions[x["position"] - 1]["place"]
     prize = positions[x["position"] - 1]["credits"]
     if (racesettings["laps"] <= 1) {
-      prize = Math.round(parseFloat(prize * (racesettings["km"] / 10)));
+      prize = Math.round(parseFloat(prize * (racesettings["distance"]["km"] / 10)));
       } else {
-      prize = Math.round(parseFloat(prize + prize * (racesettings["km"] / 10)));
+      prize = Math.round(parseFloat(prize + prize * (racesettings["distance"]["km"] / 10)));
     }
 
     if (x["user"]) {
@@ -1385,27 +1308,27 @@ module.exports.startonline = function (racesettings, racedetails, finalgrid, use
 module.exports.preracedetails = function(racesettings, embed, msg, userdata) {
   var results = ""
   embed.setTitle("__" + racesettings["title"] + "__");
+  
   var laps = racesettings["laps"];
   if (racesettings["type"] == "LAPS") {
-    var lapntime = "**Lap(s):** " + laps + "\n" + "**Total Distance:** " + [racesettings["km"] + " km", racesettings["mi"] + " mi"][userdata["settings"]["MILEAGE"]] + "\n"
+    var lapntime = "**Lap(s):** " + laps + "\n" + "**Total Distance:** " + [racesettings["distance"]["km"] + " km", racesettings["distance"]["mi"] + " mi"][userdata["settings"]["UNITS"]] + "\n"
   } 
 
   if (racesettings["type"] == "TIME") {
-     var fpp = require(gtf.PERF).perf(racesettings["misc"]["car"], "GARAGE")["fpp"];
+     var fpp = require(gtf.PERF).perf(racesettings["driver"]["car"], "GARAGE")["fpp"];
   var numx = gtftools.lengthalpha(fpp, "0%", racesettings["track"]);
-  var speed111 = require(gtf.PERF).speedcalc(numx, racesettings["misc"]["car"]);
+  var speed111 = require(gtf.PERF).speedcalc(numx, racesettings["driver"]["car"]);
   speed111[1] = Math.round(speed111[0] / 1.4)
   speed111[0] = Math.round(speed111[0] * 1.609)
-    racesettings["km"] = Math.round((parseInt(racesettings["laps"].split("m")[0]) /60) * speed111[1])
-    racesettings["mi"] = Math.round((parseInt(racesettings["laps"].split("m")[0]) /60) * speed111[0])
-    var lapntime = "**Time:** " + laps.replace("m", " Minutes") + "\n" + "**Total Distance (Estimated):** " + [racesettings["km"] + " km", racesettings["mi"] + " mi"][userdata["settings"]["MILEAGE"]] + "\n";
+    racesettings["distance"]["km"] = Math.round((parseInt(racesettings["laps"].split("m")[0]) /60) * speed111[1])
+    racesettings["distance"]["mi"] = Math.round((parseInt(racesettings["laps"].split("m")[0]) /60) * speed111[0])
+    var lapntime = "**Time:** " + laps.replace("m", " Minutes") + "\n" + "**Total Distance (Estimated):** " + [racesettings["distance"]["km"] + " km", racesettings["distance"]["mi"] + " mi"][userdata["settings"]["UNITS"]] + "\n";
   }
 
   if (racesettings["type"] == "TIMETRIAL") {
-    var lapntime = "**Total Distance:** ---" + "\n"
+    console.log(racesettings["distance"]["km"])
+    var lapntime = "**Distance:** " + [racesettings["distance"]["km"] + " km", racesettings["distance"]["mi"] + " mi"][userdata["settings"]["UNITS"]] + "\n"
   } 
- 
- 
   var racedetails = "__Session Details__" + "\n" +
     "**Track:** " + racesettings["track"]["name"] + "\n" +
     "**Track Conditions:** " + racesettings["time"]["emoji"] +
@@ -1418,19 +1341,15 @@ module.exports.preracedetails = function(racesettings, embed, msg, userdata) {
   }
 
   var msgjson = { embeds: [embed], components:[] }
-  if (typeof racesettings["image"] !== "undefined") {
-    if (racesettings["image"]) {
-  if (racesettings["image"].length != 0) {
-    if (racesettings["image"].includes("https://")) {
+ 
+   if (racesettings["image"].length != 0) {
+    if (typeof racesettings["track"]["location"] === 'undefined') {
       embed.setThumbnail(racesettings["image"]);
     } else {
     var attachment = Buffer.isBuffer(racesettings["image"]) ? new AttachmentBuilder(racesettings["image"], {name: "course.png"}) : new AttachmentBuilder(racesettings["image"].buffer, {name: "course.png"});
 
     embed.setThumbnail("attachment://course.png");
     msgjson = { embeds: [embed], files: [attachment], components: []}
-  }
-    }
-      
   }
   }
   return [results, racedetails, msgjson]

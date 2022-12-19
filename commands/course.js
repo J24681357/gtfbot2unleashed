@@ -40,15 +40,8 @@ module.exports = {
    stats.load("CUSTOMCOURSES", userdata, startcourse)
     
     function startcourse(coursestats) {
-      coursestats = coursestats["courses"]
       
-      if (!isNaN(query["options"])) {
-        query = { options: "list" };
-      }
-
-      if (query["options"] === undefined) {
-        query = { options: "list" };
-      }
+      coursestats = coursestats["courses"]
 
       if (query["options"] == "list") {
         delete query["number"]
@@ -97,7 +90,7 @@ module.exports = {
         embed.setDescription("**Name:** " + course["name"] + "\n" + 
         "**Author:** " + msg.guild.members.cache.get(course["author"]).user.username + "\n" + 
         "**Environment:** " + course["location"] + " | " + course["surface"] + "\n" +
-        "**Track Length:** " + lengthselect[userdata["settings"]["MILEAGE"]] + pageargs["footer"]);
+        "**Track Length:** " + lengthselect[userdata["settings"]["UNITS"]] + pageargs["footer"]);
              var emojilist = [
   { emoji: "🗑️", 
   emoji_name: "🗑️", 
@@ -314,6 +307,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         course["name"] = name.replace(/_/g, " ");
         course["options"] = ["Drift", course["layout"]];
         course["author"] = msg.author.id;
+        course["date"] = stats.lastonline(userdata)
 
         embed.setTitle(emote.tracklogo + "__GTF Course Maker__");
         const attachment = new AttachmentBuilder(course["image"], {name: "course.png"});
@@ -324,7 +318,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         }
         embed.setDescription("**Name:** " + course["name"] + "\n" +
         "**Environment:** " + course["location"] + " | " + course["surface"] + "\n" +
-         "**Track Length:** " + [course["lengthkm"] + "km", course["length"] + "mi"][userdata["settings"]["MILEAGE"]] + pageargs["footer"]);
+         "**Track Length:** " + [course["lengthkm"] + "km", course["length"] + "mi"][userdata["settings"]["UNITS"]] + pageargs["footer"]);
         embed.setFooter({text: footer});
 
     if (coursestats.length >= require(gtf.GTF).courselimit) {

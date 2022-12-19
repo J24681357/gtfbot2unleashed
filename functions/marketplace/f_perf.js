@@ -1,10 +1,11 @@
-var stats = require("../../functions/profile/f_stats");
-var emote = require("../../index");
-var gtftools = require("../../functions/misc/f_tools");
+var dir = "../../"
+var stats = require(dir + "functions/profile/f_stats");
+var emote = require(dir + "index");
+var gtftools = require(dir + "functions/misc/f_tools");
 
 const {  Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, SelectMenuBuilder } = require("discord.js");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-var gtf = require("../../files/directories");
+var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
 module.exports.speedcalc = function (number, gtfcar) {
@@ -13,20 +14,22 @@ module.exports.speedcalc = function (number, gtfcar) {
   for (var i = 0; i < 10; i++) {
     total = total + rnorm({ mean: number * 1.43, dev: 5 })
   }
+  
   var topspeed = total/10
-  var value = gtfcar["transmission"]["tuning"];
-  if (value == -999) {
-    value = 0
+  var finalgear = gtfcar["perf"]["transmission"]["tuning"][0];
+  if (finalgear == -999) {
+    finalgear = 0
   }
-  var aero = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]], year: [gtfcar["year"]] })["aerom"]
+  var aero = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]] })["aerom"]
+  
   if (aero > 1) {
     var x = 5/(aero/5)
     topspeed = topspeed - (4/(1/x))
   }
-  if (value <= 0) {
-    topspeed = topspeed * (1 - 0.04 * Math.abs(value));
+  if (finalgear <= 0) {
+    topspeed = topspeed * (1 - 0.04 * Math.abs(finalgear));
   } else {
-    topspeed = topspeed * (1 + 0.01 * Math.abs(value));
+    topspeed = topspeed * (1 + 0.01 * Math.abs(finalgear));
   }
   return [Math.round(topspeed * 1.609), Math.round(topspeed)];
 };
@@ -37,12 +40,9 @@ module.exports.perf = function (gtfcar, condition) {
   var aero = gtfcar["aerom"];
   var drivetrain = gtfcar["drivetrain"];
   
-
   if (condition == "DEALERSHIP") {
     var value = require(gtf.MARKETPLACE).costcalc(gtfcar)
     var sell = require(gtf.MARKETPLACE).sellcalc(value);
-    
-    var newoffset = Math.round((3000 - weight) / 25);
     
     var offset = 3000 - weight;
     offset = Math.round(offset / 30);
@@ -62,20 +62,22 @@ module.exports.perf = function (gtfcar, condition) {
     }
     var aero = (aero - 1) * 30;
     
-   var fpp1 = 22 *Math.pow(power, (0.5 + ((gtfcar["aerom"]-1) * 0.008))) - 50
+   var fpp1 = 22 * Math.pow(power, (0.5 + ((gtfcar["aerom"]-1) * 0.008))) - 50
     var fpp2 = ( (3000 - gtfcar["weight"])/30 ) + 100
     var fpp3 = (900 * offset_dt) + ((gtfcar["aerom"]-1) * 5)
-    var newfpp = fpp1 + (fpp2 /1200) * fpp3
-
-    var fpp = Math.round(((power - 50 + offset + 200) / 1200) * 900 * offset_dt + aero);
-    power = gtfcar["power"];
-
-    return { fpp: Math.round(newfpp), newfpp: Math.round(newfpp), opower: gtfcar["power"], power: power, oweight: gtfcar["weight"], weight: weight, osell: gtfcar["cost"], sell: sell };
+    var fpp = fpp1 + (fpp2 /1200) * fpp3
+    
+    return { fpp: Math.round(fpp), 
+            opower: power, 
+            power: power, 
+            oweight: weight, 
+            weight: weight, 
+            osell: gtfcar["cost"], 
+            sell: sell };
   }
 
   if (condition == "GARAGE") {
     var car = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]], year: [gtfcar["year"]] })
-
 
     power = car["power"];
     weight = car["weight"];
@@ -90,13 +92,13 @@ module.exports.perf = function (gtfcar, condition) {
     var osell = sell.valueOf()
 
     /// PARTS
-    var engine = require(gtf.PARTS).find({ name: gtfcar["engine"]["current"], type: "engine" })[0];
-    var transmission = require(gtf.PARTS).find({ name: gtfcar["transmission"]["current"], type: "transmission" })[0];
-    var suspension = require(gtf.PARTS).find({ name: gtfcar["suspension"]["current"], type: "suspension" })[0];
-    var weightred = require(gtf.PARTS).find({ name: gtfcar["weight reduction"]["current"], type: "weight-reduction" })[0];
-    var turbo = require(gtf.PARTS).find({ name: gtfcar["turbo"]["current"], type: "turbo" })[0];
-    var brakes = require(gtf.PARTS).find({ name: gtfcar["brakes"]["current"], type: "brakes" })[0];
-    var aeropart = require(gtf.PARTS).find({ name: gtfcar["aero kits"]["current"], type: "aero kits" })[0];
+    var engine = require(gtf.PARTS).find({ name: gtfcar["perf"]["engine"]["current"], type: "engine" })[0];
+    var transmission = require(gtf.PARTS).find({ name: gtfcar["perf"]["transmission"]["current"], type: "transmission" })[0];
+    var suspension = require(gtf.PARTS).find({ name: gtfcar["perf"]["suspension"]["current"], type: "suspension" })[0];
+    var weightred = require(gtf.PARTS).find({ name: gtfcar["perf"]["weightreduction"]["current"], type: "weight-reduction" })[0];
+    var turbo = require(gtf.PARTS).find({ name: gtfcar["perf"]["turbo"]["current"], type: "turbo" })[0];
+    var brakes = require(gtf.PARTS).find({ name: gtfcar["perf"]["brakes"]["current"], type: "brakes" })[0];
+    var aeropart = require(gtf.PARTS).find({ name: gtfcar["perf"]["aerokits"]["current"], type: "aerokits" })[0];
 
     if (engine !== undefined) {
       var enginep = (100 + engine["percent"]) / 100;
@@ -130,10 +132,10 @@ module.exports.perf = function (gtfcar, condition) {
     }
     if (aeropart !== undefined) {
       var aeropartp = (100 + aeropart["percent"]) / 100;
-      if (aeropart["name"] == "Default" || gtfcar["aero kits"]["tuning"][0] == 0 || gtfcar["aero kits"]["tuning"][0] == -999)  {
+      if (aeropart["name"] == "Default" || gtfcar["perf"]["aerokits"]["tuning"][0] == 0 || gtfcar["perf"]["aerokits"]["tuning"][0] == -999)  {
          aero = aero * aeropartp 
       } else {
-        aero = aero * (aeropartp + (0.1*(gtfcar["aero kits"]["tuning"][0]-3)));
+        aero = aero * (aeropartp + (0.1*(gtfcar["perf"]["aerokits"]["tuning"][0]-3)));
       }
       value += aeropart["cost"]
       sell += require(gtf.MARKETPLACE).sellcalc(aeropart["cost"]);
@@ -183,27 +185,28 @@ module.exports.topspeed = function (car) {
 
 module.exports.careerdifficultycalc = function (difficulty, weather, racesettings) {
   var num = difficulty
-  var otires = racesettings["misc"]["car"]["tires"]["current"].slice()
-  if (racesettings["misc"]["tirechange"] && racesettings["misc"]["otires"].includes("Racing")) {
+  var gtfcar = racesettings["driver"]["car"]
+  var otires = gtfcar["perf"]["tires"]["current"].slice()
+  
+  if (racesettings["driver"]["tirechange"] && racesettings["driver"]["otires"].includes("Racing")) {
     if (weather["wetsurface"] < 20 && (otires.includes("Wet") || otires.includes("Intermediate"))) {
-         racesettings["misc"]["car"]["tires"]["current"] = racesettings["misc"]["car"]["tires"]["list"].filter(x=> x.includes("Hard") || x.includes("Medium") || x.includes("Soft"))[0]
+         gtfcar["perf"]["tires"]["current"] = gtfcar["perf"]["tires"]["list"].filter(x=> x.includes("Hard") || x.includes("Medium") || x.includes("Soft"))[0]
     }
     if (weather["wetsurface"] >= 20) {
-      racesettings["misc"]["car"]["tires"]["current"] = "Racing: Intermediate"
+      gtfcar["perf"]["tires"]["current"] = "Racing: Intermediate"
     }
     if (weather["wetsurface"] >= 50) {
-      racesettings["misc"]["car"]["tires"]["current"] = "Racing: Heavy Wet"
+      gtfcar["perf"]["tires"]["current"] = "Racing: Heavy Wet"
     } 
   }
-  if (racesettings["misc"]["car"]["tires"]["current"] !== otires) {
+  if (gtfcar["perf"]["tires"]["current"] !== otires) {
     return num
   }
-  var car = racesettings["misc"]["car"]
-  var fpp = require(gtf.PERF).perf(car, "GARAGE")["fpp"];
+  var fpp = require(gtf.PERF).perf(gtfcar, "GARAGE")["fpp"];
   
-  var tires = require(gtf.PARTS).find({ name: car["tires"]["current"], type: "tires" })[0]
+  var tires = require(gtf.PARTS).find({ name: gtfcar["perf"]["tires"]["current"], type: "tires" })[0]
 
-  if (racesettings["tires"] == "Sports") {
+  if (racesettings["regulations"]["tires"].includes("Sports")) {
     if (tires["name"].includes("Comfort")) {
       num = num - 10
     } 
@@ -228,7 +231,7 @@ module.exports.careerdifficultycalc = function (difficulty, weather, racesetting
     } 
   }
 
-  if (racesettings["tires"] == "Racing") {
+  if (racesettings["regulations"]["tires"].includes("Racing")) {
     if (tires["name"].includes("Comfort")) {
       num = num - 20
     } 
@@ -244,6 +247,7 @@ module.exports.careerdifficultycalc = function (difficulty, weather, racesetting
     if (tires["name"] == "Racing: Super Soft") {
       num = num + 10
     }
+    
     if (weather["wetsurface"] >= 20 && (tires["name"].includes("Wet") || tires["name"].includes("Intermediate"))) {
     } else {
       if (weather["wetsurface"] >= 20) {
@@ -305,69 +309,60 @@ module.exports.onlinedifficultycalc = function (player, racesettings) {
 };
 
 module.exports.partpreview = function (part, car, condition) {
-  if (condition == "GARAGE") {
     var car5 = JSON.stringify(car);
     var car2 = JSON.parse(car5);
-    car2[part["type"].toLowerCase()]["current"] = part["name"];
+    var type = part["type"].toLowerCase().replace(/ /g, "")
+    
+  car2["perf"][type]["current"] = part["name"];
     if (typeof part["tuning"] !== 'undefined') {
-      car2[part["type"].toLowerCase()]["tuning"] = part["tuning"];
+      car2["perf"][type]["tuning"] = part["tuning"];
     }
     return require(gtf.PERF).perf(car2, condition);
-  }
 };
 
 module.exports.partinstall = function (part, userdata) {
-  var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["ID"]
-
-  var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()];
+  var type = part["type"].toLowerCase().replace(/ /g, "")
+  
+  var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type];
   
   installedpart["current"] = part["name"];
+  // update tuning values
   for (var i = 0; i < installedpart["tuning"].length; i++) {
     if (part["name"] == "Default") {
       installedpart["tuning"][i] = -999;
     } else {
-      if (part["type"].toLowerCase() == "aero kits") {
+      if (type == "aerokits") {
         installedpart["tuning"][i] = 3;
       } else {
     installedpart["tuning"][i] = 0;
     }
   }
   }
+  ////
 
-  if (!installedpart["list"].includes(part["name"]) && part["name"] != "Default") {
-    userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()]["list"].push(part["name"]);
+  if (part["name"] != "Default" && !installedpart["list"].includes(part["name"])) {
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push(part["name"]);
   }
-
-  if (part["type"].toLowerCase() == "tires" && (part["name"].includes("Racing: Hard") || part["name"].includes("Racing: Medium") || part["name"].includes("Racing: Soft") || part["name"].includes("Racing: Super Soft")) ) {
+  
+if (type == 'tires') {
+    if (part["name"].includes("Racing")) {
      if (!installedpart["list"].includes("Racing: Intermediate")) {
-    userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()]["list"].push("Racing: Intermediate");
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push("Racing: Intermediate");
   }
   if (!installedpart["list"].includes("Racing: Heavy Wet")) {
-    userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()]["list"].push("Racing: Heavy Wet");
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push("Racing: Heavy Wet");
   }
   }
+  if (part["name"].includes("Intermediate") || part["name"].includes("Heavy Wet")) {
+      if (!installedpart["list"].includes("Racing: Hard")) {
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push("Racing: Hard");
+  }
+  }
+}
 
-   if (part["type"].toLowerCase() == "tires" && (part["name"].includes("Racing: Intermediate") || part["name"].includes("Racing: Heavy Wet"))) {
-     if (!installedpart["list"].includes("Racing: Hard")) {
-    userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()]["list"].push("Racing: Hard");
-  }
-  }
-
-  if (part["type"].toLowerCase() == "tires" && part["name"].includes("Racing")) {
-     if (!installedpart["list"].includes("Racing: Intermediate")) {
-    userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()]["list"].push("Racing: Intermediate");
-  }
-  if (!installedpart["list"].includes("Racing: Intermediate")) {
-    userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()]["list"].push("Racing: Heavy Wet");
-  }
-  }
-
-  userdata["garage"][stats.currentcarnum(userdata) - 1][part["type"].toLowerCase()] = installedpart;
+  userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type] = installedpart;
 
   userdata["garage"][stats.currentcarnum(userdata) - 1]["fpp"] = require(gtf.PERF).perf(userdata["garage"][stats.currentcarnum(userdata) - 1], "GARAGE")["fpp"];
-
-  id = stats.garage(userdata).findIndex(x => x["ID"] == id) + 1
-  userdata["currentcar"] = id;
 };
 
 module.exports.carclean = function (number, userdata) {
@@ -405,23 +400,23 @@ module.exports.rimsinstall = function(part, userdata) {
 };
 
 module.exports.paint = function (paint, userdata) {
+  if (paint["type"] == "Livery") {
+     var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1]["livery"];
+  } else {
   var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1]["color"];
+  }
+
   if (paint["name"] == "Default") {
     installedpart["current"] = paint["name"];
   } else {
   installedpart["current"] = paint["type"] + " " + paint["name"];
   }
   
-  if (paint["type"] == "Livery") {
-    if (paint["name"] == "Default") {
-    userdata["garage"][stats.currentcarnum(userdata) - 1]["livery"]["current"] = paint["name"];
-    } else {
-      userdata["garage"][stats.currentcarnum(userdata) - 1]["livery"]["current"] = paint["type"] + " " + paint["name"];
-    }
-    userdata["garage"][stats.currentcarnum(userdata) - 1]["color"]["current"] = "Default"
+
+if (paint["type"] == "Livery") {
+      userdata["garage"][stats.currentcarnum(userdata) - 1]["livery"] = installedpart
   } else {
-    userdata["garage"][stats.currentcarnum(userdata) - 1]["color"] = installedpart;
-    userdata["garage"][stats.currentcarnum(userdata) - 1]["livery"] = {current: "Default"};
+   userdata["garage"][stats.currentcarnum(userdata) - 1]["color"] = installedpart
   }
   
 };

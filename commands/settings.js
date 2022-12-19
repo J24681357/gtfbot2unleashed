@@ -41,43 +41,30 @@ module.exports = {
     }, msg, userdata)
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
 
-    embed.setTitle("⚙ __GTF Settings (7 Options)__");
-    if (query["options"] == 1) {
-      query["options"] = "progressbar";
-    } else if (query["options"] == 2) {
-      query["options"] = "dealersort";
-    } else if (query["options"] == 3) {
-      query["options"] = "garagesort";
-    } else if (query["options"] == 4) {
-      query["options"] = "displaygrid";
-    } else if (query["options"] == 5) {
-      query["options"] = "menuselect";
-    } else if (query["options"] == 6) {
-      query["options"] = "units";
-    } else if (query["options"] == 7) {
-      query["options"] = "time";
-    } else if (query["options"] == 8) {
-      query["options"] = "tips";
-    } else if (query["options"] == 9) {
-      query["options"] = "reset";
-    }
+    embed.setTitle("⚙ __GTF Settings__");
+
+
 
     if (query["options"] == "list") {
       delete query["number"]
-        var m = ["Kilometers", "Miles"];
-        var n = ["Enabled", "Disabled"]
-        var o = ["Arrows", "Numbers"]
-        var grid = ["Car", "Driver"]
+        var units = ["Kilometers", "Miles"];
+        var enabled = ["Enabled", "Disabled"]
+        var menutype = ["Arrows", "Numbers"]
+        var gridname = ["Car", "Driver"]
       var list = [
-         "__**Accent Color**__ " + userdata["settings"]["PROGRESSBAR"].join("  "),
-        "__**Dealership Catalog Sort**__ " + userdata["settings"]["DEALERSORT"],
-        "__**Garage Sort**__ " + userdata["settings"]["GARAGESORT"],
-        "__**Grid Display Names**__ " + grid[userdata["settings"]["GRIDNAME"]],
-        "__**Menu Selector**__ " + o[userdata["settings"]["MENUSELECT"]],
-        "__**Metric Units**__ " + m[userdata["settings"]["MILEAGE"]],
-        "__**Time Zone Offset**__ " + userdata["settings"]["TIME OFFSET"],
-        "__**Tips**__ " + n[userdata["settings"]["TIPS"]],
+         "__**Embed Color**__ " + "`" + userdata["settings"]["COLOR"] + "`",
+        "__**Dealership Catalog Sort**__ " + "`" + userdata["settings"]["DEALERSORT"] + "`",
+        "__**Garage Sort**__ " + "`" + userdata["settings"]["GARAGESORT"] + "`",
+        "__**Grid Display Names**__ " + "`" + gridname[userdata["settings"]["GRIDNAME"]] + "`",
+        "__**Menu Icons**__ " + userdata["settings"]["ICONS"]["select"] + " " + userdata["settings"]["ICONS"]["bar"].join(" "),
+        "__**Menu Selector**__ " + 
+ "`" + menutype[userdata["settings"]["MENUSELECT"]] + "`",
+        "__**Metric Units**__ " + "`" + units[userdata["settings"]["UNITS"]] + "`",
+        "__**Daily Workout - Time Zone Offset**__ " + "`"+ userdata["settings"]["TIMEOFFSET"] + "`",
+        "__**Menu Tips**__ " + 
+"`" + enabled[userdata["settings"]["TIPS"]] + "`",
         "🔁 __**Reset To Default Settings**__ ",
+        "⭕ __**Delete Save Data**__ ",
       ];
 
       pageargs["list"] = list;
@@ -91,7 +78,12 @@ module.exports = {
       gtftools.formpages(pageargs, embed, msg, userdata);
       return;
     }
-    var results = require(gtf.SETTINGS).settingsm(query, pageargs, embed, msg, userdata)
+
+    if (!isNaN(query["options"])) {
+  query["options"] = ["color", "dealersort", "garagesort", "displaygrid", "icons", "menuselect", "units", "time", "tips", "reset", "deletesavedata"][parseInt(query["options"]) - 1]
+    }
+
+    var results = require(gtf.SETTINGS).settingsmenu(query, pageargs, embed, msg, userdata)
 
       if (results == "PAGES" || results == "SUCCESS" || results == "INVALID" || results == "ERROR") {
         return;

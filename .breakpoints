@@ -1,12 +1,3 @@
 {
-  "files": {
-    "commands/update.js": [
-      {
-        "id": "913722ed-03bc-4e0b-9dff-5cfda923873a",
-        "line": 59,
-        "version": 1,
-        "index": 2172
-      }
-    ]
-  }
+  "files": {}
 }

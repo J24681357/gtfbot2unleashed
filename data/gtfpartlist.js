@@ -159,18 +159,20 @@ module.exports.tuninglist = function (part, gtfcar, embed, msg, userdata) {
 };
 
 module.exports.checkpartsavail = function (part, gtfcar) {
-  var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]], year: [gtfcar["year"]] });
+  var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]]});
   var perf = require(gtf.PERF).perf(ocar, "DEALERSHIP");
-  
+  console.log(part)
   var fpp = require(gtf.PERF).partpreview(part, gtfcar, "GARAGE")["fpp"].toString()
+
+  var type = part["type"].toLowerCase().replace(/ /g, "")
   
-  if (part["type"] == "Aero Kits") {
+  if (part["type"] == "aerokits") {
     var nameid = parseInt(part["name"].split(" ").pop()) - 1
     var list = [["❌", "**" + "---" + "**"], ["❌", "**" + "---" + "**"]]
     var kits = ocar["image"].length - 1
     for (var x = 0; x < kits; x++) {
-      if (gtfcar[part["type"].toLowerCase()]["list"].includes(part["name"])) {
-      if (gtfcar[part["type"].toLowerCase()]["current"] == part["name"]) {
+      if (gtfcar["perf"][type]["list"].includes(part["name"])) {
+      if (gtfcar["perf"][type]["current"] == part["name"]) {
        list[x] = ["✅", "**" + fpp + "**"]
       } else {
         list[x] = ["📦", "**" + fpp + "**"]
@@ -182,15 +184,21 @@ module.exports.checkpartsavail = function (part, gtfcar) {
     return list[nameid]
   }
 
-  var bfpplimit = perf["fpp"] < part["fpplimit"];
-  var bweightlimit = perf["oweight"] > part["weightlowerlimit"];
-  var btype = part["eligible"].some(x => ocar["type"].includes(x))
-  var prohibitcheck = part["prohibited"].some(x => ocar["special"].includes(x))
-  var bengine = true
+    var btype = part["eligible"].length == 0 ? true : part["eligible"].some(x => ocar["type"].includes(x))
   
-  if (btype && bfpplimit && bweightlimit && bengine && !prohibitcheck) {
-    if (gtfcar[part["type"].toLowerCase()]["list"].includes(part["name"])) {
-      if (gtfcar[part["type"].toLowerCase()]["current"] == part["name"]) {
+  var bfpplimit = perf["fpp"] < part["fpplimit"];
+  var bweightlimit = perf["oweight"] > part["lowerweight"];
+  
+  var prohibitcheck = part["prohibited"].length == 0 ? true : !part["prohibited"].some(x => ocar["special"].includes(x))
+  var bengine = true
+
+  
+  if (btype && bfpplimit && bweightlimit && bengine && prohibitcheck) {
+    if (gtfcar["perf"][type]["current"] == "Default" && gtfcar["perf"][type]["current"] == part["name"]) {
+      return ["✅", "**" + gtfcar["fpp"] + "**"]
+    }
+    if (gtfcar["perf"][type]["list"].includes(part["name"])) {
+      if (gtfcar["perf"][type]["current"] == part["name"]) {
         return ["✅", "**" + gtfcar["fpp"] + "**"];
       } else {
         return ["📦", "**" + fpp + "**"];
@@ -203,4 +211,30 @@ module.exports.checkpartsavail = function (part, gtfcar) {
   }
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////
+module.exports.costcalc = function (part, gtfcar, ocar) {
+  if (part["type"] == "Tires" || part["type"] == "Car Wash") {
+    return part["cost"]
+  }
+  console.log(ocar)
+  var discount = require(gtf.PERF).perf(ocar, "DEALERSHIP")["fpp"]/500
+  if (discount > 1) {
+     discount = discount ** 2
+  }
+  if (part["type"] == "Engine Repair") {
+    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.28)
+    return require(gtf.MATH).round(totalcost * ((100-gtfcar["condition"]["engine"]) / 100), 2)
+  }
+  if (part["type"] == "Transmission Repair") {
+    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.13)
+    return require(gtf.MATH).round(totalcost * ( (100 -gtfcar["condition"]["transmission"]) / 100), 2)
+  }
+  if (part["type"] == "Suspension Repair") {
+    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.13)
+    return require(gtf.MATH).round(totalcost * ((100 - gtfcar["condition"]["suspension"]) / 100), 2)
+  }
+  if (part["type"] == "Body Damage Repair") {
+    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.2)
+    return require(gtf.MATH).round(totalcost * ((100-gtfcar["condition"]["body"]) / 100), 2)
+  }
+  return Math.round(part["cost"] * discount / 100) *100
+};

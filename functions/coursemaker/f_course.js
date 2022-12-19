@@ -76,6 +76,7 @@ module.exports.drawtrack = async function (track, callback) {
 
   var rint = 1
   //var rint = gtftools.randomInt(1,2)
+  console.log(track)
   if (track.location == "Grass") {
   var url = 'https://raw.githubusercontent.com/J24681357/gtfbot/raw/master/images/coursemaker/backgrounds' + '/grass' + rint.toString() + '.png'
   }
@@ -87,13 +88,17 @@ module.exports.drawtrack = async function (track, callback) {
   }
   if (track.location == "Snow") {
   var url = 'https://raw.githubusercontent.com/J24681357/gtfbot/raw/master/images/coursemaker/backgrounds' +  '/snow' + rint.toString() + '.png'
+  } else {
+    var url = ""
   }
   
   var Canvas = require("@napi-rs/canvas");
   
   var { request } = require("undici") 
-  const { body } = await request("https://raw.githubusercontent.com/J24681357/gtfbot/master/images/coursemaker/backgrounds/snow1.png");
+  if (url.length != 0) {
+  const { body } = await request(url);
   const background = await Canvas.loadImage(await body.arrayBuffer())
+  }
   
   var canvas = Canvas.createCanvas(2000, 2000);
   var ctx = canvas.getContext("2d");
@@ -246,11 +251,10 @@ module.exports.drawtrack = async function (track, callback) {
     trimWidth = bound.right - bound.left;
       
     ctx.globalCompositeOperation='destination-over';
-      if (track.location != "Blank") {
+      if (url.length != 0) {
       ctx.drawImage(background, 0, 0, 1024, 1024);
     }
       trimmed = ctx.getImageData(bound.left, bound.top, trimWidth + 10, trimHeight + 10);
-    console.log(trimmed.width)
     trimmed.width = trimWidth;
     trimmed.height = trimHeight;
     copy = Canvas.createCanvas(trimWidth, trimHeight)
@@ -366,14 +370,9 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
       .forEach(row => {
         coursedata = row;
         delete coursedata["_id"];
-        add();
+        coursedata["courses"].push(course)
         dbo.collection("CUSTOMCOURSES").replaceOne({ id: userdata["id"] }, coursedata);
         found = true;
       });
   });
-
-  function add() {
-    coursedata["courses"]["date"] = stats.lastonline(userdata)
-    coursedata["courses"].push(course)
-  }
 };

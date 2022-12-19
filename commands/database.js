@@ -82,8 +82,7 @@ module.exports = {
           "**ID:** " +
           number +
           "\n" +
-          "**Length:** " +
-          [Math.round(1000 * track["length"]) / 1000 + " km", Math.round(100 * (track["length"] / 1.609)) / 100 + " mi"][userdata["settings"]["MILEAGE"]] +
+          "**Length:** " + Math.round(1000 * track["length"]) / 1000 + " km | " +  Math.round(100 * (track["length"] / 1.609)) / 100 + " mi" +
           "\n" +
           "**Version:** " +
           track["version"] +

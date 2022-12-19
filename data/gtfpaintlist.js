@@ -93,12 +93,20 @@ module.exports.checkpaintsavail = function (paint, gtfcar) {
     }
     return list[nameid]
     
-  } else {
+  } 
+  else {
+    if (paint["name"] == "Default" && gtfcar["color"]["current"] == "Default") {
+      return "✅"
+    }
+    
   if (gtfcar["color"]["current"] == paint["type"] + " " + paint["name"]) {
     return "✅";
-  } else {
+  } else if (gtfcar["color"]["current"] == "Default") {
     return "";
   }
+
+    return ""
+    
   }
 };
 

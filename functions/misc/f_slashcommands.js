@@ -12,7 +12,7 @@ const { REST } = require('@discordjs/rest');
 
 module.exports.createslashcommands = function() {
   var fs = require("fs")
-var slashcommands = JSON.parse(fs.readFileSync("/home/runner/gtfbot/jsonfiles/slashcommands.json", "utf8"))
+var slashcommands = JSON.parse(fs.readFileSync("/home/runner/" + process.env.NAME + "/jsonfiles/slashcommands.json", "utf8"))
   
 const rest = new REST({ version: '10' }).setToken(process.env.SECRET);
 const commands = []
@@ -66,7 +66,7 @@ for (var i = 0; i < keys.length; i++) {
   }
     commands.push(slashcommand)
 }
-rest.put(Routes.applicationGuildCommands("704873671356973106", gtf.SERVERID), { body: commands })
+rest.put(Routes.applicationGuildCommands(gtf.USERID, gtf.SERVERID), { body: commands })
 	.then((data) => console.log(`Successfully registered ${data.length} application commands.`))
 	.catch(console.error)
 

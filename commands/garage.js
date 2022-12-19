@@ -74,7 +74,7 @@ module.exports = {
     if (typeof query["drivetrain1"] !== 'undefined') {
       filterlist.push(function(x) {return require(gtf.CARS).get({ make: [x["make"]], fullname: [x["name"]], year: [x["year"]] })["drivetrain"].includes(query["drivetrain1"])})
     }
-   if (typeof query["engine1"] !== 'undefined') {
+    if (typeof query["engine1"] !== 'undefined') {
       filterlist.push(function(x) {return require(gtf.CARS).get({ make: [x["make"]], fullname: [x["name"]], year: [x["year"]] })["engine"].includes(query["engine1"])})
     }
     if (typeof query["special1"] !== 'undefined') {
@@ -86,10 +86,10 @@ module.exports = {
     if (typeof query["manufacturer"] !== 'undefined') {
        filterlist.push(function(x) {return x["make"].includes(query["manufacturer"])})
     }
+    
     if (typeof query["filter"] === 'undefined') {
       query["filter"] = {"function":function(x) {return x}, "args": ""}
     }
-
     if (Array.isArray(query["filter"])) {
       filterlist = query["filter"]
     }
@@ -124,15 +124,16 @@ module.exports = {
         }
         list = cars.map(function(i, index) {
           var favorite = i["favorite"] ? " ⭐" : ""
-          var carname = "`🚘" + (index + 1) + "` " + i["name"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
+          var name = require(gtf.CARS).shortname(i["name"])
+          carname = "`" + (index + 1) + ".` " + name + " " + require(gtf.CONDITION).condition(i)["emote"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
           if (stats.currentcarnum(userdata) == index+1)  {
-            carname = "`🚘" + (index + 1) + "` **" + i["name"] + "** **" + i["fpp"] + emote.fpp + "**" + favorite 
+            carname = "`🚘" + (index + 1) + "` **" + name + "** **" + i["fpp"] + emote.fpp + "**" + favorite 
           }
           if (type != "") {
-            carname = "`🚘" + (index + 1) + "` " + i["name"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
+            carname = "`🚘" + (index + 1) + "` " + name + " **" + i["fpp"] + emote.fpp + "**" + favorite
           }
           if (name != "") {
-            carname = "`🚘" + (index + 1) + "` " + i["name"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
+            carname = "`" + (index + 1) + ".` " + name + " " + require(gtf.CONDITION).condition(i)["emote"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
           }
           return carname
         })
@@ -164,9 +165,9 @@ module.exports = {
         return;
       }
       if (number2 == number) {
-        var car = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))[number - 1];
+        var gtfcar = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))[number - 1];
         query = {options: query["options"], number: query["number"]}
-        require(gtf.MARKETPLACE).sell(car, "CAR", query, embed, msg, userdata);
+        require(gtf.MARKETPLACE).sell(gtfcar, "CAR", query, embed, msg, userdata);
       } else {
         require(gtf.MARKETPLACE).sell([number, number2], "CARS", query, embed, msg, userdata);
       }
@@ -178,11 +179,11 @@ module.exports = {
         require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your garage.", embed: "", seconds: 3 }, msg, userdata);
         return;
       }
-      var car = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))[number - 1]
-      var favorite = car["favorite"] ? "⭐" : ""
-      embed.setTitle("🚘 __" + car["name"] + "__ " + favorite);
-      results = stats.view(car, embed, userdata);
-      stats.loadcarimage(car, embed, userdata, then)
+      var gtfcar = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))[number - 1]
+      var favorite = gtfcar["favorite"] ? "⭐" : ""
+      embed.setTitle("🚘 __" + gtfcar["name"] + "__ " + favorite);
+      results = stats.view(gtfcar, embed, userdata);
+      stats.loadcarimage(gtfcar, embed, userdata, then)
 
       function then(attachment) {
       embed.setThumbnail("attachment://image.png");
@@ -192,14 +193,16 @@ module.exports = {
       }
       var details = 0
       embed.setDescription(results + pageargs["footer"]);
+  var icon = require(gtf.CONDITION).condition(gtfcar)["emote"]
+
        var emojilist = [
   { emoji: "⭐", 
   emoji_name: "⭐", 
   name: '', 
   extra: "",
   button_id: 0 },
-  { emoji: "🚘", 
-  emoji_name: "🚘", 
+  { emoji: "🔑", 
+  emoji_name: "🔑", 
   name: 'Change Car', 
   extra: "",
   button_id: 1 },
@@ -208,25 +211,30 @@ module.exports = {
   name: 'Tuning/Details', 
   extra: "",
   button_id: 2 },
+       { emoji: icon, 
+  emoji_name: icon.split(":")[1], 
+  name: 'Condition', 
+  extra: "",
+  button_id: 3 },
     { emoji: emote.credits, 
   emoji_name: "credits", 
   name: 'Sell', 
   extra: "",
-  button_id: 3 },
+  button_id: 4 },
 ]
 var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
        require(gtf.DISCORD).send(msg, {embeds:[embed], components:buttons, files: [attachment]}, carfunc)
        
        function carfunc(msg) {
         function favoritecar() {
-          if (car["favorite"]) {
+          if (gtfcar["favorite"]) {
             stats.favoritecar(number, false, filterlist, userdata)
             var title = embed.title.split(" ")
             title.pop()
             embed.setTitle(title.join(" "))
           } else {
             stats.favoritecar(number, true, filterlist, userdata)
-            embed.setTitle("🚘 __" + car["name"] + "__ " + "⭐");
+            embed.setTitle("🚘 __" + gtfcar["name"] + "__ " + "⭐");
           }
           if (query["favoritesonly"] == "enable") {
             require(dir + "commands/garage").execute(msg, {options:"list", filter:query["filter"]}, userdata);
@@ -241,13 +249,10 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         function changecar() {
          require(dir + "commands/garage").execute(msg, {options:"select", number:parseInt(query["number"]), filter:filterlist}, userdata);
         }
-        function sellcar() {
-         require(dir + "commands/garage").execute(msg, {options:"sell", number:parseInt(query["number"]), filter:filterlist}, userdata);
-        }
         function view() {
           if (details == 0) {
             details = 1         
-            var results2 = stats.view2(car, userdata);
+            var results2 = stats.view2(gtfcar, userdata);
           embed.setDescription(results2 + pageargs["footer"]);
           msg.edit({embeds: [embed], components:buttons});
           } else {
@@ -256,8 +261,17 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
           msg.edit({embeds: [embed], components:buttons});
           }
         }
+        function carcondition() {
+          var results2 = stats.viewcarcondition(gtfcar, userdata);
+          embed.setDescription(results2 + pageargs["footer"]);
+          msg.edit({embeds: [embed], components:buttons});
+        }
+         
+              function sellcar() {
+         require(dir + "commands/garage").execute(msg, {options:"sell", number:parseInt(query["number"]), filter:filterlist}, userdata);
+        }
 
-        var functionlist = [favoritecar, changecar, view, sellcar]
+        var functionlist = [favoritecar, changecar, view, carcondition, sellcar]
         gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
       }
       return;
@@ -274,9 +288,9 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         if (userdata["settings"]["GARAGESORT"] == "Recently Used") {
           number = 1
         }
-        var car = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))[number - 1];
+        var gtfcar = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))[number - 1];
         if (userdata["inlobby"]["active"]) {
-          require(gtf.LOBBY).updateusercar(car, userdata);
+          require(gtf.LOBBY).updateusercar(gtfcar, userdata);
         }
         if (query["extra"] == "silent") {
           //embed = msg.embeds[0]
@@ -285,7 +299,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         } else {
           require(dir + "commands/garage").execute(msg, 
             {options:"list", 
-             extra: "Selected the **" + car["name"] + " " + car["fpp"] + emote.fpp + "**" + " `🚘ID:" + number + "`.",
+             extra: "Selected the **" + gtfcar["name"] + " " + gtfcar["fpp"] + emote.fpp + "**" + " `🚘ID:" + number + "`.",
              filter:query["filter"]}, 
             userdata);
         }

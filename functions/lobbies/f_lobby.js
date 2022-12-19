@@ -543,9 +543,9 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
   MongoClient.connect(function (err, db) {
     if (err) throw err;
     var dbo = db.db("GTFitness");
-    var users = dbo.collection("USERS");
+    var users = dbo.collection("GTF2SAVES");
     dbo
-      .collection("USERS")
+      .collection("GTF2SAVES")
       .find({ id: user["id"] })
       .forEach(userdata => {
         if (typeof userdata["id"] === undefined) {
@@ -571,9 +571,9 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
     MongoClient.connect(function (err, db) {
       if (err) throw err;
       var dbo = db.db("GTFitness");
-      var users = dbo.collection("USERS");
+      var users = dbo.collection("GTF2SAVES");
       dbo
-        .collection("USERS")
+        .collection("GTF2SAVES")
         .find({ id: finalgrid[i]["id"] })
         .forEach(row => {
           if (typeof row["id"] === undefined) {

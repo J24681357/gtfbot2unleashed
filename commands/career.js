@@ -41,38 +41,33 @@ module.exports = {
     
     var mode = "CAREER";
     if (parseInt(query["options"]) == 1) {
-      query["options"] = "B";
+      query["options"] = "C";
     }
     if (parseInt(query["options"]) == 2) {
-      query["options"] = "A";
-      if (!require(gtf.EXP).checklevel(5, embed, msg, userdata)) {
-        return;
-      }
+      query["options"] = "B";
+
     }
     if (parseInt(query["options"]) == 3) {
-      query["options"] = "IC";
-        if (!require(gtf.EXP).checklevel(10, embed, msg, userdata)) {
-        return;
-      }
+      query["options"] = "A";
     }
     if (parseInt(query["options"]) == 4) {
-      query["options"] = "IB";
-      if (!require(gtf.EXP).checklevel(15, embed, msg, userdata)) {
-        return;
-      }
+      query["options"] = "IC";
     }
     if (parseInt(query["options"]) == 5) {
-      query["options"] = "IA";
-      if (!require(gtf.EXP).checklevel(20, embed, msg, userdata)) {
-        return;
-      }
+      query["options"] = "IB";
     }
     if (parseInt(query["options"]) == 6) {
-      query["options"] = "S";
-        if (!require(gtf.EXP).checklevel(25, embed, msg, userdata)) {
-        return;
-      }
+      query["options"] = "IA";
     }
+    if (parseInt(query["options"]) == 8) {
+      query["options"] = "S";
+    }
+    /*
+    if (!stats.checklicense(query["options"], embed, msg, userdata)) {
+        return;
+    }*/
+    
+    /*
     if (parseInt(query["options"]) == 7) {
       query["options"] = "KART";
       if (!require(gtf.EXP).checklevel(5, embed, msg, userdata)) {
@@ -91,11 +86,13 @@ module.exports = {
         return;
       }
     }
+    */
     pageargs["image"].push( "https://github.com/J24681357/gtfbot/raw/master/images/career/" + query["options"].toUpperCase() + "_level.png")
-
+/*
     if (userdata["id"] == "237450759233339393") {
       query["options"] = "TESTING";
     }
+*/
     
 
     var races = [...require(gtf.CAREERRACES).find({types: [query["options"]] })]
@@ -105,6 +102,8 @@ module.exports = {
       delete query["track"]
        embed.setTitle("🏁" + " __Career Mode__");
       results =
+        "__**C Level**__ " +
+        "\n" +
         "__**B Level**__ " +
         "\n" +
         "__**A Level**__ " +
@@ -125,7 +124,8 @@ module.exports = {
         "\n" +
         "__**S Level**__ " +
         emote.exp +
-        " `Lv.25`" + "/n/n" + 
+        " `Lv.25`" 
+        /*+ "/n/n" + 
         "__Special Events__" + "\n" + 
         "__**Kart**__ " +  emote.exp +
         " `Lv.5`" + "\n" +
@@ -133,6 +133,7 @@ module.exports = {
         " `Lv.15`" + "\n" +
         "__**Formula**__ " +  emote.exp +
         " `Lv.27`"
+        */
         var list = results.split("\n")
       pageargs["list"] = list;
       if (userdata["settings"]["TIPS"] == 0) {
@@ -145,29 +146,35 @@ module.exports = {
       return
     }
     var ids = Object.keys(races);
-    if (ids.length != 0 && query["number"] === undefined) {
+    if (ids.length == 0) {
+      require(gtf.EMBED).alert({ name: "❌ Invaild", description: "There are no events in this level.", embed: "", seconds: 3 }, msg, userdata);
+      return
+    }
+
+
+    //list of x races
+    if (typeof query["number"] === 'undefined') {
       results = []
         for (var t = 0; t < ids.length; t++) {
           var raceevent = races[ids[t]];
+          raceevent["eventlength"] = raceevent["tracks"].length
+          var regulations = raceevent["regulations"]
+
           
-          var rmakes = raceevent["makes"];
-          var rcountries = raceevent["countries"];
-          var rmodels = raceevent["models"];
-          var drivetrains = raceevent["drivetrains"]
-          var engines = raceevent["engines"]
-          var tires = raceevent["tires"]
-          
-          var rmake = rmakes.length != 0 ? rmakes.join(", ") + " | ": ""
-          var rcountry = rcountries.length != 0 ? rcountries.join(", ") + " | " : ""
-          var rmodel = rmodels.length != 0 ? rmodels.join(", ") + " | ": ""
-          var drivetrain = drivetrains.length != 0 ? drivetrains.join(", ") + " | " : ""
-          var engine = engines.length != 0 ? engines.join(", ") : ""
+          var rmake = regulations["makes"].length != 0 ? regulations["makes"].join(", ") + " | ": ""
+          var rcountry = regulations["countries"].length != 0 ? regulations["countries"].join(", ") + " | " : ""
+          var rmodel =  regulations["models"].length != 0 ?  regulations["models"].join(", ") + " | ": ""
+          var drivetrain =  regulations["drivetrains"].length != 0 ?  regulations["drivetrains"].join(", ") + " | " : ""
+          var engine = regulations["engines"].length != 0 ? regulations["engines"].join(", ") : ""
           var bop = raceevent["bop"] ? (" " + emote.bop) : ""
           var weather = (raceevent["weatherchange"] >= 1) ? (" " + emote.weather) : ""
-          var championship = raceevent["championship"][0] ? ("🏆 ") : ""
-          var any = [rcountry,rmake,rmodel,drivetrain,engine,bop].join("").length != 0 ? "" : "None"
+          var championship = raceevent["championship"] ? ("🏆 ") : ""
+          var types = regulations["types"].length != 0 ? regulations["types"].join(", ") : ""
           
-          var types = raceevent["types"].length != 0 ? raceevent["types"].join(", ") : ""
+          var any = [rcountry,rmake,rmodel,drivetrain,engine,bop].join("").length != 0 ? "" : "None"
+          var tires = regulations["tires"]
+          
+          
           if (raceevent["type"] == "TIMETRIAL") {
             results.push(
             "⌛" +
@@ -190,9 +197,9 @@ module.exports = {
             stats.eventstatus(query["options"] + "-" + (t + 1), userdata) +
             "/n" +
             "**" +
-            raceevent["fpplimit"].toString().replace("9999", "--") + emote.fpp + " " + 
-            raceevent["upperpower"].toString().replace("9999", "--") + " hp" + " " + 
-            gtftools.numFormat(raceevent["upperweight"].toString().replace("9999", "--")) + " Lbs" + " " +
+            regulations["fpplimit"].toString().replace("9999", "--") + emote.fpp + " " + 
+            regulations["upperpower"].toString().replace("9999", "--") + " hp" + " " + 
+            gtftools.numFormat(regulations["upperweight"].toString().replace("9999", "--")) + " Lbs" + " " +
             emote.tire  + tires + weather +
             "**/n" +
             "**Regulations:** " +
@@ -220,8 +227,8 @@ module.exports = {
         pageargs["rows"] = 3
         pageargs["text"] = gtftools.formpage(pageargs, userdata);
         gtftools.formpages(pageargs, embed, msg, userdata);
-
-         setTimeout(function() {
+      /*
+        setTimeout(function() {
           var t = 0 
             for (t; t < ids.length; t++) {
           raceevent = races[ids[t]];
@@ -232,48 +239,45 @@ module.exports = {
           }
             }
           }, 2000)
+      */
         return;
     }
+    //
 
-    query["number"] = parseInt(query["number"])
-      if (!gtftools.betweenInt(query["number"], 1, Object.keys(races).length) && !isNaN(query["number"])) {
+    var number = parseInt(query["number"])
+      if (!gtftools.betweenInt(number, 1, Object.keys(races).length) && !isNaN(number)) {
           require(gtf.EMBED).alert({ name: "❌ Invaild ID", description: "This event ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
           return
       }
       embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}]);
-      var event = require(gtf.RACE).careerevent(races, query, embed, msg, asyncrace, userdata);
-      if (event == "Invalid") {
-          return
-      }
 
-      function asyncrace(event) {
-        if (event == "Invalid") {
-          return;
-        }
+
+    var event = {...races[Object.keys(races)[number - 1]]}
+      require(gtf.RACE).careerraceselect(event, query, gorace, embed, msg, userdata);
+
+      function gorace(event) {
+
         if (event["type"] == "TIMETRIAL") {
         var raceprep = {
-          mode: mode,
+          mode: "CAREER",
           modearg: "",
-          carselect: "LOANER",
-          car: {},
-          trackselect: "N/A",
-          track: {},
+          track: event["track"],
+          car: event["car"],
           racesettings: event,
-          other: [],
+          other: {},
         }
         } else {
         var raceprep = {
-          mode: mode,
+          mode: "CAREER",
           modearg: "",
-          carselect: "GARAGE",
-          car: stats.currentcar(userdata),
-          trackselect: "N/A",
-          track: {},
+          track: event["track"],
+          car: "GARAGE",
           racesettings: event,
-          other: [],
+          other: {},
         };
       }
-         require(gtf.RACE).raceprep(raceprep, embed, msg, userdata);
+      var gtfcar = stats.currentcar(userdata)
+         require(gtf.RACE).raceprep(raceprep, gtfcar, embed, msg, userdata);
       }
       }
 }

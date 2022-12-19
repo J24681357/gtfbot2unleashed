@@ -3,7 +3,7 @@ var stats = require(dir + "functions/profile/f_stats");
 var emote = require(dir + "index");
 var gtftools = require(dir + "functions/misc/f_tools");
 
-const { Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, SelectMenuBuilder } = require("discord.js");
+const {  Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, AttachmentBuilder, ButtonBuilder, SelectMenuBuilder } = require("discord.js");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
@@ -99,4 +99,22 @@ module.exports.edit = function(msg, content, callback) {
        i = setInterval(function() {repeat()}, 1500)
       }
 }
+}
+
+module.exports.sendModal = function(modallist, callback, msg, userdata) {
+  
+      const modal = new ModalBuilder()
+			.setCustomId('modal')
+			.setTitle('My Modal');
+		const favoriteColorInput = new TextInputBuilder()
+			.setCustomId('favoriteColorInput')
+			.setLabel("What's your favorite color?")
+			.setStyle(TextInputStyle.Short);
+
+
+		const firstActionRow = new ActionRowBuilder().addComponents(favoriteColorInput);
+
+		modal.addComponents(firstActionRow);
+
+		msg.showModal(modal);
 }

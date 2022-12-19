@@ -45,7 +45,6 @@ module.exports = {
     );
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
    
-    
     var searchname = "";
     if (query["options"] == "search") {
       query["options"] = "select";
@@ -140,7 +139,7 @@ module.exports = {
       delete query["special1"];
       for (var makei = 0; makei < makelist.length; makei++) {
         var m = makelist[makei].replace(/,/, " ");
-        var cars = require(gtf.CARS).find({ make: [m] });
+        var cars = require(gtf.CARS).find({ makes: [m] });
         var count = cars.length;
         var country = gtftools.toEmoji(cars[0]["country"]);
         list.push(m + " " + country + " `🚘" + count + "`");
@@ -157,12 +156,10 @@ module.exports = {
       return;
     }
 
-
-
     if (query["options"] == "select" || query["options"] == "selectused") {
       
       if (typeof query["manufacturer"] !== "undefined" || typeof query["type"] !== "undefined" || typeof query["drivetrain"] !== "undefined" || typeof query["engine"] !== "undefined" || typeof query["special"] !== "undefined") {
-        var term = { make: query["manufacturer"], types: query["type"], drivetrains: query["drivetrain"], engines: query["engine"], special: query["special"], sort: sort };
+        var term = { makes: query["manufacturer"], types: query["type"], drivetrains: query["drivetrain"], engines: query["engine"], special: query["special"], sort: sort };
 
         if (searchname.length != 0) {
           term["fullname"] = [searchname];
@@ -170,13 +167,10 @@ module.exports = {
         
         if (query["options"] == "selectused") {
           var list = require(gtf.CARS).find({uppercostm: 30, upperyear: 2012, sort: sort})
-          console.log(list.length)
-          const Random = require('yy-random')
           var indexes = []
           var day = require(gtf.DATETIME).getCurrentDay()
           var seed = 1
-          Random.seed(seed + day)
-          for (var num = 0; num < 10; num++) { indexes.push(Random.get(list.length))
+          for (var num = 0; num < 20; num++) { indexes.push(gtftools.randomIntSeed(0, list.length, (num+1000) + day))
           }
           list = list.filter(function(x,i) {
             if (indexes.includes(i)) {
@@ -185,13 +179,12 @@ module.exports = {
               return false
             }
           }).map(function(x) {
-            Random.seed(x["id"] + day)
-            var discount = [10,20,30,40,50,60][Random.get(6)]
+            seed = x["id"] + day
+            var discount = [10,20,30,40,50,60][gtftools.randomIntSeed(0,5, seed)]
             x["discount"] = discount
             return x
           })
         } else {
-                   
           var list = require(gtf.CARS).find(term);
         }
 
@@ -211,6 +204,13 @@ module.exports = {
         var drivetrain = query["drivetrain"].length == 0 ? "" : query["drivetrain"][0];
         var engine = query["engine"].length == 0 ? "" : query["engine"][0];
         var special = query["special"].length == 0 ? "" : query["special"][0];
+
+        if (make == "Ferrari") {
+          /*
+          if (stats.checkinvitation(make, userdata)) {
+          }
+          */
+        }
 
         var carlist = [];
         for (var i = 0; i < list.length; i++) {
@@ -239,7 +239,7 @@ module.exports = {
               require(gtf.EMBED).alert({ name: "❌ Car Unavailable", description: "You cannot purchase this car.", embed: "", seconds: 3 }, msg, userdata);
               return;
             }
-            require(gtf.MARKETPLACE).purchase(msg.member, item, "CAR", embed, msg, userdata);
+            require(gtf.MARKETPLACE).purchase(item, "CAR", "", embed, msg, userdata);
             return;
           }
         }
@@ -270,7 +270,7 @@ module.exports = {
       var list = [];
       for (var makei = 0; makei < makelist.length; makei++) {
         var m = makelist[makei].replace(/,/g, "-");
-        var count = require(gtf.CARS).find({ make: [m] }).length;
+        var count = require(gtf.CARS).find({ makes: [m] }).length;
         list.push(m + " `🚘" + count + "`");
       }
       embed.setTitle("🏢 __GTF Car Dealerships (" + list.length + " Makes)" + "__");

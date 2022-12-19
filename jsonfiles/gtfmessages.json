@@ -1,0 +1,54 @@
+{
+  "arcade": {"id": 1,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [[]],
+  "messages": ["Welcome to the Arcade menu.", "You can select from 3 modes: Single Race, Drift Trial, and Top Speed Run. Tracks are randomized but you can select what type you can use. From original tracks to user generated ones.", "In Arcade mode, damage and oil wear are disabled, so drive whenever you'll like without pay!"]
+  },
+  "career": [
+  {"id": 1,
+  "unlock": [[]],
+  "ignore": [[]],
+  "required": [[]],
+  "messages": ["Welcome to the start of your career!", "Here you will find career races to race agaisnt other opponents. As you level up and earn new licenses, you will have more access to more staggering races up to the top. Can you reach up to the S level?"]
+  }
+],
+  "car": [
+  {"id": 1,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["currentcar", "==", 0]],
+  "messages": ["Welcome to the GTF Car Dealership where you can purchase your first car!", "Before you start driving supercars and hardcore race cars, you have to start from the beginning. Maybe you should purchase a Honda or a Toyota?"]
+  },
+  {"id": 2,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["garage", ">=", 1]],
+  "messages": ["__**❗ Quick Tip**__: For some manufacturers, you need to have an invitation before purchasing cars from that manufacturer. Invitations can be earned via completing **Gold** in special **Time Trials** for that manufacturer."]
+  }
+],
+  "course": [
+  {"id": 1,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [[]],
+  "messages": ["You can create your own courses with the GTF Course Maker!", "You can create your own courses by using **/course - Generate Course** and using the parameters used in the slash command menu. You are able to create circuit & sprint courses on asphalt, gravel, and snow.", "Course Maker courses can be used in Arcade mode. Check out <> for more information."]
+  }
+],
+  "daily": [
+  {"id": 1,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [[]],
+  "messages": ["Welcome to the Daily Workout spin where you can earn credits & random cars daily. You must drive at least **26.2 miles** or **42.1 kilometers** in order to spin for a prize.", "Your daily workout resets every 24 hours. You can set the time zone for daily workouts in **/settings - Time Zone**, to match with your time zone."]
+  }
+],
+  "garage": [
+  {"id": 1,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["garage", ">=", 1]],
+  "messages": ["Welcome to your garage where you can manage all of your garage!", "Viewing your cars, their car details, and inspecting their conditions will be crucial into become a professional GTF driver. You can also sell your cars here."]
+  }
+]
+}

@@ -12,7 +12,6 @@ module.exports = {
   name: "home",
   title: "My GTF Home",
   level: 0,
-  aliases: ["myhome"],
   channels: ["testing", "gtf-demo", "gtf-mode"],
 
   availinmaint: false,
@@ -54,11 +53,11 @@ module.exports = {
       return cmd.execute(msg, {}, userdata);
     }
 
-    if (parseFloat(stats.mileage("KM", false, userdata)) == 0) {
+    if (parseFloat(stats.mileage(userdata)[0]) == 0) {
       notifications.push("**🔔 You have not driven in the last 24 hours. Complete at least one session to increase your credits multiplier the next day!**");
     }
 
-    if (parseFloat(stats.mileage("KM", false, userdata)) > 42.1 && !userdata["dailyworkout"]) {
+    if (parseFloat(stats.mileage(userdata)[0]) > 42.1 && !userdata["dailyworkout"]) {
       notifications.push("**🔔 You have enough daily mileage to receive your daily workout! Use __/daily__ to redeem.**");
     }
     if (stats.gifts(userdata).length >= 1) {
@@ -137,7 +136,7 @@ module.exports = {
           var cmd = require(dir + "commands/" + commandslist[int]);
           if (cmd.channels.length >= 1) {
             if (!cmd.channels.some(name => msg.channel.name.includes(name))) {
-              userdata = { id: msg.author.id, settings: { PROGRESSBAR: ["⬜", "⬛", "#0151b0"] } };
+              userdata = require(gtf.GTF).defaultuserdata
               require(gtf.EMBED).alert({ name: "❌ Incorrect Channel", description: "Commands are not allowed in this channel.", embed: "", seconds: 3 }, msg, userdata);
               return;
             }
@@ -213,7 +212,7 @@ function createlist() {
           embed.setDescription(message + results);
           embed.setThumbnail(track["image"]);
           embed.fields = [];
-          embed.setThumbnail("https://github.com/J24681357/gtfbot/raw/master/images/logo/gtflogo.gif");
+        
           embed.setFields([{ name: stats.main(userdata), value: stats.currentcarmain(userdata) }]);
           msg.edit({ embeds: [embed], files: [] });
         }

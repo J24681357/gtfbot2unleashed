@@ -54,7 +54,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
       if (err) throw err;
        var dbo = db.db("GTFitness");
     dbo
-      .collection("USERS")
+      .collection("GTF2SAVES")
       .find({})
       .forEach(row => {
         if (typeof row["id"] === undefined) {
@@ -122,33 +122,16 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
 
       if (query["args"] == "resetcareer") {
         success = true
-        var types = ["b", "a", "ic", "ib", "ia", "s", "seasonal"]
+        var types = ["n", "b", "a", "ic", "ib", "ia", "s", "seasonal"]
         var career = {}
-        for (var i = 0; i < types.length;i++) {
-          for (var j = 1; j < 11; j++) {
+        for (var i = 0; i < types.length; i++) {
+          for (var j = 1; j < 21; j++) {
             career[types[i] + "-" + j] = [0,0,0,0,0,0,0,0,0,0]
           }
-
         }
     userdata["careerraces"] = career
 }
 
-if (query["args"] == "test1") {
-  var f = async function () {
-    var Canvas = require("@napi-rs/canvas");
-    const avatar = await Canvas.loadImage(msg.member.user.displayAvatarURL({format: "png"}));
-       var canvas = Canvas.createCanvas(avatar.naturalWidth, avatar.naturalHeight);
-       var ctx = canvas.getContext('2d');
-        ctx.drawImage(avatar, 0,0);
-      const water = await Canvas.loadImage("https://i.gifer.com/GPyH.gif");
-      ctx.globalAlpha = 0.1
-      ctx.drawImage(water, 0,0);
-      const attachment = new AttachmentBuilder(canvas.toBuffer(), {name: 'photo.png'});    
-	    require(gtf.DISCORD).send(msg, { files: [attachment] })
-  }
-  f()
-  return
-}
 
 if (query["args"] == "announce_update") {
         success = true
@@ -163,7 +146,7 @@ if (query["args"] == "announce_update") {
         } , 1000)
 }
 
-      if (query["args"] == "resetseasonals") {
+    if (query["args"] == "resetseasonals") {
         success = true
          var careeraceskeys = Object.keys(userdata["careerraces"])
          for (var i = 0; i < careeraceskeys.length; i++) {
@@ -173,7 +156,7 @@ if (query["args"] == "announce_update") {
 }
       }
 
-      
+     
       if (query["args"] == "maintenance") {
         success = true;
         if (require(gtf.MAIN).gtfbotconfig["maintenance"] == "YES") {
@@ -197,11 +180,11 @@ if (query["args"] == "announce_update") {
         }, 1000);
       }
 
+      //CREDITS
       if (query["args"] == "addcredits") {
         success = true;
         stats.addcredits(parseInt(query["number"]), userdata);
       }
-
       if (query["args"] == "removecredits") {
         success = true;
         stats.addcredits(-parseInt(query["number"]), userdata);
@@ -213,7 +196,14 @@ if (query["args"] == "announce_update") {
       ///GIFTS
       if (query["args"] == "giftcredits") {
         success = true;
-        stats.addgift(query["number"] + emote.credits, query["number"], "CREDITS", "USERNAME", true, userdata);
+        var gift = {
+        "name": "DEBUG " + query["number"] + emote.credits,
+        "type": "CREDITS",
+        "item": 5000,
+        "author": "GTF",
+        "inventory": true
+      }
+        stats.addgift(gift, userdata);
       }
       if (query["args"] == "giftrandomcar") {
         success = true;
@@ -225,6 +215,8 @@ if (query["args"] == "announce_update") {
         success = true;
         userdata["gifts"] = [];
       }
+
+      //DAILYWORKOUT
       if (query["args"] == "dailyworkoutoff") {
         success = true;
         userdata["dailyworkout"] = false;
@@ -233,6 +225,8 @@ if (query["args"] == "announce_update") {
         success = true;
         userdata["dailyworkout"] = true;
       }
+
+      //RACES
       if (query["args"] == "forcecancel") {
         success = true;
         stats.clearraceinprogress(userdata)
@@ -254,7 +248,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         MongoClient.connect(function (err, db) {
           if (err) throw err;
           var dbo = db.db("GTFitness");
-          var users = dbo.collection("USERS");
+          var users = dbo.collection("GTF2SAVES");
           users.insertOne(userdata, (err, result) => {});
           dbo.collection("REPLAYS").insertOne(
             {
@@ -274,7 +268,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         MongoClient.connect(function (err, db) {
           if (err) throw err;
           var dbo = db.db("GTFitness");
-          var users = dbo.collection("USERS");
+          var users = dbo.collection("GTF2SAVES");
           users.insertOne(userdata, (err, result) => {});
           dbo.collection("CUSTOMCOURSES").insertOne(
             {
@@ -285,6 +279,8 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
           );
         });
       }
+
+      ///GARAGE
       if (query["args"] == "cleargarage") {
         success = true;
         userdata["garage"] = [];
@@ -298,6 +294,11 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         }
         results = "`" + query["args"] + "` success to " + msg.guild.members.cache.get(userdata["id"]).user.username + "." + "\n" + "Added " + query["number"] + " random cars to garage.";
       }
+      
+       if (query["args"] == "addmileage") {
+        success = true;
+        stats.addmileage(query["number"], query["number"], userdata);
+      }
       if (query["args"] == "setmileage") {
         success = true;
         userdata["mileage"] = [query["number"], query["number"]];
@@ -306,10 +307,8 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         success = true;
         userdata["racemulti"] = parseFloat(query["number"])
       }
-      if (query["args"] == "addmileage") {
-        success = true;
-        stats.addmileage(query["number"], query["number"], userdata);
-      }
+
+      //EXP & LEVEL
       if (query["args"] == "setexp") {
         success = true;
         userdata["exp"] = query["number"];
@@ -323,20 +322,24 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         userdata["exp"] = 0;
         userdata["level"] = 0;
       }
-
+      if (query["args"] == "setlevel") {
+        success = true;
+        userdata["level"] = parseInt(query["number"]);
+      }
       if (query["args"] == "resetexplevel" || query["args"] == "resetlevel") {
         success = true;
         userdata["level"] = 0;
       }
+      
       if (query["args"] == "careerracecomplete") {
          success = true;
-        if (!query[1].includes("-")) {
+        if (!query["number"].includes("-")) {
           return;
         }
- if (query[1].split("-")[0].match(/b/g)) {
+ if (query["number"].split("-")[0].match(/b/g)) {
           var races = require(dir + "data/career/races").beginner();
         }
-        if (query[1].split("-")[0].match(/a/g)) {
+        if (query["number"].split("-")[0].match(/a/g)) {
           var races = require(dir + "data/career/races").amateur();
         }
         if (query[1].split("-")[0].match(/ic/g)) {
@@ -389,8 +392,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         var tracks = event["tracks"];
         var track = require(gtf.TRACKS).find({ name: tracks[1] })[0];
         var racesettings = require(gtf.RACE).setcareerrace(event, track, stats.currentcar(userdata), 0);
-        stats.gift(emote.goldmedal + " Congrats! Complete in " + racesettings["title"].split(" - ")[0] + " " + emote.goldmedal, racesettings["prize"], embed, msg, userdata);
-
+        stats.redeemgift(racesettings["prize"], userdata)
         ;
       }
 

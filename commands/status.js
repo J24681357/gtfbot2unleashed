@@ -89,10 +89,12 @@ module.exports = {
         
 
       function exitnow() {
-        if ( parseFloat(userdata["raceinprogress"]["expire"] - new Date().getTime()) <= 10 * 1000) {
-          require(gtf.EMBED).alert({ name: "❌ Session Ending Soon", description: "You can not exit a session that has under 20 seconds remaining.", embed: "", seconds: 0 }, msg, userdata);
+        /*
+        if ( parseFloat(userdata["raceinprogress"]["expire"] - new Date().getTime()) <= 0 * 1000) {
+          require(gtf.EMBED).alert({ name: "❌ Session Ending Soon", description: "You can not exit a session that has under 10 seconds remaining.", embed: "", seconds: 0 }, msg, userdata);
           return
         }
+        */
         
         userdata["raceinprogress"]["active"] = false
         require(gtf.EMBED).alert({ name: "✅ Success", description: "You have left the session.", embed: "", seconds: 5 }, msg, userdata);

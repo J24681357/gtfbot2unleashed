@@ -11,7 +11,6 @@ const client = new Client({
 
 var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
-
 var fs = require("fs");
 var gtfbot = JSON.parse(fs.readFileSync(dir + "jsonfiles/_botconfig.json", "utf8"));
 var extra = require(dir + "functions/misc/f_extras");
@@ -24,22 +23,24 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
 
 const prefix = "!";
 var announcer = JSON.parse(fs.readFileSync(dir + "jsonfiles/announcer.json", "utf8"));
+var gtfmessages = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfmessages.json", "utf8"));
 var gtfcareerraces = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfcareerraces.json", "utf8"));
 var gtfsponsors = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfsponsors.json", "utf8"));
 var gtfcars = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfcarlist.json", "utf8"));
 var gtftracks = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtftracklist.json", "utf8"));
-//var gtffreerunlist = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtffreerunlist.json", "utf8"));
 var gtfparts = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfpartlist.json", "utf8"));
 var gtfpaints = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfpaints.json", "utf8"));
 var gtfwheels = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfwheels.json", "utf8"));
 var gtfexp = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfexp.json", "utf8"));
 var gtfweather = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtfweather.json", "utf8"));
 var gtftime = JSON.parse(fs.readFileSync(dir + "jsonfiles/gtftime.json", "utf8"));
+
+module.exports.announcer = announcer;
+module.exports.messages = gtfmessages;
 module.exports.gtfcareerraces = gtfcareerraces;
 module.exports.gtfsponsors = gtfsponsors;
 module.exports.gtfcarlist = gtfcars;
 module.exports.gtftracklist = gtftracks;
-//module.exports.gtffreerunlist = gtffreerunlist;
 module.exports.gtfweather = gtfweather;
 module.exports.gtftime = gtftime;
 module.exports.gtfpartlist = gtfparts;
@@ -48,32 +49,9 @@ module.exports.gtfwheellist = gtfwheels;
 module.exports.gtfexp = gtfexp;
 module.exports.embedcounts = {};
 module.exports.bot = gtfbot;
-module.exports.announcer = announcer;
 module.exports.emote = emote;
 
-/*
-module.exports.alluserdata = function () {
-  MongoClient.connect(function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("GTFitness");
-    dbo
-      .collection("USERS")
-      .find({})
-      .forEach(row => {
-        if (typeof row["id"] === undefined) {
-          return;
-        } else {
-          data[row["id"]] = row;
-        }
-      })
-      .then(() => db.close());
-  });
-};
-require(gtf.MAIN).alluserdata();
-*/
-//gtftools.updateallsaves("USERS", {})
-
-
+//gtftools.updateallsaves("GTF2SAVES", {})
 
 var listinmaint = [];
 client.commands = {};
@@ -95,28 +73,7 @@ const express = require("express");
 const server = express();
 
 var app = express();
-/*
-var PORT = 3000;
-
-// View engine setup
-app.set('view engine', 'ejs');
-
-// Without middleware
-app.get('/', function(req, res){
-    // Rendering home.ejs page
-    res.render('home', {name: "test"});
-  res.render('home', {name: "test2"});
-})
-
-
-app.listen(PORT, function(err){
-    if (err) console.log(err);
-    console.log("Server listening on PORT", PORT);
-});
-*/
-
 const port = process.env.PORT || 3000;
-
 server.all("/", (re, res) => {
   res.send("GT Fitness is now online!");
 });
@@ -177,28 +134,6 @@ try {
     if (interaction.type != 2) {
       return;
     }
-    //interaction.guild = client.guilds.cache.get(interaction.guildid);
-    /*
-      const modal = new ModalBuilder()
-			.setCustomId('myModal')
-			.setTitle('My Modal');
-		const favoriteColorInput = new TextInputBuilder()
-			.setCustomId('favoriteColorInput')
-			.setLabel("What's your favorite color?")
-			.setStyle(TextInputStyle.Short);
-
-		const hobbiesInput = new TextInputBuilder()
-			.setCustomId('hobbiesInput')
-			.setLabel("What's some of your favorite hobbies?")
-			.setStyle(TextInputStyle.Paragraph);
-
-		const firstActionRow = new ActionRowBuilder().addComponents(favoriteColorInput);
-		const secondActionRow = new ActionRowBuilder().addComponents(hobbiesInput);
-
-		modal.addComponents(firstActionRow, secondActionRow);
-
-		interaction.showModal(modal);
-  */
 
     interaction.channel = client.channels.cache.get(interaction.channelid);
     interaction.author = interaction.user;
@@ -229,11 +164,10 @@ try {
       if (timeelapsed >= 2300) {
         warn = "(Some loading issues may occur)";
       }
-      console.log("OKAY");
       interaction.reply({ content: "**✅ Success** " + warn, ephemeral: true });
     } catch (error) {
       if (error) {
-        require(gtf.EMBED).alert({ name: "Interaction Error", description: "An interaction error has occurred. Please try again.\n" + "**" + error + "**", embed: "", seconds: 0 }, interaction, { id: interaction.author.id });
+        require(gtf.EMBED).alert({ name: "❌ Interaction Error", description: "An interaction error has occurred. Please try again.\n" + "**" + error + "**", embed: "", seconds: 0 }, interaction, { id: interaction.author.id });
         console.error(error);
       } else {
         console.error(error);
@@ -252,7 +186,7 @@ try {
     function load_msg(msg) {
       ///////
       if (userdata === undefined) {
-        userdata = userdata = { id: msg.author.id, settings: { PROGRESSBAR: ["⬜", "⬛", "#0151b0"] } };
+        userdata = require(gtf.GTF).defaultuserdata(msg.author.id);
       }
       var next = function () {
         var args = msg.content.split(/\*\*\*+/);
@@ -261,14 +195,11 @@ try {
         var command = client.commands[commandName] || client.commands.filter(cmd => cmd.aliases && cmd.aliases.includes(commandName)[0]);
 
         if (!command) return;
-        if (command.delete) {
-          setTimeout(() => msg.delete(), 0);
-        }
 
         // Profile
         if (gtfbot["maintenance"]) {
           if (msg.author.id != "237450759233339393" && !command.availinmaint) {
-            userdata = { id: msg.author.id, settings: { PROGRESSBAR: ["⬜", "⬛", "#0151b0"] } };
+            userdata = require(gtf.GTF).defaultuserdata(msg.author.id);
             require(gtf.EMBED).alert({ name: "⚠️ Maintenance", description: "This bot is currently in maintenance. Come back later!", embed: "", seconds: 0 }, msg, userdata);
             return;
           }
@@ -276,13 +207,13 @@ try {
         if (command.channels.length >= 1) {
           if (msg.channel.type == 11) {
             if (!command.channels.some(name => msg.channel.parent.name.includes(name))) {
-              userdata = { id: msg.author.id, settings: { PROGRESSBAR: ["⬜", "⬛", "#0151b0"] } };
+              userdata = require(gtf.GTF).defaultuserdata(msg.author.id);
               require(gtf.EMBED).alert({ name: "❌ Incorrect Channel", description: "Commands are not allowed in this channel.", embed: "", seconds: 0 }, msg, userdata);
               return;
             }
           } else {
             if (!command.channels.some(name => msg.channel.name.includes(name))) {
-              userdata = { id: msg.author.id, settings: { PROGRESSBAR: ["⬜", "⬛", "#0151b0"] } };
+              userdata = require(gtf.GTF).defaultuserdata(msg.author.id);
               require(gtf.EMBED).alert({ name: "❌ Incorrect Channel", description: "Commands are not allowed in this channel.", embed: "", seconds: 0 }, msg, userdata);
               return;
             }
@@ -290,7 +221,7 @@ try {
         }
         var check = require(dir + "functions/misc/f_start").intro(userdata, command.name, msg);
         if (check == "COMMAND") {
-          userdata = { id: msg.author.id, settings: { PROGRESSBAR: ["⬜", "⬛", "#0151b0"] } };
+          userdata = require(gtf.GTF).defaultuserdata(msg.author.id);
           executecommand(command, args, msg, userdata);
           return;
         }
@@ -353,7 +284,7 @@ try {
         }
 
         if (command.requireuserdata) {
-          if (userdata.length <= 5) {
+          if (Object.keys(userdata).length <= 5) {
             require(gtf.EMBED).alert({ name: "❌ Userdata Required", description: "You do not have a save data.", embed: "", seconds: 0 }, msg, userdata);
             return;
           }
@@ -372,8 +303,11 @@ try {
           return;
         }
         try {
-          stats.checkachievements(userdata, msg.member);
+          //stats.checkachievements(msg.member, userdata);
+          stats.checkmessages(command, execute, msg, userdata)
+          function execute() {
           executecommand(command, args, msg, userdata);
+          }
         } catch (error) {
           require(gtf.EMBED).alert({ name: "❌ Unexpected Error", description: "Oops, an unexpected error has occurred.\n" + "**" + error + "**", embed: "", seconds: 0 }, msg, userdata);
           console.error(error);
@@ -387,7 +321,7 @@ try {
         }
         var dbo = db.db("GTFitness");
         dbo
-          .collection("USERS")
+          .collection("GTF2SAVES")
           .find({ id: msg.author.id })
           .forEach(row => {
             if (typeof row["id"] === undefined) {
@@ -419,22 +353,26 @@ client.login(process.env.SECRET).then(function () {
   var keys = [];
   client.rest.on("rateLimited", info => {
     gtfbot["msgtimeout"] = info["timeout"];
+    console.log(info)
+    /*
     if (info["path"].includes("messages")) {
       var channelid = info["path"].split("/channels/")[1].split("/")[0];
       var messageid = info["path"].split("/messages/")[1].split("/")[0];
-    } else {
+    } 
+    else {
       channelid = "";
       messageid = "";
     }
     if (typeof client.guilds.cache.get(gtf.SERVERID).members.cache.get("237450759233339393") == "undefined") {
-    } else {
+    } 
+    else {
       client.guilds.cache
         .get(gtf.SERVERID)
         .members.cache.get("237450759233339393")
         .send({ content: "**RATE LIMIT DETECTED**" + "\n\n" + "**Timeout:** " + require(gtf.DATETIME).getFormattedTime(info["timeout"]) + "\n" + "**Message:** " + "https://discord.com/channels/" + gtf.SERVERID + "/" + channelid + "/" + messageid + "\n\n" + JSON.stringify(info) });
     }
+    */
   });
-
 
   MongoClient.connect(function (err, db) {
     if (err) {
@@ -444,7 +382,7 @@ client.login(process.env.SECRET).then(function () {
     }
     var dbo = db.db("GTFitness");
     dbo
-      .collection("USERS")
+      .collection("GTF2SAVES")
       .find({})
       .forEach(row => {
         if (typeof row["id"] === undefined) {
@@ -467,6 +405,7 @@ client.login(process.env.SECRET).then(function () {
       });
 
     var index1 = 0;
+  
     setTimeout(function () {
       //gtftools.checkcarlist(gtfcars);
       //gtftools.checktracklist(gtftracks);
@@ -487,6 +426,7 @@ client.login(process.env.SECRET).then(function () {
       //require(gtf.EXTRA).checkerrors(client)
       db.close();
     }, 5000);
+  
   });
   
 });
@@ -502,18 +442,11 @@ var executecommand = function (command, args, msg, userdata) {
   }
 };
 
-///EMOJIS
+///FUNCTIONS
 function loademojis() {
   module.exports.update = "<:update:419605168510992394>";
   module.exports.flag = "<:flag:646244286635180033>";
   module.exports.transparent = "<:t_:666878765552369684>";
-  module.exports.curbh = "<:rcb_h:886268699290525776>";
-  module.exports.curbv = "<:rcb_v:886268699894485052>";
-  module.exports.curbturnleftdown = "<:rcb_turnleftdown:888442626657898526>";
-
-  module.exports.curbturnleftup = "<:rcb_turnleftup:890512989655015445>";
-  module.exports.curbturndownright = "<:rcb_turndownright:887529169330765854>";
-  module.exports.curbturnupright = "<:rcb_turnupright:895859428904038430>";
 
   module.exports.goldmedal = "<:gold:683881057589657650>";
   module.exports.silvermedal = "<:silver:672660378047741982>";
@@ -538,10 +471,14 @@ function loademojis() {
   module.exports.yes = "<:Yes:973817070418554881>";
   module.exports.tracklogo = "<:trackgtfitness:647254741990244372>";
   module.exports.cargrid = "<:gtfcargrid:906447596632014859>";
-
-  module.exports.cardown = "<:plrcard:885574220338311198>";
-  module.exports.carright = "<:plrcarf:885574220455764008>";
-  module.exports.carup = "<:plrcaru:885574220577382460>";
+  
+  module.exports.carexcellent = "<:car_condition_excellent:1048864552038699008>"
+  module.exports.carnormal = "<:car_condition_normal:1048864550461648956>"
+  module.exports.carworn = "<:car_condition_worn:1048864548997845002>"
+  module.exports.carbad = "<:car_condition_bad:1048864547047481356>"
+   module.exports.cardead = "<:car_condition_dead:1048864545826951208>"
+  
+   module.exports.gtauto = "<:gtauto:1050304598780428329>"
 
   module.exports.exit = "<:exit:670134165806514206>";
   module.exports.gtflogo = "<:gtfitness:912928750851752016>";
@@ -557,6 +494,7 @@ function loademojis() {
   module.exports.mileage = "<:mileage:470270715682226178>";
   module.exports.fpp = "<:fpp:1030148104680382494>";
   module.exports.dailyworkout = "<:dailyworkout:895858086697390241>";
+  module.exports.dailyworkoutman = "<a:dailyworkout_running:1048879274175774770>";
   module.exports.bop = "<:bop:908564536989200417>";
   module.exports.weather = "<:dynamicweather:991956491479298092>";
   module.exports.aero = "<:aerowing:917615553852620850>";
@@ -580,21 +518,16 @@ function loademojis() {
 function updatebotstatus() {
   console.log("Maintenance: " + gtfbot["maintenance"]);
   if (gtfbot["maintenance"] && typeof gtfbot["maintenance"] === "boolean") {
-    client.user.setPresence({ activities: [{ name: "Server automation channels are not available at the moment." }], status: "dnd" });
-    client.guilds.cache.get("239493425131552778").members.cache.get(gtf.USERID).setNickname("In Maintenance");
+    client.user.setPresence({ activities: [{ name: "The bot is under maintenance." }], status: "dnd" });
+    client.guilds.cache.get(gtf.SERVERID).members.cache.get(gtf.USERID).setNickname("In Maintenance");
   } else if (gtfbot["maintenance"] == "PARTIAL") {
     client.user.setPresence({ activities: [{ name: "Available commands: " + listinmaint.map(x => "/" + x).join(" ") }], status: "idle" });
-    client.guilds.cache.get("239493425131552778").members.cache.get(gtf.USERID).setNickname("Partial Maintenance");
+    client.guilds.cache.get(gtf.SERVERID).members.cache.get(gtf.USERID).setNickname("Partial Maintenance");
   } else {
-    client.user.setPresence({ activities: [{ name: "GT Fitness Game (PS5)" }], status: "purple" });
-    client.guilds.cache.get("239493425131552778").members.cache.get(gtf.USERID).setNickname("/ | GT Fitness");
+    client.user.setPresence({ activities: [{ name: "GT Fitness 2: Unleashed (PS5)" }], status: "purple" });
+    client.guilds.cache.get(gtf.SERVERID).members.cache.get(gtf.USERID).setNickname("/ | GT Fitness");
   }
 }
-
-//////////////
-
-//client.on("debug", console.log).on("warn", console.log)
-
 
 function restartbot() {
   console.log("Restarting bot...");
@@ -613,3 +546,4 @@ function restartbot() {
     });
 }
 
+//client.on("debug", console.log).on("warn", console.log)

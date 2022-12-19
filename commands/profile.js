@@ -41,8 +41,8 @@ module.exports = {
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
 
     //////////EXP//////////
-    var progress = userdata["settings"]["PROGRESSBAR"][0];
-    var progressb = userdata["settings"]["PROGRESSBAR"][1];
+    var progress = userdata["settings"]["ICONS"]["bar"][0];
+    var progressb = userdata["settings"]["ICONS"]["bar"][1];
     var expbar = [progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb];
     
     var nextlevel = stats.level(userdata) + 1;
@@ -67,7 +67,7 @@ module.exports = {
     embed.setTitle("👤 " + "__My Profile__");
 
     results =
-      "__**Credits**__" +
+      "__**Current Credits**__" +
       "\n" +
       "**" +
       gtftools.numFormat(stats.credits(userdata))+
@@ -87,17 +87,18 @@ module.exports = {
       "Lv." +
       nextlevel +
       "\n" +
-      "__**Total Distance Driven**__ " +
-      "\n" +
-      "**" + gtftools.numFormat(stats.totalmileage("KM", undefined, userdata))+
+      "**Total Distance Driven: ** " +
+      "**" + gtftools.numFormat(stats.totalmileage( userdata)[0])+
       "** km | " +
-      "**" + gtftools.numFormat(stats.totalmileage("MI", undefined, userdata)) +
+      "**" + gtftools.numFormat(stats.totalmileage( userdata)[1]) +
       "** mi " +
       emote.mileage +
       "\n" +
      "__**Total Play Time**__ " +
       "\n" + stats.totalplaytime(userdata) +
-      "\n"
+      "\n\n" +
+      "**Total Races:** " + userdata["stats"]["numraces"] + "\n" + 
+      "**# of Wins:** " + userdata["stats"]["numwins"]
     
 
     embed.setDescription(results);
@@ -181,7 +182,7 @@ embed.setThumbnail(msg.guild.members.cache.get(userdata["id"]).user.displayAvata
         var results = "**Garage Count:** " +
       stats.garagecount(userdata) +
       " Cars" + "\n" + 
-      "**Favorite Car:** " + favcar["name"] + " " + "**" + favcar["totalmileage"][userdata["settings"]["MILEAGE"]] + ["km", "mi"][userdata["settings"]["MILEAGE"]] + "**" + emote.mileage + "\n" + 
+      "**Favorite Car:** " + favcar["name"] + " " + "**" + favcar["totalmileage"][userdata["settings"]["UNITS"]] + stats.mileageunits(userdata) + "**" + emote.mileage + "\n" + 
         "**Total Garage Value:** " + "**" + gtftools.numFormat(garagevalue) + "**" + emote.credits
         embed.setDescription(results);
         msg.edit({embeds:[embed], components: buttons})

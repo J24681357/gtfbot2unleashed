@@ -12,13 +12,13 @@
         "EV"
       ],
       "eligible": [
-        "Production"
+        "Production", "Aftermarket"
       ],
       "prohibited": [
         "Electric"
       ],
       "fpplimit": 1200,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Engine",
@@ -32,13 +32,13 @@
         "EV"
       ],
       "eligible": [
-        "Production"
+        "Production", "Aftermarket"
       ],
       "prohibited": [
         "Electric"
       ],
       "fpplimit": 700,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Engine",
@@ -52,13 +52,13 @@
         "EV"
       ],
       "eligible": [
-        "Production"
+        "Production", "Aftermarket"
       ],
       "prohibited": [
         "Electric"
       ],
       "fpplimit": 650,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Engine",
@@ -72,13 +72,13 @@
         "EV"
       ],
       "eligible": [
-        "Production"
+        "Production", "Aftermarket"
       ],
       "prohibited": [
         "Electric"
       ],
       "fpplimit": 600,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Engine",
@@ -98,7 +98,7 @@
         "Electric"
       ],
       "fpplimit": 500,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Engine",
@@ -118,7 +118,7 @@
         "Electric"
       ],
       "fpplimit": 400,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Engine",
@@ -138,7 +138,7 @@
         "Electric"
       ],
       "fpplimit": 350,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "transmission": [
@@ -167,7 +167,7 @@
       "min": -5,
       "max": 5,
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Transmission",
@@ -194,7 +194,7 @@
       "min": -5,
       "max": 5,
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Transmission",
@@ -221,7 +221,7 @@
       "min": -5,
       "max": 5,
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "suspension": [
@@ -245,7 +245,7 @@
       "min": -1,
       "max": 1,
       "fpplimit": 1000,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Suspension",
@@ -270,7 +270,7 @@
       "min": -3,
       "max": 3,
       "fpplimit": 700,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Suspension",
@@ -295,7 +295,7 @@
       "min": -5,
       "max": 5,
       "fpplimit": 550,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "weight-reduction": [
@@ -317,7 +317,7 @@
         "Electric"
       ],
       "fpplimit": 1000,
-      "weightlowerlimit": 2000
+      "lowerweight": 2000
     },
     {
       "type": "Weight Reduction",
@@ -337,7 +337,7 @@
         "Electric"
       ],
       "fpplimit": 1000,
-      "weightlowerlimit": 3000
+      "lowerweight": 3000
     },
     {
       "type": "Weight Reduction",
@@ -357,7 +357,7 @@
         "Electric"
       ],
       "fpplimit": 550,
-      "weightlowerlimit": 4000
+      "lowerweight": 4000
     }
   ],
   "turbo": [
@@ -365,7 +365,7 @@
       "type": "Turbo",
       "name": "Stage 1",
       "cost": 6000,
-      "percent": 20,
+      "percent": 15,
       "engine": [
         "NA",
         "TB",
@@ -381,13 +381,13 @@
         "Electric"
       ],
       "fpplimit": 750,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Turbo",
       "name": "Supercharger Low",
       "cost": 15000,
-      "percent": 25,
+      "percent": 20,
       "engine": [
         "NA",
         "TB",
@@ -403,13 +403,13 @@
         "Electric"
       ],
       "fpplimit": 700,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Turbo",
       "name": "Stage 2",
       "cost": 20000,
-      "percent": 50,
+      "percent": 45,
       "engine": [
         "NA",
         "TB",
@@ -426,13 +426,13 @@
         "Electric"
       ],
       "fpplimit": 600,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Turbo",
       "name": "Supercharger High",
       "cost": 24000,
-      "percent": 55,
+      "percent": 50,
       "engine": [
         "NA",
         "TB",
@@ -448,13 +448,13 @@
         "Electric"
       ],
       "fpplimit": 500,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Turbo",
       "name": "Stage 3",
       "cost": 31000,
-      "percent": 70,
+      "percent": 65,
       "engine": [
         "NA",
         "TB",
@@ -471,13 +471,13 @@
         "Electric"
       ],
       "fpplimit": 400,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Turbo",
       "name": "Stage 4",
       "cost": 45000,
-      "percent": 95,
+      "percent": 90,
       "engine": [
         "NA",
         "TB",
@@ -494,7 +494,7 @@
         "Electric"
       ],
       "fpplimit": 300,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "tires": [
@@ -510,19 +510,12 @@
         "SC",
         "EV"
       ],
-      "eligible": [
-        "Production",
-        "Aftermarket",
-        "Race Car",
-        "Redbull X",
-        "Formula",
-        "Rally Car"
-      ],
+      "eligible": [],
       "prohibited": [
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 2,
@@ -544,11 +537,9 @@
         "Formula",
         "Rally Car"
       ],
-      "prohibited": [
-
-      ],
+      "prohibited": [],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 3,
@@ -574,7 +565,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 4,
@@ -600,7 +591,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 5,
@@ -626,7 +617,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 6,
@@ -652,7 +643,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 7,
@@ -678,7 +669,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 8,
@@ -704,7 +695,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 9,
@@ -730,33 +721,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
-    },
-    {
-      "id": 10,
-      "type": "Tires",
-      "name": "Racing: Super Soft",
-      "cost": 17000,
-      "percent": 0,
-      "engine": [
-        "NA",
-        "TB",
-        "SC",
-        "EV"
-      ],
-      "eligible": [
-        "Production",
-        "Aftermarket",
-        "Race Car",
-        "Redbull X",
-        "Formula",
-        "Rally Car"
-      ],
-      "prohibited": [
-
-      ],
-      "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Tires",
@@ -781,7 +746,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 11,
@@ -807,7 +772,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 12,
@@ -830,7 +795,7 @@
 
       ],
       "fpplimit": 500,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "id": 13,
@@ -853,7 +818,7 @@
 
       ],
       "fpplimit": 500,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "brakes": [
@@ -876,7 +841,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Brakes",
@@ -897,7 +862,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "aero-kits": [
@@ -921,7 +886,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     },
     {
       "type": "Aero Kits",
@@ -943,14 +908,14 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "car-wash": [
     {
       "type": "Car Wash",
       "name": "",
-      "cost": 100,
+      "cost": 50,
       "percent": 0,
       "engine": [
         "NA",
@@ -970,7 +935,7 @@
 
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
     }
   ],
   "oil-change": [
@@ -993,7 +958,91 @@
         "Electric"
       ],
       "fpplimit": 9999,
-      "weightlowerlimit": 0
+      "lowerweight": 0
+    }
+  ],
+  "engine-repair": [
+    {
+      "type": "Engine Repair",
+      "name": "",
+      "cost": 0,
+      "percent": 0,
+      "engine": [
+        "NA",
+        "TB",
+        "SC",
+        "EV"
+      ],
+      "eligible": [
+        "Production",
+        "Aftermarket"
+      ],
+      "prohibited": [],
+      "fpplimit": 9999,
+      "lowerweight": 0
+    }
+  ],
+  "transmission-repair": [
+    {
+      "type": "Transmission Repair",
+      "name": "",
+      "cost": 0,
+      "percent": 0,
+      "engine": [
+        "NA",
+        "TB",
+        "SC",
+        "EV"
+      ],
+      "eligible": [
+        "Production",
+        "Aftermarket"
+      ],
+      "prohibited": [],
+      "fpplimit": 9999,
+      "lowerweight": 0
+    }
+  ],
+  "suspension-repair": [
+    {
+      "type": "Suspension Repair",
+      "name": "",
+      "cost": 0,
+      "percent": 0,
+      "engine": [
+        "NA",
+        "TB",
+        "SC",
+        "EV"
+      ],
+      "eligible": [
+        "Production",
+        "Aftermarket"
+      ],
+      "prohibited": [],
+      "fpplimit": 9999,
+      "lowerweight": 0
+    }
+  ],
+  "body-damage-repair": [
+    {
+      "type": "Body Damage Repair",
+      "name": "",
+      "cost": 0,
+      "percent": 0,
+      "engine": [
+        "NA",
+        "TB",
+        "SC",
+        "EV"
+      ],
+      "eligible": [
+        "Production",
+        "Aftermarket"
+      ],
+      "prohibited": [],
+      "fpplimit": 9999,
+      "lowerweight": 0
     }
   ]
 }

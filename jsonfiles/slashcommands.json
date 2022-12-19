@@ -5,7 +5,7 @@
     "options": [
       {
       "name": "mode",
-      "description": "🏁 Select the league you want to enter.",
+      "description": "Select a mode in the Arcade menu.",
       "type": 3,
       "required": true,
       "choices": [
@@ -21,7 +21,87 @@
             "name": "Speed Test | Lv.7",
             "value": "3"
         }]
-      }]
+      },
+      {
+      "name": "singlerace_league",
+      "description": "(Single Race) Select a difficulty for Single Race.",
+      "type": 3,
+      "required": false,
+      "choices": [
+        {
+            "name": "Beginner",
+            "value": "1"
+        },
+        {
+            "name": "Amateur",
+            "value": "2"
+        },
+        {
+            "name": "Professional",
+            "value": "3"
+        },
+        {
+            "name": "Endurance",
+            "value": "4"
+        }]
+      },
+      {
+      "name": "drifttrial_league",
+      "description": "(Drift Trial) Select a difficulty for Drift Trial.",
+      "type": 3,
+      "required": false,
+      "choices": [
+        {
+            "name": "Beginner",
+            "value": "1"
+        },
+        {
+            "name": "Professional",
+            "value": "2"
+        }]
+      },
+      {
+      "name": "speedtest_length",
+      "description": "(Speed Test) Select a distance of the Speed Test.",
+      "type": 3,
+      "required": false,
+      "choices": [
+        {
+            "name": "400m",
+            "value": "1"
+        },
+        {
+            "name": "1,000m",
+            "value": "2"
+        },
+        {
+            "name": "10,000m",
+            "value": "3"
+        }
+      ]
+      },
+        {
+      "name": "trackselect",
+      "description": "(Single Race & Drift Trial) Select a track type.",
+      "type": 3,
+      "required": false,
+      "choices": [
+        {
+            "name": "GT Tarmac Course (Random)",
+            "value": "1"
+        },
+          {
+            "name": "GT Dirt Course (Random)",
+            "value": "2"
+        },
+      
+          {
+            "name": "GT Snow Course (Random)",
+            "value": "3"
+        }
+      ]
+      }
+    ]
 },
   "car": {
       "name": "car",
@@ -40,7 +120,12 @@
          {
             "name": "❗ Menu",
             "value": "list"
-        },{
+        },
+        {
+            "name": "C Level",
+            "value": "c"
+        },
+        {
             "name": "B Level",
             "value": "b"
         },
@@ -465,9 +550,9 @@
     "description": "🏁 Opens the GTF Main Menu with a command selection.",
     "options": []
   },
-  "items": {
-    "name": "items",
-    "description": "🏁 Manage & redeem your items and prizes.",
+  "gifts": {
+    "name": "gifts",
+    "description": "🏁 Manage & redeem your gifts and prizes.",
     "options": [{
       "name": "options",
       "description": "Select an option.",
@@ -499,6 +584,50 @@
       "required": false
       }]
 },
+  "license": {
+    "name": "license",
+    "description": "💳 Earn licenses in license tests.",
+    "options": [{
+      "name": "options",
+      "description": "Select an option to choose a league.",
+      "type": 3,
+      "required": true,
+      "choices": [
+         {
+            "name": "❗ Menu",
+            "value": "list"
+        },
+        {
+            "name": "B Licence",
+            "value": "b"
+        },
+        {
+            "name": "A License",
+            "value": "a"
+        },
+      {
+            "name": "IC License",
+            "value": "ic"
+        },
+        {
+            "name": "IB License",
+            "value": "ib"
+        },
+        {
+            "name": "IA License",
+            "value": "ia"
+        },
+        {
+            "name": "S License",
+            "value": "s"
+        }]
+      },{
+      "name": "number",
+      "description": "Pick a number associated with the list in the menu.",
+      "type": 4,
+      "required": false
+      }]
+  },
   "lobby": {
     "name": "lobby",
     "description": "🚘 Race with other people across the world in lobbies.",
@@ -916,7 +1045,7 @@
 },
   "settings": {
     "name": "settings",
-    "description": "🏁 Configure settings for the GT Fitness game.",
+    "description": "🏁 Configure settings for GT Fitness 2: Unleashed game.",
     "options": [{
       "name": "options",
       "description": "Select an option.",
@@ -928,39 +1057,43 @@
             "value": "list"
         },
         {
-            "name": "Accent/Progress Bar Color",
-            "value": "progressbar"
+            "name": "Embed Color",
+            "value": "1"
         },
         {
             "name": "Dealership Sorting Type",
-            "value": "dealersort"
+            "value": "2"
         },
         {
             "name": "Garage Sorting Type",
-            "value": "garagesort"
+            "value": "3"
         },
         {
             "name": "Grid Display Names",
-            "value": "displaygrid"
+            "value": "4"
+        },
+          {
+            "name": "Menu Icons",
+            "value": "5"
         },
           {
             "name": "Menu Selector",
-            "value": "menuselect"
+            "value": "6"
         },
         {
             "name": "Metric Units",
-            "value": "units"
+            "value": "7"
         },
         {
             "name": "Time Zone Setting",
-            "value": "time"
+            "value": "8"
         },
         {
             "name": "Tips Display",
-            "value": "tips"
+            "value": "9"
         },{
             "name": "🔁 Reset To Default Settings",
-            "value": "reset"
+            "value": "10"
         }]
     },
         {
@@ -1000,10 +1133,10 @@
 },
   "tune": {
     "name": "tune",
-    "description": "🏁 Purchase tuning parts and other accessories in your current car.",
+    "description": "🏁 Purchase tuning parts, repair your car, & install other accessories in your current car.",
     "options": [{
       "name": "type",
-      "description": "Select the part type.",
+      "description": "Select an option to tune/repair.",
       "type": 3,
       "required": true,
       "choices": [
@@ -1044,8 +1177,8 @@
             "value": "aero"
         },
         {
-            "name": "Car Wash 💧",
-            "value": "car-wash"
+            "name": "Maintenance",
+            "value": "maintenance"
         }]
       },
       {

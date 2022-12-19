@@ -41,10 +41,9 @@ module.exports = {
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
     
 
-    var results2 = "";
     var select = "";
-    var car = stats.currentcar(userdata);
-    var ocar = require(gtf.CARS).get({ make: [car["make"]], fullname: [car["name"]], year: [car["year"]] })
+    var gtfcar = stats.currentcar(userdata);
+    var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]] })
 
     if (ocar["type"] != "Production" && ocar["type"] != "Aftermarket") {
       if (ocar["type"].includes("Race Car")) {
@@ -61,7 +60,7 @@ module.exports = {
       paint("")
       return
     }
-    stats.loadcarimage(car, embed, userdata, paint)
+    stats.loadcarimage(gtfcar, embed, userdata, paint)
     function paint(attachment) {
     pageargs["image"].push(attachment)
 
@@ -128,7 +127,7 @@ module.exports = {
       pageargs["image"] = []
     var select = select.map(function (x, i) {
       pageargs["image"].push(ocar["image"][i+1])
-      var cond = require(gtf.PAINTS).checkpaintsavail(x, car);
+      var cond = require(gtf.PAINTS).checkpaintsavail(x, gtfcar);
       var name = typeof ocar["livery"][i+1] === 'undefined' ? x["type"] + " " + x["name"] : ocar["livery"][i+1]
       return name + " " + cond;
     });
@@ -136,10 +135,12 @@ module.exports = {
     pageargs["image"].unshift(ocar["image"][0])
     } else {
       if (ocar["type"].includes("Race Car")) {
-        require(gtf.EMBED).alert({ name: "❌ Paint Unavailable", description: "This car cannot be painted.", embed: "", seconds: 3 }, msg, userdata);
+        require(gtf.EMBED).alert({ name: "❌ Paint Unavailable", description: "This car cannot have custom paint chips.", embed: "", seconds: 3 }, msg, userdata);
       }
+      
+      select.unshift({ name: "Default", type: "", cost: 0 });
       var select = select.map(function (x, i) {
-      var cond = require(gtf.PAINTS).checkpaintsavail(x, car);
+      var cond = require(gtf.PAINTS).checkpaintsavail(x, gtfcar);
       var name = x["type"] + " " + x["name"] 
       return "**" + gtftools.numFormat(Math.round(x["cost"])) + "**" + emote.credits + " " + name + " " + cond;
     });
@@ -158,40 +159,30 @@ module.exports = {
     }
 
     var number = query["number"];
-    if (type == "Livery" && number == 1) {
-      number = "S"
-    }
-    if (number == 0) {
-      number = "S"
-    }
     
-    if (number != "S") {
-        if (!gtftools.betweenInt(number, 1, select.length + 1)) {
+
+   if (!gtftools.betweenInt(number, 1, select.length + 1)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
             return
           }
-    }
-    if (number == "S") {
-        var paint = { name: "Default", type: select[0]["type"], cost: 0 };
-      } else {
-      if (type == "Livery") {
-        var paint = select[number - 2];
-      } else {
-        var paint = select[number - 1];
-      }
-    }
-        var cond = require(gtf.PAINTS).checkpaintsavail(paint, car);
+  if (number == 1) {
+    var paint = { name: "Default", type: select[0]["type"], cost: 0 }
+  } else {
+      var paint = select[number - 1];
+  }
+    var cond = require(gtf.PAINTS).checkpaintsavail(paint, gtfcar);
       
         if (cond.includes("❌")) {
-          require(gtf.EMBED).alert({ name: "❌ Paint Unavailable", description: "**" + paint["type"] + " " + paint["name"] + "** is unavailable for **" + car["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
+          require(gtf.EMBED).alert({ name: "❌ Paint Unavailable", description: "**" + paint["type"] + " " + paint["name"] + "** is unavailable for **" + gtfcar["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
           return;
         }
   
         if (cond.includes("✅")) {
-          require(gtf.EMBED).alert({ name: "❌ Same Paint", description: "**" + paint["type"] + " " + paint["name"] + "** is already applied for **" + car["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
+          require(gtf.EMBED).alert({ name: "❌ Same Paint", description: "**" + paint["type"] + " " + paint["name"] + "** is already applied for **" + gtfcar["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
           return;
         }
-      require(gtf.MARKETPLACE).purchase(msg.member, paint, "PAINT", embed, msg, userdata);
+      
+      require(gtf.MARKETPLACE).purchase(paint, "PAINT", "", embed, msg, userdata);
       return;
       }
   }

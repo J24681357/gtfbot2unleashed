@@ -10,7 +10,7 @@ module.exports.delete = function (index, replaydata, userdata) {
 delete replaydata[index]
 replaydata = replaydata.filter(function(val) { return val !== null})
 
-userdata["numreplays"] = replaydata.length
+userdata["stats"]["numreplays"] = replaydata.length
 
  var { MongoClient, ServerApiVersion } = require('mongodb');
 
@@ -39,7 +39,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         dbo.collection("REPLAYS").replaceOne({id: userdata["id"]}, { id: userdata["id"] , replays:[]});
       });
   });
-  userdata["numreplays"] = 0
+  userdata["stats"]["numreplays"] = 0
 };
 
 module.exports.remove = function (userdata) {
@@ -52,7 +52,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
     var dbo = db.db("GTFitness");
     dbo.collection("REPLAYS").deleteOne({ id: userdata["id"]});
   });
-  userdata["numreplays"] = 0
+  userdata["stats"]["numreplays"] = 0
 };
 
 
@@ -87,6 +87,6 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
   function add() {
     replay["date"] = stats.lastonline(userdata)
     replaydata["replays"].push(replay)
-    userdata["numreplays"] = Object.keys(replaydata["replays"]).length
+    userdata["stats"]["numreplays"] = Object.keys(replaydata["replays"]).length
   }
 };

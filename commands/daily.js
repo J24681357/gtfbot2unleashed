@@ -39,40 +39,42 @@ module.exports = {
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
 
     embed.setTitle("__GTF Daily Workout - Prize__");
-
     var prizes = [];
 
-    if (userdata["dailyworkout"]) {
-      require(gtf.EMBED).alert({ name: "❌ Invalid", description: "You have already earned your daily workout for the day.", embed: "", seconds: 3 }, msg, userdata);
+    if (stats.dailyworkout(userdata)["done"]) {
+      require(gtf.EMBED).alert({ name: "❌ Invalid", description: "You have already earned your daily workout for the day.", embed: "", seconds: 5 }, msg, userdata);
       return;
     }
 
     if (require(gtf.EMBED).checkgarageerror(embed, msg, userdata)) {
       return;
     }
-
-    if (parseFloat(stats.mileage("KM", false, userdata)) < 42.1 && parseFloat(stats.mileage("MI", false, userdata)) < 26.2) {
+/*
+    if (parseFloat(stats.mileage(userdata)[0]) < 42.1 && parseFloat(stats.mileage(userdata)[1]) < 26.2) {
       var mile = ["42.1 km", "26.2 mi"]
-      var m = "**Mileage: " + userdata["mileage"][userdata["settings"]["MILEAGE"]] + [" km", " mi"][userdata["settings"]["MILEAGE"]] + emote.mileage + " -> " + mile[userdata["settings"]["MILEAGE"]] + emote.mileage + "**"
-      require(gtf.EMBED).alert({ name: "❌ Insufficient Mileage", description: "You are unable to earn your daily workout car because you have not drove " + mile[userdata["settings"]["MILEAGE"]] + "." + "\n" + m, embed: "", seconds: 0 }, msg, userdata);
+      var m = "**Mileage: " + userdata["mileage"][userdata["settings"]["UNITS"]] + [" km", " mi"][userdata["settings"]["UNITS"]] + emote.mileage + " -> " + mile[userdata["settings"]["UNITS"]] + emote.mileage + "**"
+      require(gtf.EMBED).alert({ name: "❌ Insufficient Mileage", description: "You are unable to earn your daily workout car because you have not drove " + mile[userdata["settings"]["UNITS"]] + "." + "\n" + m, embed: "", seconds: 0 }, msg, userdata);
       return;
     }
+    */
 
-    userdata["dailyworkout"] = true;
+    stats.setdailyworkout(true, userdata)
 
-    results = "🎉 __** Daily Workout Prize **__ 🎉";
+    results = "🎉 " + "__** Daily Workout - " + stats.lastonline(userdata) + "**__" + " 🎉";
     var car = require(gtf.CARS).random({lowerfpp:500}, 1)[0];
-    prizes.push(["CAR", {
-      id: -1, name: car["name"] + " " + car["year"], item: car, author: "DAILY WORKOUT", isgift: false }]);
+    prizes.push({
+      id: -1, type:"CAR", name: car["name"] + " " + car["year"], item: car, author: "DAILY WORKOUT", inventory: false });
+    
     var car2 = require(gtf.CARS).random({upperfpp:500, types:["Production"]}, 1)[0];
-      prizes.push(["CAR", {
-      id: -1, name: car2["name"] + " " + car2["year"], item: car2, author: "DAILY WORKOUT", isgift: false }]);
+      prizes.push( {
+      id: -1, type:"CAR", name: car2["name"] + " " + car2["year"], item: car2, author: "DAILY WORKOUT", inventory: false });
     var credits = 1000 * gtftools.randomInt(5, 10)
     var credits2 = 1000 * gtftools.randomInt(15, 50)
-    prizes.push(["CREDITS", {
-      id: -1, name: gtftools.numFormat(credits) + emote.credits, item: credits, author: "DAILY WORKOUT", isgift: false }]);
-    prizes.push(["CREDITS", {
-      id: -1, name: gtftools.numFormat(credits2) + emote.credits, item: credits2, author: "DAILY WORKOUT", isgift: false }]);
+    
+    prizes.push({
+      id: -1, type: "CREDITS", name: gtftools.numFormat(credits) + emote.credits, item: credits, author: "DAILY WORKOUT", inventory: false });
+    prizes.push({
+      id: -1, type: "CREDITS", name: gtftools.numFormat(credits2) + emote.credits, item: credits2, author: "DAILY WORKOUT", inventory: false });
     prizes = gtftools.shuffle(prizes)
 
     require(gtf.MARKETPLACE).fourgifts("GTF Daily Workout", results, prizes, embed, msg, userdata);

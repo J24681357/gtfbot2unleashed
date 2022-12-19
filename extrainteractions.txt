@@ -1,5 +1,13 @@
 npm init -y && npm i --save-dev node@17 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH && rm -rf ./node_modules
 
+
+B lv1 98
+A lv5 90
+IC lv10 80
+IB lv15 70
+A lv20 60
+S lv30 40
+
 curl -I https://discordapp.com/api/v7/gateway
 
 client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({

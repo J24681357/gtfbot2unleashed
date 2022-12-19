@@ -12,7 +12,7 @@ module.exports = {
   name: "tune",
   title: "GTF Auto - Tuning Shop",
   cooldown: 3,
-  level: 0,
+  level: 4,
   channels: ["testing", "gtf-mode", "gtf-test-mode"],
 
   delete: false,
@@ -40,17 +40,17 @@ module.exports = {
       other: "",
     }, msg, userdata)
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
-  
+  console.log(query)
     var results2 = "";
     var select = "";
-    var car = stats.currentcar(userdata);
-    var ocar = require(gtf.CARS).get({ make: [car["make"]], fullname: [car["name"]], year: [car["year"]] });
+    var gtfcar = stats.currentcar(userdata);
+    var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]]});
 
     if (typeof query["number"] !== 'undefined') {
       tune("")
       return
     }
-    stats.loadcarimage(car, embed, userdata, tune)
+    stats.loadcarimage(gtfcar, embed, userdata, tune)
 
     function tune(attachment) {
     pageargs["image"].push(attachment)
@@ -84,33 +84,95 @@ module.exports = {
       
       var type = "turbo";
     }
+      
     if (query["type"] == "brakes" || query["type"] == "brake" || query["type"] == "br" || parseInt(query["type"]) == 7) {
       
       var type = "brakes";
     }
 
     if (query["type"] == "aero-kits" || query["type"] == "aero-kit" || query["type"] == "aero" || parseInt(query["type"]) == 8) {
-      
       var type = "aero-kits";
     }
 
-    if (query["type"] == "car-wash" || query["type"] == "wash" || parseInt(query["type"]) == 9) {
-      
-      var type = "car-wash";
+    if (query["type"] == "maintenance" || parseInt(query["type"]) == 9) {
+      var type = "maintenance"
     }
 
-    if (query["type"] == "oil-change" || query["type"] == "oil" || parseInt(query["type"]) == 10) {
-      var type = "oil-change";
+    if (type == "maintenance") {
+      embed.setTitle("🔧 __GTF Auto - Maintenance Service__");
+      var partscount = {"Car Wash":0, "Oil Change":0, "Engine Repair": 0, "Transmission Repair": 0, "Suspension Repair": 0, "Body Damage Repair": 0}
+      var keys = Object.keys(partscount)
+      var costs = []
+      for (var x = 0; x < keys.length; x++) {
+        var type = keys[x]
+        var part = require(gtf.PARTS).find({ type: type })[0];
+        costs.push(require(gtf.PARTS).costcalc(part, gtfcar, ocar))
+      }
+      
+      if (typeof query["number"] === 'undefined') {
+      var list = ["**" + gtftools.numFormat(costs[0]) + emote.credits + "** " + "__**Car Wash**__ " + "`💧" + gtfcar["condition"]["clean"] + "%`",
+        "**" + gtftools.numFormat(costs[1]) + emote.credits + "** " + "__**Oil Change**__ " + "`" + gtfcar["condition"]["oil"] + "%`",
+        "**" + gtftools.numFormat(costs[2]) + emote.credits + "** " + "__**Engine Repair**__ " + "`" + gtfcar["condition"]["engine"] + "%`" ,
+        "**" + gtftools.numFormat(costs[3]) + emote.credits + "** " + "__**Transmission Repair**__ " + "`" + gtfcar["condition"]["transmission"] + "%`",
+        "**" + gtftools.numFormat(costs[4]) + emote.credits + "** " + "__**Suspension Repair**__ " + "`" + gtfcar["condition"]["suspension"] + "%`", 
+        "**" + gtftools.numFormat(costs[5]) + emote.credits + "** " + "__**Body Damage Repair**__ " + "`" + gtfcar["condition"]["body"] + "%`" + "/n", 
+        "**" + gtftools.numFormat(require(gtf.MATH).sum(costs)) + emote.credits + "** " + "__**Apply All**__"]
+      pageargs["list"] = list;
+      if (userdata["settings"]["TIPS"] == 0) {
+      pageargs["footer"] = "❓ **Test**"
+      }
+        
+      if (typeof query["extra"] !== "undefined") {
+        pageargs["footer"] = "✅ " + query["extra"]
+        delete query["extra"]
+      }
+      stats.addcount(userdata);
+      pageargs["text"] = gtftools.formpage(pageargs, userdata);
+      pageargs["selector"] = "number"
+      pageargs["query"] = query
+      gtftools.formpages(pageargs, embed, msg, userdata);
+      return;
     }
-/*
-    if (userdata["id"] == "237450759233339393") {
-      query["type"] = "oil-change";
+      var number = parseInt(query["number"])
+      var cost = costs[number-1]
+      
+      if (parseInt(query["number"]) == 1) {
+        require(gtf.CONDITION).updatecondition(100, "clean", userdata)
+        var successmessage = "Car Wash completed! " + "**-" + cost + emote.credits + "**"
+      }
+      if (parseInt(query["number"]) == 2) {
+          require(gtf.CONDITION).updatecondition(100, "oil", userdata)
+        var successmessage = "Oil Change completed! " + "**-" + cost + emote.credits + "**"
+      }
+      if (parseInt(query["number"]) == 3) {
+          require(gtf.CONDITION).updatecondition(100, "engine", userdata)
+        var successmessage = "Engine Repair completed! " + "**-" + cost + emote.credits + "**"
+      }
+      if (parseInt(query["number"]) == 4) {
+          require(gtf.CONDITION).updatecondition(100, "transmission", userdata)
+        var successmessage = "Transmission Repair completed! " + "**-" + cost + emote.credits + "**"
+      }      
+      if (parseInt(query["number"]) == 5) {
+          require(gtf.CONDITION).updatecondition(100, "suspension", userdata)
+        var successmessage = "Suspension Repair completed! " + "**-" + cost + emote.credits + "**"
+      }
+      if (parseInt(query["number"]) == 6) {
+          require(gtf.CONDITION).updatecondition(100, "body", userdata)
+        var successmessage = "Body Damage Repair completed! " + "**-" + cost + emote.credits + "**"
+      }
+      if (parseInt(query["number"]) == 7) {
+          require(gtf.CONDITION).updatecondition(100, "all", userdata)
+        cost = require(gtf.MATH).sum(costs)
+        var successmessage = "Car Repair completed! " + "**-" + cost + emote.credits + "**"
+      }
+      stats.addcredits(-cost, userdata);
+      require(dir + "commands/tune").execute(msg, {type:"maintenance", extra:successmessage}, userdata);
+      return
     }
-    */
     
     if (query["type"] == "list") {
       delete query["number"]
-      embed.setTitle("🔧 __GTF Auto - Tuning Shop__");
+      embed.setTitle(emote.gtauto + " __GTF Auto - Tuning Shop__");
       var partscount = {"Engine":0, "Transmission":0, "Suspension":0, "Tires":0, "Weight Reduction":0, "Turbo":0, 
                         "Brakes": 0, "Aero Kits":0}
       var keys = Object.keys(partscount)
@@ -119,7 +181,7 @@ module.exports = {
         var select = require(gtf.PARTS).find({ type: type });
         for (var y = 0; y < select.length; y++) {
          var part = select[y]
-          var cond = require(gtf.PARTS).checkpartsavail(part, car);
+          var cond = require(gtf.PARTS).checkpartsavail(part, gtfcar);
           if (cond[0] != "❌") {
             partscount[type]++
           }
@@ -139,16 +201,15 @@ module.exports = {
         "__**Turbo Kits**__ " + "`🔧" + partscount['Turbo'] + "`" + "\n" +
         "__**Brakes**__ " + "`🔧" + partscount['Brakes'] + "`" + "\n" +
         "__**Aero Kits**__ " + "`🔧" + partscount['Aero Kits'] + "`" + "\n" +
-        "__**Car Wash**__ " + "`💧`"
+        "__**Maintenance**__ "
       var list = results.split("\n")
-      pageargs["rows"] = 8;
       pageargs["list"] = list;
       if (userdata["settings"]["TIPS"] == 0) {
       pageargs["footer"] = "❓ **Select a part type corresponding with the name (or number) of the part type above. Each part type has performance parts from the number associated of each list for your current car.\nWhen you purchase a part, the current part on your current car will be sold and replaced, and will be added to the current car's inventory.**"
       }
       if (typeof query["extra"] !== "undefined") {
         pageargs["footer"] = "✅ " + query["extra"]
-        query["extra"] = ""
+        delete query["extra"]
       }
       stats.addcount(userdata);
       pageargs["text"] = gtftools.formpage(pageargs, userdata);
@@ -157,44 +218,39 @@ module.exports = {
       gtftools.formpages(pageargs, embed, msg, userdata);
       return;
     }
-    
-    var select = require(gtf.PARTS).find({ type: type });
 
-    if (select[0]["type"] == "Car Wash") {
-      var part = select[0]
-      require(gtf.MARKETPLACE).purchase(msg.member, part, "PART", embed, msg, userdata)
-      return
-    }
+    var select = require(gtf.PARTS).find({ type: type });
 
     if (select.length != 0 && query["number"] === undefined) {
     delete query["number"]
     
-    var name = select[0]["type"];
-    embed.setTitle("🔧 __GTF Auto - " + name + " (" + select.length + " Items)" + "__");
+    var nametype = select[0]["type"];
+    embed.setTitle(emote.gtauto + " __GTF Auto - " + nametype + " (" + select.length + " Items)" + "__");
     select = select.map(function (x) {
-      var cond = require(gtf.PARTS).checkpartsavail(x, car);
+      x["cost"] = require(gtf.PARTS).costcalc(x, gtfcar, ocar)
+      var cond = require(gtf.PARTS).checkpartsavail(x, gtfcar);
       if (cond[0].includes("❌")) {
       return cond[0] + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp;
       } else if (cond[0].includes("📦")) {
         return cond[0] + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp;
       } else {
-      if (type == "tires") {
-        var discount = 1
-      } else {
-      var discount = require(gtf.PERF).perf(ocar, "DEALERSHIP")["fpp"]/500
-      if (discount > 1) {
-        discount = discount ** 2
-      }
-      }
       if (cond[0].includes("✅")) {
       return cond[0] + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp;
       } else {
-         return "**" + gtftools.numFormat(Math.round(x["cost"] * discount / 100)*100 ) + "**" + emote.credits + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp + cond[0];
+         return "**" + gtftools.numFormat(x["cost"]) + "**" + emote.credits + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp + cond[0];
       }
       }
     })
     if (type != "tires") {
-    select.unshift("Default")
+     
+      
+      var defaultpartavail = require(gtf.PARTS).checkpartsavail({ type: nametype, name: "Default", cost: 0, percent: 0,
+      engine: [],
+      eligible: [],
+      prohibited: [],
+      fpplimit: 9999,
+      lowerweight: 0}, gtfcar);
+    select.unshift("Default " + defaultpartavail[1] + emote.fpp + " " + defaultpartavail[0]);
     }
     if (userdata["settings"]["TIPS"] == 0) {
     pageargs["footer"] = "❓ **Select an upgrade corresponding with the numbers above with the buttons.**";
@@ -206,46 +262,37 @@ module.exports = {
     gtftools.formpages(pageargs, embed, msg, userdata);
     return;
     }
+
     
     var number = query["number"]
+    var nametype = select[0]["type"];
     if (type != "tires") {
-      if (number == "Default" || number == 1) {
-        number = "S";
-      }
+      select.unshift({ type: nametype, name: "Default", cost: 0,percent: 0,
+      engine: [],
+      eligible: [],
+      prohibited: [],
+      fpplimit: 9999,
+      lowerweight: 0})
     }
-      if (number != "S") {
-        if (!gtftools.betweenInt(number, 1, select.length+1)) {
+    
+    if (!gtftools.betweenInt(number, 1, select.length)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
             return
-       }
-       if (type == "tires") {
-       if (!gtftools.betweenInt(number, 1, select.length)) {
-            require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
-            return
-       }
-       }
-      }
+    }
+    
+      var part = select[number-1]
 
+    var cond = require(gtf.PARTS).checkpartsavail(part, gtfcar);
+        if (cond[0] == "❌") {
+          require(gtf.EMBED).alert({ name: "❌ Part Unavailable", description: "**" + part["type"] + " " + part["name"] + "** is unavailable for **" + gtfcar["name"] + "**.", embed: "", seconds: 3 }, msg, userdata);
+          return;
+        }
+        if (cond[0] == "✅") {
+          require(gtf.EMBED).alert({ name: "❌ Part Already Installed", description: "**" + part["type"] + " " + part["name"] + "** is already installed for **" + gtfcar["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
+          return;
+        }
       
-      if (number == "S") {
-        var part = { name: "Default", type: select[0]["type"], cost: 0 };
-      } else {
-        if (type == "tires") {
-          var part = select[number - 1];
-        } else {
-        var part = select[number - 2];
-        }
-        var cond = require(gtf.PARTS).checkpartsavail(part, car);
-        if (cond[0].includes("❌")) {
-          require(gtf.EMBED).alert({ name: "❌ Part Unavailable", description: "**" + part["type"] + " " + part["name"] + "** is unavailable for **" + car["name"] + "**.", embed: "", seconds: 3 }, msg, userdata);
-          return;
-        }
-        if (cond[0].includes("✅")) {
-          require(gtf.EMBED).alert({ name: "❌ Part Already Installed", description: "**" + part["type"] + " " + part["name"] + "** is already installed for **" + car["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
-          return;
-        }
-      }
-      require(gtf.MARKETPLACE).purchase(msg.member, part, "PART", embed, msg, userdata);
+      require(gtf.MARKETPLACE).purchase(part, "PART","", embed, msg, userdata);
       return;
   }
   }

@@ -23,44 +23,55 @@ module.exports.commandlist = [['career', "Career Mode", "🏁"],
 ['seasonal', "Seasonal Events | Lv.13", "🎉"], 
 ['customrace', "Custom Race | Lv.35", "♾"], 
 ['car', "GTF Car Dealerships", "🏢"],
-['tune', "GTF Auto: Tuning Shop", "🔧"],
+['tune', "GTF Auto: Tuning & Maintenance", "🔧"],
 ['paint', "GTF Auto: Paints", "🎨"],
 ['wheels', "GTF Auto: Wheels", "🛞"],
 ['setup', "Car Setups", "🛠"], 
-['garage', "My Garage", "🚘"], 
-["profile", "My Profile", "👤"],
-["items", "My Items", "🎁"],
+['garage', "Garage", "🚘"], 
+["profile", "Profile", "👤"],
+["gifts", "Items", "🎁"],
 ["daily", "Daily Workout | Lv.4", "🎽"],
 ["course", "Course Maker | Lv.11", "🛣"],
 ["replay", "Replay Theater", "🎞"],
-['database', "GTF Database", "🗃"],
+["database", "GTF Database", "🗃"],
 ["settings", "Settings", "⚙"],
-['manual', "Manual", "📝"]]
+["manual", "Manual", "📝"]]
 module.exports.defaultsettings = {
+            MODE: "Simulation",
             GARAGESORT: "Oldest Added",
             DEALERSORT: "Lowest Price",
-            "RACE DM": 0,
-            MILEAGE: 0,
-            "TIME OFFSET": 0,
+            RACEDM: 0,
+            UNITS: 0,
+            TIMEOFFSET: 0,
             TIPS: 0,
-            PROGRESSBAR: ["⬜", "⬛", "#0151b0"],
-            COMPACTMODE: "Off",
+            ICONS: {"select": "⬜", "bar": ["⬜", "⬛"]},
+            COLOR: "#0151b0",
+            COMPACTMODE: 0,
             HOMELAYOUT: 0,
             MENUSELECT: 0,
             GRIDNAME: 0
-      }
+}
+module.exports.invitationlist = ["Ferrari", "Lamborghini"]
+
+module.exports.defaultuserdata = function(id) {
+  return { id: id, 
+          settings: require(gtf.GTF).defaultsettings 
+         }
+}
 ////////////////////////////
 
 
-module.exports.checkregulations = function (gtfcar, regulations, func, special, msg, embed, userdata) {
+module.exports.checkregulations = function (gtfcar, regulations, func, embed, msg, userdata) {
+  var car = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]]});
 
-  var car = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]], year: [gtfcar["year"]] });
-  var gtfcartune = require(gtf.PERF).perf(gtfcar, "GARAGE")
+  
+  var perf = require(gtf.PERF).perf(gtfcar, "GARAGE")
 
   var fpplimit = regulations["fpplimit"];
   var powerlimit = regulations["upperpower"];
   var weightlimit = regulations["upperweight"];
-
+  var yearlimit = regulations["upperyear"];
+  
   var makes = regulations["makes"];
   var models = regulations["models"];
   var types = regulations["types"];
@@ -72,38 +83,22 @@ module.exports.checkregulations = function (gtfcar, regulations, func, special, 
 
   var favorite = regulations["favorite"]
 
-  if (typeof makes === 'undefined') {
-    makes = []
-  }
-    if (typeof models === 'undefined') {
-    models = []
-  }
-    if (typeof types === 'undefined') {
-    types = []
-  }
-if (typeof countries === 'undefined') {
-    countries = []
-  }
-    if (typeof drivetrains === 'undefined') {
-    drivetrains = []
-  }
-  if (typeof engines === 'undefined') {
-    engines = []
-  }
-    if (typeof specials === 'undefined') {
-    specials = []
-  }
-  if (typeof prohibiteds === 'undefined') {
-    prohibiteds = []
-  }
+  if (typeof makes === 'undefined') makes = []
+  if (typeof models === 'undefined') models = []
+  if (typeof types === 'undefined') types = []
+  if (typeof countries === 'undefined') countries = []
+  if (typeof drivetrains === 'undefined') drivetrains = []
+  if (typeof engines === 'undefined') engines = []
+  if (typeof specials === 'undefined') specials = []
+  if (typeof prohibiteds === 'undefined') prohibiteds = []
 
-  if (typeof favorite === 'undefined') {
-    favorite = false
-  }
+  if (typeof favorite === 'undefined') favorite = false
   
   var fppexist = fpplimit != "";
   var powerexist = powerlimit != "";
   var weightexist = weightlimit != "";
+  var yearexist = yearlimit != "";
+  
   var makeexist = makes.length > 0;
   var modelexist = models.length > 0;
   var typeexist = types.length > 0;
@@ -112,9 +107,10 @@ if (typeof countries === 'undefined') {
   var engineexist = engines.length > 0;
   var specialexist = specials.length > 0;
   var prohibitexist = prohibiteds.length > 0;
+  
   var favoriteexist = favorite
 
-  var errors1 = [];
+  var errors = [];
 
   var fppsuccess = false;
   if (fppexist) {
@@ -122,35 +118,42 @@ if (typeof countries === 'undefined') {
     if (fpp <= fpplimit) {
       fppsuccess = true;
     }
+    if (!fppsuccess) {
+    errors.push("**FPP Limit:** " + "**" + fpp + "**" + emote.fpp + " -> " + "**" + fpplimit + "**" + emote.fpp);
   }
-
-  if (!fppsuccess) {
-    errors1.push("**FPP Limit:** " + "**" + fpp + "**" + emote.fpp + " -> " + "**" + fpplimit + "**" + emote.fpp);
   }
 
   var powersuccess = false;
   if (powerexist) {
-    var power = gtfcartune["power"];
+    var power = perf["power"];
     if (power <= powerlimit) {
       powersuccess = true;
     }
+    if (!powersuccess) {
+    errors.push("**Power Limit:** " + "**" + power + " HP**"+ " -> " + "**" + powerlimit + " HP**");
   }
-
-  if (!powersuccess) {
-    errors1.push("**Power Limit:** " + "**" + power + " HP**"+ " -> " + "**" + powerlimit + " HP**");
   }
-
  
   var weightsuccess = false;
   if (weightexist) {
-    var weight = gtfcartune["weight"];
+    var weight = perf["weight"];
     if (weight <= weightlimit) {
       weightsuccess = true;
     }
+    if (!weightsuccess) {
+    errors.push("**Weight Limit:** " + "**" + weight + " Ibs**"+ " -> " + "**" + weightlimit + " Ibs**");
+  }
   }
 
-  if (!weightsuccess) {
-    errors1.push("**Weight Limit:** " + "**" + weight + " Ibs**"+ " -> " + "**" + weightlimit + " Ibs**");
+  var yearsuccess = false;
+  if (yearexist) {
+    var year = car["year"];
+    if (year <= yearlimit) {
+      yearsuccess = true;
+    }
+    if (!yearsuccess) {
+    errors.push("**Model Year:** " + "**" + year + "**"+ " -> " + "**" + yearlimit + "**");
+  }
   }
 
   var makesuccess = false;
@@ -164,7 +167,7 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!makesuccess) {
-      errors1.push("**Makes:** " + car["make"] + " -> " + gtftools.removeDups(makes).join(", "));
+      errors.push("**Makes:** " + car["make"] + " -> " + gtftools.removeDups(makes).join(", "));
     }
   }
 
@@ -179,7 +182,7 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!modelsuccess) {
-      errors1.push("**Model:** " + car["name"] + " -> " + models.join(", "));
+      errors.push("**Model:** " + car["name"] + " -> " + models.join(", "));
     }
   }
 
@@ -194,7 +197,7 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!typesuccess) {
-      errors1.push("**Type:** " + car["type"] + " -> " + types.join(", "));
+      errors.push("**Type:** " + car["type"] + " -> " + types.join(", "));
     }
   }
 
@@ -209,11 +212,9 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!countrysuccess) {
-      errors1.push("**Country:** " + car["country"] + " -> " + countries.join(", "));
+      errors.push("**Country:** " + car["country"] + " -> " + countries.join(", "));
     }
   }
-
-
 
   var enginesuccess = false;
   if (engineexist) {
@@ -226,7 +227,7 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!enginesuccess) {
-      errors1.push("**Engine Aspiration:** " + car["engine"] + " -> " + engines.join(", "));
+      errors.push("**Engine Aspiration:** " + car["engine"] + " -> " + engines.join(", "));
     }
   }
  
@@ -241,7 +242,7 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!dtsuccess) {
-      errors1.push("**Drivetrain:** " + car["drivetrain"] + " -> " + drivetrains.join(", "));
+      errors.push("**Drivetrain:** " + car["drivetrain"] + " -> " + drivetrains.join(", "));
     }
   }
   
@@ -256,7 +257,7 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!specialsuccess) {
-      errors1.push("**Special:** " + specials.join(", "));
+      errors.push("**Special:** " + specials.join(", "));
     }
   }
   
@@ -271,36 +272,43 @@ if (typeof countries === 'undefined') {
       index++;
     }
     if (!prohibitsuccess) {
-      errors1.push("**Prohibited:** " + prohibiteds.join(", "));
+      errors.push("**Prohibited:** " + prohibiteds.join(", "));
     }
   }
 
-   
+  
   var favoritesuccess = false;
   if (favoriteexist) {
       if (gtfcar["favorite"]) {
         favoritesuccess = true;
     }
     if (!favoritesuccess) {
-      errors1.push("**Favorite:** False");
+      errors.push("**Favorite:** False");
     }
   }
 
-  if (special == "silent") {
-  if (errors1.length == 0) {
+  var conditionsuccess = false;
+  if (require(gtf.CONDITION).condition(gtfcar)["health"] <= 5) {
+        errors.push(emote.cardead + " The car condition is **Wreaked** and must be repaired at GTF Auto.");
+  }
+
+  if (typeof func == "string") {
+  if (errors.length == 0) {
     return [true, ""]
   } else {
-    return [false, errors1]
+    return [false, errors]
 }
 }
-  if (errors1.length == 0) {
+  
+  if (errors.length == 0) {
     func()
     return true
   } else {
-
+    
   var garagepage = 0;
   var hundredpage = 0
-  var totallength = userdata["garage"].length
+    
+  var totallength = stats.garage(userdata).length
   var gmenulist = []
   var gmenulistselect = []
   var gemojilist = [];
@@ -319,13 +327,13 @@ if (typeof countries === 'undefined') {
 if (gmenulist.length == 0) {
   embed.setColor(0x460000)
 embed.setTitle("❌ Regulations Breached")
-embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for **" + regulations["title"] + "**." + "\n\n" + errors1.join("\n") + "\n\n" + "**❗ None of your garage cars are eligible.**")
+embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the tire regulations for this event." + "\n\n" + errors.join("\n") + "\n\n" + "**❗ None of your garage cars are eligible.**")
 require(gtf.DISCORD).send(msg, {embeds:[embed]})
 return
 }     
 embed.setColor(0x460000)
 embed.setTitle("❌ Regulations Breached")
-embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for **" + regulations["title"] + "**." + "\n\n" + errors1.join("\n") + "\n\n" + "**❗ See the menu below for eligible cars in your garage.**")
+embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for this event." + "\n\n" + errors.join("\n") + "\n\n" + "**❗ See the menu below for eligible cars in your garage.**")
 
  require(gtf.DISCORD).send(msg, { embeds:[embed], components: [menu]}, garagefunc)
  
@@ -350,136 +358,62 @@ name = name.split(" ").map(function(x, index) {
 return name.join("")
 }
 
-module.exports.checktireregulations = function (gtfcar, regulations, func, special, msg, embed, userdata) {
-  var car = require(gtf.CARS).find({ make: [gtfcar["make"]], fullname: [gtfcar["name"]], year: [gtfcar["year"]] })[0];
-  if (typeof regulations["type"] == "undefined") {
-    regulations["type"] = regulations["tires"]
-  }
-  if (regulations["type"].includes("Asphalt")) {
-    regulations["tires"] = "Racing"
-  }
+module.exports.checktireregulations = function (gtfcar, regulations, func, embed, msg, userdata) {
   
-  if (regulations["type"].includes("Dirt")) {
-    regulations["tires"] = "RD"
-  }
-  if (regulations["type"].includes("Snow")) {
-    regulations["tires"] = "RS"
-  }
-  
-  if (regulations["tires"] == "SH" || regulations["tires"] == "SM" || regulations["tires"] == "SS") {
-    regulations["tires"] = "Sports"
-  }
-  if (regulations["tires"] == "CH" || regulations["tires"] == "CM" || regulations["tires"] == "CS") {
-    regulations["tires"] = "Comfort"
-  }
-
   var tires = regulations["tires"]
-  var tireexist = tires.length > 0;
+  if (tires == "") {
+    tires = "Racing: Soft"
+  }
 
-  var errors1 = [];
+  var tireranking = {
+    "Comfort: Hard": 1,
+    "Comfort: Medium": 2,
+    "Comfort: Soft": 3,
+    "Sports: Hard": 4,
+    "Sports: Medium": 5,
+    "Sports: Soft": 6,
+    "Racing: Hard": 7,
+    "Racing: Intermediate": 7,
+    "Racing: Heavy Wet": 7,
+    "Racing: Medium": 8,
+    "Racing: Soft": 9,
+    "Rally: Snow": 10,
+    "Rally: Dirt": 11
+  }
+  
+ var uppertire = tireranking[tires]
+  
+var errors = [];
 
   var tiresuccess = false
-  if (tireexist) {
-    if (tires == "RD") {
-      if (gtfcar["tires"]["current"].includes("Dirt")) {
-        tiresuccess = true
-      } else {
-        tiresuccess = false
-      }
-    } else if (tires == "RS") {
-      if (gtfcar["tires"]["current"].includes("Snow")) {
-        tiresuccess = true
-      } else {
-        tiresuccess = false
-      }
-    } else if (tires == "Comfort") {
-      if (gtfcar["tires"]["current"].includes("Comfort")) {
-        tiresuccess = true
-      } else {
-        tiresuccess = false
-      }
-    } else if (tires == "Sports") {
-      if (gtfcar["tires"]["current"].includes("Sports") || gtfcar["tires"]["current"].includes("Comfort")) {
-        tiresuccess = true
-      } else {
-        tiresuccess = false
-      }
-    } else if (tires == "Racing") {
-      if (gtfcar["tires"]["current"].includes("Sports") || gtfcar["tires"]["current"].includes("Comfort") || gtfcar["tires"]["current"].includes("Racing")) {
-        tiresuccess = true
-      } else {
-        tiresuccess = false
-      }
+  if (tires == "Rally: Dirt") {
+        tiresuccess = gtfcar["perf"]["tires"]["current"].includes("Dirt")
+    } else if (tires == "Rally: Snow") {
+        tiresuccess = gtfcar["perf"]["tires"]["current"].includes("Snow")
     } else {
-      if (gtfcar["tires"]["current"].includes("Dirt") || gtfcar["tires"]["current"].includes("Snow")) {
-        tiresuccess = false
-      } else {
-        tiresuccess = true
-      }
+      tiresuccess = tireranking[gtfcar["perf"]["tires"]["current"]] <= uppertire
     }
     if (!tiresuccess) {
-      errors1.push("**Maximum Tire Grade:** " + gtfcar["tires"]["current"] + " -> " + tires.replace("RD", "Rally: Dirt").replace("RS", "Rally: Snow") );
+      errors.push("**Maximum Tire Grade:** " + gtfcar["perf"]["tires"]["current"] + " -> " + tires);
     }
-  }
 
-if (special == "silent") {
-  if (errors1.length == 0) {
+if (typeof func === 'string') {
+  if (errors.length == 0) {
     return [true, ""]
   } else {
-    return [false, errors1]
+    return [false, errors]
 }
 }
-  if (errors1.length == 0) {
+  if (errors.length == 0) {
     func()
     return true
   } else {
-  var tireslist = gtfcar["tires"]["list"].filter(function(tire){
-  if (regulations["tires"].includes("Comfort")) {
-    if (tire.includes("Comfort")) {
-        return true
-      } else {
-        return false
-    }
-  }
-
-  if (regulations["tires"].includes("Sports")) {
-    if (tire.includes("Sports") || tire.includes("Comfort")) {
-        return true
-      } else {
-        return false
-    }
-  }
-
-  if (regulations["tires"].includes("Racing")) {
-    if (tire.includes("Sports") || tire.includes("Comfort") || tire.includes("Racing")) {
-        return true
-      } else {
-        return false
-    }
-  }
-
-  if (regulations["type"].includes("Tarmac")) {
-    if (tire.includes("Rally")) {
-      return false
-    } else {
-      return true
-    }
-  }
-  if (regulations["type"].includes("Dirt")) {
-    if (tire.includes("Dirt")) {
-      return true
-    } else {
-      return false
-    }
-  }
-  if (regulations["type"].includes("Snow")) {
-    if (tire.includes("Snow")) {
-      return true
-    } else {
-      return false
-    }
-  }
-    return true
+  var tireslist = gtfcar["perf"]["tires"]["list"].filter(function(tire) {
+    return require(gtf.GTF).checktireregulations({
+      perf: {
+      tires: {current: tire}
+      }
+    }, regulations, "", embed, msg, userdata)[0]
   }).sort()
   var tmenulist = tireslist.map(function (tire, index) {
           return {
@@ -490,18 +424,18 @@ if (special == "silent") {
             }
   })
   var temojilist = []
-var menu = gtftools.preparemenu("Change Tires " + "(" + gtfcar["tires"]["current"] + ")" , tmenulist, temojilist, msg, userdata);
+var menu = gtftools.preparemenu("Change Tires " + "(" + gtfcar["perf"]["tires"]["current"] + ")" , tmenulist, temojilist, msg, userdata);
 
 if (tmenulist.length == 0) {
   embed.setColor(0x460000)
 embed.setTitle("❌ Tires Prohibited")
-embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for this event." + "\n\n" + errors1.join("\n") + "\n\n" + "**❗ None of your tires are eligible.**")
+embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for this event." + "\n\n" + errors.join("\n") + "\n\n" + "**❗ None of your tires are eligible.**")
 require(gtf.DISCORD).send(msg, {embeds:[embed]})
 return
 }
 embed.setColor(0x460000)
 embed.setTitle("❌ Tires Prohibited")
-embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for this event." + "\n\n" + errors1.join("\n") + "\n\n" + "**❗ See the menu below to change tires.**")
+embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for this event." + "\n\n" + errors.join("\n") + "\n\n" + "**❗ See the menu below to change tires.**")
 
 require(gtf.DISCORD).send(msg, {embeds:[embed], components: [menu]}, regfunc)
 
@@ -509,7 +443,7 @@ function regfunc(msg) {
     var functionlist = []
        for (var j = 0; j < tmenulist.length; j++) {
       functionlist.push(function(int) {
-        gtfcar["tires"]["current"] = tireslist[int]
+        gtfcar["perf"]["tires"]["current"] = tireslist[int]
         func() 
         setTimeout(() => msg.delete(),2000);
       })
@@ -540,7 +474,7 @@ module.exports.garagemenu = function (regulations, func, args, [garagepage, gmen
         filterlist.push(function (x) {return x["favorite"]})
     } 
     if (typeof regulations !== 'string') {
-      filterlist.push(function(x) {return require(gtf.GTF).checkregulations(x, regulations, function() {}, "silent", msg, embed,userdata)[0]})
+      filterlist.push(function(x) {return require(gtf.GTF).checkregulations(x, regulations, "", embed, msg, userdata)[0]})
     }
     return filterlist
   }
@@ -591,7 +525,7 @@ module.exports.garagemenufunctions = function (regulations, func, args, [garagep
         filterlist.push(function (x) {return x["favorite"]})
     } 
     if (typeof regulations !== "string") {
-     filterlist.push(function(x) {return require(gtf.GTF).checkregulations(x, regulations, function() {}, "silent", msg, embed,userdata)[0]})
+     filterlist.push(function(x) {return require(gtf.GTF).checkregulations(x, regulations, "", embed, msg, userdata)[0]})
     }
     return filterlist
   }
@@ -721,14 +655,13 @@ while (gmenulist.length <= 0)
           gmenulist = []
           var number = parseInt(int);
           
-            console.log("D")
           filterlist = setfilter(filterlist, regulations, fav)
           stats.setcurrentcar(
             number + 1 + (100 * hundredpage),filterlist,
             userdata
           );
+
           
-            console.log("D")
           stats.save(userdata);
           setTimeout(() => {
             require(dir + "commands/" + args["command"]).execute(msg, args["oldquery"], userdata);
@@ -801,8 +734,10 @@ module.exports.garagemenucars = function (min, max, regulations, filterlist, sor
   
   return [garage.map(function (car, index) {
     var ocar = require(gtf.PERF).perf(car, "GARAGE")
+    var health = require(gtf.CONDITION).condition(car)["health"]
     var favorite = car["favorite"] ? " ⭐" : ""
-    var desc = "🚘" + (index+min+1) + " | " + ocar["fpp"] + "FPP" + " " + gtftools.numFormat(ocar["power"]) + "hp" + " " + gtftools.numFormat(ocar["weight"]) + "lbs" + favorite
+    
+    var desc = "🚘" + (index+min+1) + " | " + health + "% " + ocar["fpp"] + "FPP" + " " + gtftools.numFormat(ocar["power"]) + "hp" + " " + gtftools.numFormat(ocar["weight"]) + "lbs" + favorite
     if (sorting.includes("Power")) {
       desc = "🚘" + (index + min + 1) + " | " + gtftools.numFormat(ocar["power"]) + "hp" + " " + ocar["fpp"] + "FPP" + " " + gtftools.numFormat(ocar["weight"]) + "lbs" + favorite
     }

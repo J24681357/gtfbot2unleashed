@@ -12,6 +12,12 @@ module.exports.randomInt = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
+module.exports.randomIntSeed = function (min, max, seed) {
+  const Random = require('yy-random')
+  Random.seed(seed)
+  return Random.range(min, max)
+};
+
 module.exports.betweenInt = function (number, min, max) {
   if (isNaN(number)) {
     return false;
@@ -51,7 +57,7 @@ module.exports.interval = function interval(func, wait, times) {
           func.call(null);
         } catch (e) {
           t = 0;
-          throw e.toString();
+          throw e
         }
       }
     };
@@ -164,7 +170,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
     .map(function (x) {
       if (reset) {
         if (userdata["settings"]["MENUSELECT"] == 0) {
-          x = userdata["settings"]["PROGRESSBAR"][0] + " " + x;
+          x = userdata["settings"]["ICONS"]["select"] + " " + x;
         }
         reset = false;
       }
@@ -306,7 +312,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
           args["query"]["options"] = "info";
         }
       }
-      if (args["command"] == "items") {
+      if (args["command"] == "gifts") {
         if (args["query"]["options"] == "list") {
           args["query"]["options"] = "accept";
         }
@@ -410,7 +416,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
         .map(function (x) {
           if (reset) {
             if (userdata["settings"]["MENUSELECT"] == 0) {
-              x = userdata["settings"]["PROGRESSBAR"][0] + " " + x;
+              x = userdata["settings"]["ICONS"]["select"] + " " + x;
             }
             reset = false;
           }
@@ -428,9 +434,12 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
         }
       }
       args["text"] = "";
-
-      embed.setFields([{ name: stats.main(userdata), value: stats.currentcarmain(userdata) }]);
-      buttons[1].components[0].setLabel(args["page"] + 1 + "/" + Math.ceil(args["list"].length / args["rows"]).toString());
+      var value = stats.currentcarmain(userdata)
+      var b = (value == "No car.") ? 0 : 1
+      embed.setFields([{ name: stats.main(userdata), value: value }]);
+      console.log(b)
+      
+      buttons[b].components[0].setLabel(args["page"] + 1 + "/" + Math.ceil(args["list"].length / args["rows"]).toString());
       if (userdata["settings"]["MENUSELECT"] == 1) {
         buttons.map(function (button, i) {
           if (i == 0) {
@@ -468,7 +477,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
         .map(function (x) {
           if (reset) {
             if (userdata["settings"]["MENUSELECT"] == 0) {
-              x = userdata["settings"]["PROGRESSBAR"][0] + " " + x;
+              x = userdata["settings"]["ICONS"]["select"] + " " + x;
             }
             reset = false;
           }
@@ -488,8 +497,11 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
         // }
       }
       args["text"] = "";
-      embed.setFields([{ name: stats.main(userdata), value: stats.currentcarmain(userdata) }]);
-      buttons[1].components[0].setLabel(args["page"] + 1 + "/" + Math.ceil(args["list"].length / args["rows"]).toString());
+      var value = stats.currentcarmain(userdata)
+      var b = (value == "No car.") ? 0 : 1
+      embed.setFields([{ name: stats.main(userdata), value: value }]);
+      
+      buttons[b].components[0].setLabel(args["page"] + 1 + "/" + Math.ceil(args["list"].length / args["rows"]).toString());
       if (userdata["settings"]["MENUSELECT"] == 1) {
         buttons.map(function (button, i) {
           if (i == 0) {
@@ -524,7 +536,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
       args["text"] = args["text"]
         .map(function (x) {
           if (select == index) {
-            x = userdata["settings"]["PROGRESSBAR"][0] + " " + x;
+            x = userdata["settings"]["ICONS"]["select"] + " " + x;
           }
           index++;
           return x;
@@ -561,7 +573,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
       args["text"] = args["text"]
         .map(function (x) {
           if (select == index) {
-            x = userdata["settings"]["PROGRESSBAR"][0] + " " + x;
+            x = userdata["settings"]["ICONS"]["select"] + " " + x;
           }
           index++;
           return x;
@@ -692,27 +704,9 @@ module.exports.preparemenu = function (name, menulist, emojilist, msg, userdata)
   return menu;
 };
 
-module.exports.setupcommand = function (embed, results, pageargs, msg, userdata) {
-  var embed = new EmbedBuilder();
-  embed.setColor(userdata["settings"]["PROGRESSBAR"][2]);
-  var user = msg.guild.members.cache.get(userdata["id"]);
-  embed.setAuthor({ name: user.user.username, iconURL: user.user.displayAvatarURL() });
-  var results = "";
-  if (Object.keys(pageargs["query"]).length == 0) {
-    if (pageargs["command"] == "arcade") {
-      pageargs["query"] = { league: "list" };
-    } else if (pageargs["command"] == "debug" || pageargs["command"] == "home" || pageargs["command"] == "gtf" || pageargs["command"] == "rcar" || pageargs["command"] == "rcourse" || pageargs["command"] == "rtrack") {
-      pageargs["query"] = {};
-    } else {
-      pageargs["query"] = { options: "list" };
-    }
-  }
-  return [embed, results, pageargs];
-};
-
 module.exports.setupcommands = function (embed, results, query, pageargs, msg, userdata) {
   var embed = new EmbedBuilder();
-  embed.setColor(userdata["settings"]["PROGRESSBAR"][2]);
+  embed.setColor(userdata["settings"]["COLOR"]);
   var user = msg.guild.members.cache.get(userdata["id"]);
   embed.setAuthor({ name: user.user.username, iconURL: user.user.displayAvatarURL() });
   var results = "";
@@ -1238,7 +1232,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         });
     });
   }
-  if (name == "USERS") {
+  if (name == "GTF2SAVES") {
     MongoClient.connect(function (err, db) {
       if (err) throw err;
       var dbo = db.db("GTFitness");
@@ -1267,6 +1261,15 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
                   userdata["garage"][i]["name"] = json["newcarname"];
                 }
               }
+            }
+            userdata["stats"] = {
+            numcarpurchases: 0,
+            numgifts: 0,
+            numreplays: 0,
+            numcourses: 0,
+            numraces: 0,
+            numwins:0,
+            numparts: 0,
             }
 
             console.log("Saved for " + userdata["id"]);

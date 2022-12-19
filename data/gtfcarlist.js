@@ -157,11 +157,11 @@ module.exports.find = function (args) {
     var makekey = gtfcars[makes[key]];
     for (var i = 0; i < makekey.length; i++) {
       var count = 0;
-      if (args["make"] !== undefined) {
-        if (args["make"].length == 0) {
+      if (args["makes"] !== undefined) {
+        if (args["makes"].length == 0) {
           count++;
         } else {
-          var make = args["make"];
+          var make = args["makes"];
           var x = makekey[i]["make"];
           for (var makei = 0; makei < make.length; makei++) {
             if (x.toLowerCase().replace(/-/,"_").replace(/ /g, "_") === make[makei].toLowerCase().replace(/-/,"_").replace(/ /g, "_")) {
@@ -446,7 +446,8 @@ module.exports.find = function (args) {
 };
 
 module.exports.get = function (args) {
-  var makelist = require(gtf.LISTS).gtfcarlist[args["make"][0].toLowerCase().replace(/ /g, "-")]
+  var make = args["make"][0].toLowerCase().replace(/ /g, "-")
+  var makelist = require(gtf.LISTS).gtfcarlist[make]
   var car = makelist.find(function(x) {
     var name = x["name"] + " " + x["year"]
     return name.includes(args["fullname"][0])
@@ -462,3 +463,14 @@ module.exports.random = function (args, num) {
   }
   return rlist;
 };
+
+module.exports.shortname = function (fullname) {
+  fullname = fullname.split(" ")
+  var year = fullname.pop()
+  if (fullname.join(" ").length <= 45) {
+    return fullname.join(" ") + " " + year
+  } else {
+  fullname = fullname.join(" ").substring(0,41) + "... " + year
+  return fullname
+  }
+}

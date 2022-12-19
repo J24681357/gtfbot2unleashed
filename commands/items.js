@@ -9,7 +9,7 @@ var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
 module.exports = {
-  name: "items",
+  name: "gifts",
   level: 0,
   aliases: ["inv", "inventory", "gifts"],
   channels: ["testing", "gtf-mode","gtf-demo"],
@@ -39,11 +39,11 @@ module.exports = {
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
 
     if (stats.gifts(userdata).length == 0) {
-      require(gtf.EMBED).alert({ name: "❌ No Items", description: "You do not have any items available.", embed: "", seconds: 3 }, msg, userdata);
+      require(gtf.EMBED).alert({ name: "❌ No Gifts", description: "You do not have any gifts available.", embed: "", seconds: 3 }, msg, userdata);
       return;
     }
 
-    if (!isNaN(query["options"])) {
+    if (!isNaN(parseInt(query["number"]))) {
       query["options"] = "redeem"
       query["number"] = parseInt(query["number"]);
     }
@@ -60,12 +60,12 @@ module.exports = {
       }
       
       var gift = stats.gifts(userdata)[number - 1];
-      if (gift[0] == "CAR") {
+      if (gift["type"] == "CAR") {
           if (require(gtf.EMBED).checkgarageerror(embed, msg, userdata)) {
       return;
         }
       }
-      results = "🎁 Do you want to redeem **" + gift[1]["name"] + "**?";
+      results = "🎁 Do you want to redeem **" + gift["name"] + "**?";
       embed.setDescription(results);
       embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}]);
               var emojilist = [
@@ -80,7 +80,7 @@ module.exports = {
    
    function itemsfunc(msg) {
         function accept() {
-          stats.gift("✅ " + gift[1]["name"] + " redeemed!", gift, embed, msg, userdata);
+          stats.redeemgift("✅ " + gift["name"] + " redeemed!", gift, embed, msg, userdata);
           return;
         }
 
@@ -98,7 +98,7 @@ module.exports = {
       }
       
       var gift = stats.gifts(userdata)[number - 1];
-      results = "⚠ Do you want to remove **" + gift[1]["name"] + "** from your inventory? This is permanent.";
+      results = "⚠ Do you want to remove **" + gift["name"] + "** from your inventory? This is permanent.";
       embed.setDescription(results);
       embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}]);
               var emojilist = [
@@ -114,7 +114,7 @@ module.exports = {
    function itemsfunc(msg) {
         function deleted() {
           stats.removegift(number, userdata)
-          require(gtf.EMBED).alert({ name: "✅ Success", description: gift[1]["name"] + " removed!", embed: embed, seconds: 3 }, msg, userdata);
+          require(gtf.EMBED).alert({ name: "✅ Success", description: gift["name"] + " removed!", embed: embed, seconds: 3 }, msg, userdata);
           return;
         }
          var functionlist = [deleted];
@@ -152,13 +152,19 @@ module.exports = {
 
     if (query["options"] == "list") {
       delete query["number"]
-    embed.setTitle("🎁 __My Items: " + stats.gifts(userdata).length + " / " + require(gtf.GTF).giftlimit + " Items__");
+    embed.setTitle("🎁 __Gifts: " + stats.gifts(userdata).length + " / " + require(gtf.GTF).giftlimit + " Gifts__");
       var list = stats.gifts(userdata).map(function (item) {
         var emoji = ""
-        if (item[0] == "CAR") {
+        if (item["type"] == "CAR") {
           emoji = "🚘"
         }
-        return "__**" + item[1]["author"] + "**__" + "/n" + item[1]["name"] + " " + emoji
+        if (item["type"] == "RANDOMCAR") {
+          emoji = "🎲🚘"
+        }
+        if (item["type"] == "CREDITS") {
+          emoji = emote.credits
+        }
+        return "__**" + item["author"] + "**__" + "/n" + item["name"] + " " + emoji
       });
     pageargs["list"] = list;
     if (userdata["settings"]["TIPS"] == 0) {

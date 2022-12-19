@@ -4631,6 +4631,25 @@
 				"https://raw.githubusercontent.com/J24681357/gtfbotimages777/master/images/cars/honda/hondacivicsir-ii(eg)1993-2.png"
 			]
 		},
+    	{
+			"make": "Honda",
+			"name": "Honda Civic Type-R (EK) Touring Car",
+			"year": "1997",
+			"type": "Aftermarket",
+			"country": "Japan",
+			"power": 247,
+			"weight": 1863,
+			"tires": "Sports: Hard",
+			"engine": "NA",
+			"drivetrain": "FF",
+			"carcostm": 8,
+			"aerom": 3,
+			"discount": 0,
+			"special": ["x2"],
+			"livery": [],
+			"image": [	"https://www.kudosprime.com/gt7/images/cars/big/gt7_car_172.jpg?v=2"
+			]
+		},
 		{
 			"make": "Honda",
 			"name": "Honda Civic Type-R (FD2)",
