@@ -3,7 +3,7 @@ var stats = require(dir + "functions/profile/f_stats");
 var emote = require(dir + "index");
 var gtftools = require(dir + "functions/misc/f_tools");
 
-const {  Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, SelectMenuBuilder } = require("discord.js");
+const { Client, GatewayIntentBits, Partials, Discord, EmbedBuilder } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
@@ -12,7 +12,7 @@ module.exports = {
   name: "wheels",
   title: "🛞 GTF Auto - Wheels",
   cooldown: 3,
-  level: 0,
+  level: 3,
   channels: ["testing", "gtf-mode"],
 
   delete: false,
@@ -42,8 +42,8 @@ module.exports = {
    
     var results2 = "";
     var select = "";
-    var car = stats.currentcar(userdata);
-    var ocar = require(gtf.CARS).get({ make: [car["make"]], fullname: [car["name"]], year: [car["year"]] })
+    var gtfcar = stats.currentcar(userdata);
+    var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]] })
 
        if (ocar["type"] == "Redbull X" || ocar["type"] == "Kart" || ocar["type"].includes("Kart")) {
       require(gtf.EMBED).alert({ name: "❌ Unavailable", description: "This car cannot have custom wheels.", embed: "", seconds: 3 }, msg, userdata);
@@ -53,7 +53,7 @@ module.exports = {
       wheels("")
       return
     }
-    stats.loadcarimage(car, embed, userdata, wheels)
+    stats.loadcarimage(gtfcar, embed, userdata, wheels)
     function wheels(attachment) {
     pageargs["image"].push(attachment)
       
@@ -82,22 +82,22 @@ module.exports = {
     
     var make = query["make"];
     select = require(gtf.WHEELS).find({ make: make });
+    select.unshift( {
+      "make": "", 
+      "name": "Default",
+      "colors": [],
+      "cost": 0
+    })
     if (select.length != 0 && query["number"] === undefined) {
        delete query["number"]
 
        var select = select.map(function (x) {
-      var cond = require(gtf.WHEELS).checkwheelsavail(x, car);
-      if (cond[0].includes("✅")) {
-        return cond[0] + " " + x["make"] + " " + x["name"];
-      } else if (cond[0].includes("📦")) {
-        return cond[0] + " " + x["make"] + " " + x["name"];
-      } else {
-      return "**" + gtftools.numFormat(x["cost"]) + "**" + emote.credits + " " + x["make"] + " " + x["name"];
-      }
+         var name = (x['name'] == "Default") ? x["name"] :  x["make"] + " " + x["name"]
+      var cond = require(gtf.WHEELS).checkwheelsavail(x, gtfcar);
+      return "**" + gtftools.numFormat(x["cost"]) + "**" + emote.credits + " " + name + " " + cond[0];
     });
     embed.setTitle("🛞" + " __" + make + " (" + select.length + " Items)__");
     
-    select.unshift("Default")
     
     pageargs["list"] = select;
       if (userdata["settings"]["TIPS"] == 0) {
@@ -112,31 +112,22 @@ module.exports = {
     }
 
     var number = query["number"];
-    if (number == 1) {
-      number = "S"
-    }
     
-    if (number != "S") {
         if (!gtftools.betweenInt(number, 1, select.length + 1)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
             return
-          }
-    }
-    if (number == "S") {
-        var wheel = { name: "Default", type: select[0]["make"], cost: 0 };
-      } else {
-        var wheel = select[number - 2];
       }
-        var cond = require(gtf.WHEELS).checkwheelsavail(wheel, car);
+      var wheel = select[number - 1];
+      var cond = require(gtf.WHEELS).checkwheelsavail(wheel, gtfcar);
         if (cond.includes("❌")) {
-          require(gtf.EMBED).alert({ name: "❌ Wheels Unavailable", description: "**" + wheel["make"] + " " + wheel["name"] + "** is unavailable for **" + car["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
+          require(gtf.EMBED).alert({ name: "❌ Wheels Unavailable", description: "**" + wheel["make"] + " " + wheel["name"] + "** is unavailable for **" + gtfcar["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
           return;
         }
         if (cond.includes("✅")) {
-          require(gtf.EMBED).alert({ name: "❌ Same Rims", description: "**" + wheel["make"] + " " + wheel["name"] + "** is already applied for **" + car["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
+          require(gtf.EMBED).alert({ name: "❌ Same Rims", description: "**" + wheel["make"] + " " + wheel["name"] + "** is already applied for **" + gtfcar["name"] + "**." + "\n\n" + "**❗ Choose another option when this message disappears.**", embed: "", seconds: 3 }, msg, userdata);
           return;
         }
-      require(gtf.MARKETPLACE).purchase(msg.member, wheel, "WHEEL", embed, msg, userdata);
+      require(gtf.MARKETPLACE).purchase(wheel, "WHEEL", "", embed, msg, userdata);
       return;
       }
 }

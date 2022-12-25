@@ -180,6 +180,12 @@ if (query["args"] == "announce_update") {
         }, 1000);
       }
 
+      //LICENSE
+      if (query["args"] == "setlicense") {
+        success = true;
+        userdata["license"] = query["string1"]
+      }
+
       //CREDITS
       if (query["args"] == "addcredits") {
         success = true;
@@ -193,6 +199,7 @@ if (query["args"] == "announce_update") {
         success = true;
         userdata["credits"] = parseInt(query["number"]);
       }
+      
       ///GIFTS
       if (query["args"] == "giftcredits") {
         success = true;
@@ -297,11 +304,11 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
       
        if (query["args"] == "addmileage") {
         success = true;
-        stats.addmileage(query["number"], query["number"], userdata);
+        stats.addmileage(query["number"], userdata);
       }
       if (query["args"] == "setmileage") {
         success = true;
-        userdata["mileage"] = [query["number"], query["number"]];
+        userdata["mileage"] = query["number"];
       }
       if (query["args"] == "setracemulti") {
         success = true;

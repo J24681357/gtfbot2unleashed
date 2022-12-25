@@ -40,7 +40,6 @@ module.exports = {
       other: "",
     }, msg, userdata)
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
-  console.log(query)
     var results2 = "";
     var select = "";
     var gtfcar = stats.currentcar(userdata);
@@ -116,7 +115,7 @@ module.exports = {
         "**" + gtftools.numFormat(costs[3]) + emote.credits + "** " + "__**Transmission Repair**__ " + "`" + gtfcar["condition"]["transmission"] + "%`",
         "**" + gtftools.numFormat(costs[4]) + emote.credits + "** " + "__**Suspension Repair**__ " + "`" + gtfcar["condition"]["suspension"] + "%`", 
         "**" + gtftools.numFormat(costs[5]) + emote.credits + "** " + "__**Body Damage Repair**__ " + "`" + gtfcar["condition"]["body"] + "%`" + "/n", 
-        "**" + gtftools.numFormat(require(gtf.MATH).sum(costs)) + emote.credits + "** " + "__**Apply All**__"]
+        "**" + gtftools.numFormat(Math.round(require(gtf.MATH).sum(costs))) + emote.credits + "** " + "__**Apply All**__"]
       pageargs["list"] = list;
       if (userdata["settings"]["TIPS"] == 0) {
       pageargs["footer"] = "❓ **Test**"
@@ -134,7 +133,7 @@ module.exports = {
       return;
     }
       var number = parseInt(query["number"])
-      var cost = costs[number-1]
+      var cost = Math.round(costs[number-1])
       
       if (parseInt(query["number"]) == 1) {
         require(gtf.CONDITION).updatecondition(100, "clean", userdata)
@@ -162,7 +161,7 @@ module.exports = {
       }
       if (parseInt(query["number"]) == 7) {
           require(gtf.CONDITION).updatecondition(100, "all", userdata)
-        cost = require(gtf.MATH).sum(costs)
+        cost = Math.round(require(gtf.MATH).sum(costs))
         var successmessage = "Car Repair completed! " + "**-" + cost + emote.credits + "**"
       }
       stats.addcredits(-cost, userdata);

@@ -76,6 +76,14 @@ module.exports.find = function (args) {
 };
 
 module.exports.checkwheelsavail = function (part, gtfcar) {
+  if (part["name"] == "Default") {
+    if (gtfcar["rims"]["current"] == part["name"]) {
+      return ["✅", ""]
+    } else {
+      return ["", ""]
+    }
+    
+  }
   if (gtfcar["rims"]["list"].includes(part["make"] + " " + part["name"])) {
       if (gtfcar["rims"]["current"] == (part["make"] + " " + part["name"])) {
        return ["✅", ""]

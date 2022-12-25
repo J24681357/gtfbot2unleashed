@@ -19,6 +19,9 @@ module.exports.list = function (args) {
   }
   if (args == "makes") {
     results = Object.keys(gtfcars).map(function (x) {
+    if (x == 'bac') {
+        return "BAC"
+      }
       if (x == 'bmw') {
         return "BMW"
       }

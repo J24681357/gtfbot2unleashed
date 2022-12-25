@@ -1276,6 +1276,30 @@
 			]
 		}
 	],
+  "bac": [
+    	{
+			"make": "BAC",
+			"name": "BAC Mono",
+			"year": "2016",
+			"type": "Production",
+			"country": "UK",
+			"power": 304,
+			"weight": 1279,
+			"tires": "Sports: Hard",
+			"engine": "NA",
+			"drivetrain": "MR",
+			"carcostm": 6,
+			"aerom": 1,
+			"discount": 0,
+			"special": [
+				"Open Top", "x2"
+			],
+			"livery": [],
+			"image": [
+				"https://www.autocar.co.uk/sites/autocar.co.uk/files/bac_mono.jpg"
+			]
+		}
+  ],
 	"bentley": [
 		{
 			"make": "Bentley",
@@ -2338,8 +2362,8 @@
 			"year": "2020",
 			"type": "Production",
 			"country": "USA",
-			"power": 490,
-			"weight": 3366,
+			"power": 494,
+			"weight": 3373,
 			"tires": "Sports: Hard",
 			"engine": "NA",
 			"drivetrain": "MR",
@@ -3627,11 +3651,11 @@
 			"tires": "Sports: Hard",
 			"engine": "NA",
 			"drivetrain": "MR",
-			"carcostm": 30,
+			"carcostm": 32,
 			"aerom": 1,
 			"discount": 0,
 			"special": [
-				"x4"
+				"x5"
 			],
 			"livery": [],
 			"image": [
@@ -5866,7 +5890,7 @@
 			"tires": "Sports: Hard",
 			"engine": "NA",
 			"drivetrain": "4WD-MR",
-			"carcostm": 20,
+			"carcostm": 25,
 			"aerom": 1,
 			"discount": 0,
 			"special": [],
@@ -8135,6 +8159,28 @@
 	"mini": [
 		{
 			"make": "Mini",
+			"name": "Mini Cooper S Works Rally Car",
+			"year": "1964",
+			"type": "Rally Car: Other",
+			"country": "Germany",
+			"power": 70,
+			"weight": 1250,
+			"tires": "Rally: Dirt",
+			"engine": "NA",
+			"drivetrain": "FF",
+			"carcostm": 10,
+			"aerom": 2,
+			"discount": 0,
+			"special": ["x10"],
+			"livery": [
+				"Monte Carlo 1964"
+			],
+			"image": [
+				"https://www.sportscarmarket.com/wp-content/uploads/2012/01/980d2e4261c2191caf564855a42aab3c.jpg"
+			]
+		},
+		{
+			"make": "Mini",
 			"name": "Mini Clubman Vision Gran Turismo",
 			"year": "2015",
 			"type": "Vision Gran Turismo",
@@ -8920,7 +8966,7 @@
 		},
 		{
 			"make": "Nissan",
-			"name": "Nissan GT-R NISMO GT3 N24",
+			"name": "Nissan GT-R Nismo GT3 N24",
 			"year": "2013",
 			"type": "Race Car: GT3",
 			"country": "Japan",
@@ -8964,6 +9010,26 @@
 				"https://raw.githubusercontent.com/J24681357/gtfbotimages777/master/images/cars/nissan/nissangt-rpremiumedition2017.png",
 				"https://raw.githubusercontent.com/J24681357/gtfbotimages777/master/images/cars/nissan/nissangt-rpremiumedition2017-1.png",
 				"https://raw.githubusercontent.com/J24681357/gtfbotimages777/master/images/cars/nissan/nissangt-rpremiumedition2017-2.png"
+			]
+		},
+    {
+			"make": "Nissan",
+			"name": "Nissan GT-R SpecV",
+			"year": "2009",
+			"type": "Production",
+			"country": "Japan",
+			"power": 478,
+			"weight": 3704,
+			"tires": "Sports: Hard",
+			"engine": "TB",
+			"drivetrain": "4WD",
+			"carcostm": 6,
+			"aerom": 1,
+			"discount": 0,
+			"special": [],
+			"livery": [],
+			"image": [
+				"https://file.kelleybluebookimages.com/kbb/base/house/2009/2009-Nissan-GT-R-FrontSide_NIGTR091_505x375.jpg"
 			]
 		},
 		{

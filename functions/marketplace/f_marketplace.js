@@ -179,13 +179,7 @@ var emojilist = [
 ]
   }
   if (type == "WHEEL") {
-    var emojilist = [
-  { emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: 'Purchase', 
-  extra: "Once",
-  button_id: 0 }
-]
+
     if (stats.currentcarmain(userdata) == "No car.") {
       require(gtf.EMBED).alert({ name: "❌ No Car", description: "You do not have a current car.", embed: "", seconds: 3 }, msg, userdata);
       return;
@@ -201,26 +195,20 @@ var emojilist = [
     var cost = item["cost"];
     var mcost = cost;
 
-    replacement = "\n**Rims: " + gtfcar[type1]["current"] + " -> " + name + "**\n";
+    info = "\n**Rims: " + gtfcar[type1]["current"] + " -> " + name + "**\n";
+    
+    var results = "**" + name + "**" + " | **" + gtftools.numFormat(mcost) + "**" + emote.credits + " " + info;
 
-    if (item["name"].includes("Default")) {
-      if (gtfcar["rims"]["current"] == "Default") {
-        require(gtf.EMBED).alert({ name: "❌ Rims Already Applied", description: "The rims are already installed on your **" + gtfcar["name"] + "**.", embed: "", seconds: 3 }, msg, userdata);
-        return;
-      }
-    }
-
-    if (gtfcar["rims"]["current"] == "Default") {
-      var oldpart = { name: "Default", type: type1, cost: 0 };
-    } else {
-      var oldpart = require(gtf.WHEELS).find({ name: gtfcar["rims"]["current"], make: type1 })[0];
-    }
-    oldpartmessage = "\nReinstalled from **" + gtfcar["rims"]["current"] + "**.";
-    if (gtfcar[type1]["list"].includes(item["name"])) {
-      cost = 0;
-      mcost = 0;
-      part_in_inv = true;
-    }
+      var oldpart = require(gtf.PAINTS).find({ name: gtfcar[type1]["current"], type: type1 })[0];
+    oldpartmessage = "\nApplied from **" + gtfcar[type1]["current"] + "**.";
+  
+    var emojilist = [
+  { emoji: emote.yes, 
+  emoji_name: "Yes", 
+  name: 'Purchase', 
+  extra: "Once",
+  button_id: 0 }
+]
   }
   if (type == "DRIVER") {
     var emojilist = [

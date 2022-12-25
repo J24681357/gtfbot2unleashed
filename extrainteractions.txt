@@ -4,9 +4,15 @@ npm init -y && npm i --save-dev node@17 && npm config set prefix=$(pwd)/node_mod
 B lv1 98
 A lv5 90
 IC lv10 80
-IB lv15 70
-A lv20 60
+IB lv20 60
+A lv25 50
 S lv30 40
+
+B 8.000
+A 8.000
+IC 12.000
+IB 15.000
+IA 20.000
 
 curl -I https://discordapp.com/api/v7/gateway
 

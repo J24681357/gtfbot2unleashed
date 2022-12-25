@@ -76,7 +76,8 @@ module.exports.mileage = function (userdata) {
 };
 
 module.exports.mileageuser = function (userdata) {
-  return userdata["mileage"][userdata["settings"]["UNITS"]]
+  var mileage = [userdata["mileage"], require(gtf.MATH).round(userdata["mileage"] * 0.62137119, 2)]
+  return mileage[userdata["settings"]["UNITS"]]
 };
 
 module.exports.mileageunits = function (userdata) {
@@ -88,7 +89,8 @@ module.exports.totalmileage = function (userdata) {
 };
 
 module.exports.totalmileageuser = function (userdata) {
-    return userdata["totalmileage"][userdata["settings"]["UNITS"]]
+  var totalmileage = [userdata["totalmileage"], require(gtf.MATH).round(userdata["totalmileage"] * 0.62137119, 2)]
+    return totaalmileage[userdata["settings"]["UNITS"]]
 };
 
 module.exports.messages = function (userdata) {
@@ -234,53 +236,34 @@ module.exports.addracemulti = function (number, userdata) {
   }
 };
 
-module.exports.addmileage = function (km, mi, userdata) {
-  km = Math.round(km * 100) / 100;
-  mi = Math.round(mi * 100) / 100;
-  userdata["mileage"][0] += km;
-  userdata["mileage"][1] += mi;
-  userdata["mileage"][0] = Math.round(userdata["mileage"][0] * 100) / 100;
-  userdata["mileage"][1] = Math.round(userdata["mileage"][1] * 100) / 100;
+module.exports.addmileage = function (km, userdata) {
+  km = require(gtf.MATH).round(km, 2)
+  userdata["mileage"] += km;
 };
 
-module.exports.addtotalmileagecar = function (km, mi, userdata) {
-  km = Math.round(km * 100) / 100;
-  mi = Math.round(mi * 100) / 100;
+module.exports.setmileage = function (km, userdata) {
+  userdata["mileage"] = parseFloat(km);
+};
 
+module.exports.addtotalmileagecar = function (km, userdata) {
+  km = require(gtf.MATH).round(km, 2)
   var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
-  if (typeof userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"] === "undefined") {
-    userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"] = [0, 0];
-  }
 
-  userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"][0] += parseFloat(km);
-  userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"][1] += parseFloat(mi);
-
-  userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"] = [Math.round(userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"][0] * 100) / 100, Math.round(userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"][1] * 100) / 100];
+  userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"] += km
 
   id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
   userdata["currentcar"] = id;
 };
 
-module.exports.addtotalmileage = function (km, mi, userdata) {
-  userdata["totalmileage"][0] = parseFloat(userdata["totalmileage"][0]);
-  userdata["totalmileage"][1] = parseFloat(userdata["totalmileage"][1]);
-  km = Math.round(km * 100) / 100;
-  mi = Math.round(mi * 100) / 100;
-  userdata["totalmileage"][0] += parseFloat(km);
-  userdata["totalmileage"][1] += parseFloat(mi);
-
-  userdata["totalmileage"][0] = Math.round(userdata["totalmileage"][0] * 100) / 100;
-  userdata["totalmileage"][1] = Math.round(userdata["totalmileage"][1] * 100) / 100;
+module.exports.addtotalmileage = function (km, userdata) {
+  km = require(gtf.MATH).round(km, 2)
+  userdata["totalmileage"] += km;
 };
 
-module.exports.setmileage = function (km, mi, userdata) {
-  userdata["mileage"][0] = parseFloat(km);
-  userdata["mileage"][1] = parseFloat(mi);
-};
+
 
 module.exports.settotalmileage = function (km, mi, userdata) {
-  userdata["totalmileage"][0] = parseFloat(km);
-  userdata["totalmileage"][1] = parseFloat(mi);
+  userdata["totalmileage"] = parseFloat(km);
 };
 
 ///CURRENTCAR
@@ -390,7 +373,7 @@ module.exports.view = function (gtfcar, embed, userdata) {
     ocar["type"] +
     "\n" +
     "**Mileage Driven:** " +
-    gtfcar["mileage"][userdata["settings"]["UNITS"]] +
+    stats.mileageuser(userdata) +
     " " +
     stats.mileageunits(userdata) +
     "\n" +
@@ -761,7 +744,7 @@ module.exports.addcar = function (car, arg, userdata) {
     },
     rims: { current: "Default", list: [], tuning: [-999, -999, -999] },
     condition: condition,
-    mileage: [0, 0]
+    totalmileage: 0
   };
   newcar["fpp"] = require(gtf.PERF).perf(newcar, "GARAGE")["fpp"];
   
@@ -1132,7 +1115,7 @@ module.exports.setlevel = function (number, userdata) {
 
 module.exports.main = function (userdata) {
   userdata["count"]++;
-  userdata["mileage"] = [Math.round(100 * userdata["mileage"][0]) / 100, Math.round(100 * userdata["mileage"][1]) / 100];
+  userdata["mileage"] = require(gtf.MATH).round(userdata["mileage"], 2)
 
   var levelup = require(gtf.EXP).islevelup(userdata);
 
@@ -1148,7 +1131,7 @@ module.exports.main = function (userdata) {
   if (userdata["lastonline"] != currdate) {
     userdata["dailyworkout"]["done"] = false;
     /*
-    if (userdata["mileage"][0] > 0) {
+    if (userdata["mileage"] > 0) {
       stats.addracemulti(0.2, userdata);
     } else {
       stats.addracemulti(-100, userdata);
@@ -1158,9 +1141,9 @@ module.exports.main = function (userdata) {
   }
   userdata["lastonline"] = currdate;
   stats.addracemulti(-100, userdata);
+  //emote.dailyworkout + "x" + stats.racemulti(userdata) + " " 
 
-  return gifts + gtftools.numFormat(userdata["credits"]) + " " + emote.credits + " " + 
-    emote.dailyworkout + "x" + stats.racemulti(userdata) +  " " + 
+  return gifts + gtftools.numFormat(userdata["credits"]) + " " + emote.credits + " " +  
     "Lv." + userdata["level"] + " " + emote.exp + " " + gtftools.numFormat(userdata["exp"]) + "  " + emote.dailyworkoutman + gtftools.numFormat(stats.mileageuser(userdata)) + units + levelup;
 };
 
@@ -1185,7 +1168,7 @@ module.exports.createracehistory = function (racesettings, racedetails, finalgri
     
   for (var i = 0; i < 20; i++) {
     userdata["raceinprogress"]["msghistory"].push(JSON.parse(JSON.stringify(message)))
-    message = require(gtf.RACEEX).updategrid(racesettings, racedetails, finalgrid, checkpoint, timeinterval, message, embed, msg, userdata)
+    message = require(gtf.RACEEX).updategrid(racesettings, racedetails, finalgrid, checkpoint, timeinterval, i, message, embed, msg, userdata)
 
     timei = require(gtf.TIME).increasetime(racesettings["time"], timeinterval)
     userdata["raceinprogress"]["timehistory"].push(JSON.parse(JSON.stringify(timei)))

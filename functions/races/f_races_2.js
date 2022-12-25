@@ -160,13 +160,7 @@ if (racesettings["type"] == "TIMETRIAL") {
     index = 4
     if (racesettings["type"] == "TIMETRIAL") {
       userdata["raceinprogress"]["msghistory"] = []
-      /*
-  for (var i = 0; i < 20; i++) {
-    //message = require(gtf.RACEEX).updategrid(user, racedetails, racesettings, racesettings["weather"], finalgrid, embed, msg, args, checkpoint, userdata, timeinterval, message)
-    //userdata["raceinprogress"]["msghistory"].push(JSON.parse(JSON.stringify(message)))
-   // userdata["raceinprogress"]["gridhistory"].push(JSON.parse(JSON.stringify(finalgrid)))
-  }
-  */
+
   //finalgrid = userdata["raceinprogress"]["gridhistory"][0]
     } else {
      racelength = totaltime - new Date().getTime() - 2000;
@@ -273,10 +267,8 @@ if (racesettings["type"] == "TIMETRIAL") {
         } else if (racesettings["mode"] == "ONLINE") {
            var results2 = require(gtf.RACE).startonline(racesettings, racedetails, finalgrid, user, userdata);
         } else if (racesettings["type"] == "TIMETRIAL") {
-          console.log(finalgrid[0]["laps"])
           var results2 = require(gtf.RACEEX).timetrialresults(racesettings, racedetails, finalgrid, checkpoint, embed, msg, userdata)
           //var results2 = "Test"
-          console.log(results2)
           embed.setDescription(results2)
           //require(gtf.DISCORD).send(msg, {embeds: [embed]})
           //stats.save(userdata);
@@ -379,7 +371,6 @@ emojilist.push({
         
   buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         
-    console.log(racesettings["distance"])
 require(gtf.DISCORD).send(msg, {content:ping + " **FINISH**",embeds: [embed], components:buttons}, race2func) 
 
 function race2func(msg) {
@@ -391,6 +382,8 @@ function race2func(msg) {
             stats.completeevent(racesettings, userdata);
               stats.redeemgift(emote.goldmedal + " Congrats! Completed " + racesettings["title"].split(" - ")[0] + " " + emote.goldmedal, racesettings["prize"], embed, msg, userdata);
                 }
+          } else if (racesettings["mode"] == "LICENSE") {
+            require(gtf.RACEEX).licensecheck(racesettings, racedetails, finalgrid, embed, msg, userdata)
           }
 /*
   if (racesettings["mode"] == "LICENSE") {
@@ -424,7 +417,6 @@ function race2func(msg) {
 
     var progress = setInterval(function () {
       
-    console.log(racesettings["distance"])
       check();
       if (userdata["raceinprogress"]["expire"] <= new Date().getTime() || !userdata["raceinprogress"]["active"]) { 
         clearInterval(progress);

@@ -27,14 +27,12 @@
   "messages": ["__**❗ Quick Tip**__: For some manufacturers, you need to have an invitation before purchasing cars from that manufacturer. Invitations can be earned via completing **Gold** in special **Time Trials** for that manufacturer."]
   }
 ],
-  "course": [
-  {"id": 1,
+  "course": [{"id": 1,
   "unlock": [],
   "ignore": [[]],
   "required": [[]],
   "messages": ["You can create your own courses with the GTF Course Maker!", "You can create your own courses by using **/course - Generate Course** and using the parameters used in the slash command menu. You are able to create circuit & sprint courses on asphalt, gravel, and snow.", "Course Maker courses can be used in Arcade mode. Check out <> for more information."]
-  }
-],
+  }],
   "daily": [
   {"id": 1,
   "unlock": [],
@@ -50,5 +48,42 @@
   "required": [["garage", ">=", 1]],
   "messages": ["Welcome to your garage where you can manage all of your garage!", "Viewing your cars, their car details, and inspecting their conditions will be crucial into become a professional GTF driver. You can also sell your cars here."]
   }
-]
+],
+  "license": [ {"id": 1,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["license", "==", "N"]],
+  "messages": ["Welcome to the license center where you can take license tests & learn driving techniques that will help you become a racing driver." , "In order to earn a license, you must achieve at least Bronze in a set of license tests.", "Licenses will help you unlock events to continue your career.", "Now, the first step is to achieve your B License. Good luck! If you are have any difficulties, increasing your experience level will help improve your driving skills in license tests.", "Did I tell you that there are car prizes?"]
+  },
+    {"id": 2,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["license", "==", "B"]],
+  "messages": ["Congrats on getting your first license! I hope you'll enjoy your first set of B level races. ","The A License is the next license for you to achieve. These set of tests are a bit more difficult than B, so I recommend starting once you reach **Lv.5**; however, this is not a requirement and you may freely try them at your own pace."]
+  },
+      {"id": 3,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["license", "==", "A"]],
+  "messages": ["Good job, you have an A License!", "Your next objective in the License Center is earning an IC License, which stands for International C. This set of tests contain some offroad and rainy sections, so I recommend reaching **Lv.10**. And unlike other tests, there is only 5 that you need to pass, but the final test will push you to the utmost limit!"]
+  },
+    {"id": 4,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["license", "==", "IC"]],
+  "messages": ["I hope you enjoyed your IC License!" , "The IB License is up next in the License Center. There are some advanced corners and faster sports cars that you need to master. **Lv.20** is the experience level that I would recommend before attempting, good luck!"]
+  },
+    {"id": 5,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["license", "==", "IB"]],
+  "messages": ["Great job on obtaining your IB License, it may be difficult for some!", "The IA License is coming up and there some tough tests to master, including driving race cars! **Lv.25** is recommended for the IA License, good luck!"]
+  },
+    {"id": 6,
+  "unlock": [],
+  "ignore": [[]],
+  "required": [["license", "==", "IA"]],
+  "messages": ["This are the final set of tests, the S License or the Super License! These are the most difficult tests that you will encounter in GT Fitness. Use all the skills you have learned, good luck!"]
+  }
+  ]
 }

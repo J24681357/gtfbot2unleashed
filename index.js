@@ -51,7 +51,7 @@ module.exports.embedcounts = {};
 module.exports.bot = gtfbot;
 module.exports.emote = emote;
 
-//gtftools.updateallsaves("GTF2SAVES", {})
+gtftools.updateallsaves("GTF2SAVES", {})
 
 var listinmaint = [];
 client.commands = {};

@@ -12,20 +12,25 @@ module.exports.condition = function (gtfcar) {
   var conditions = [gtfcar["condition"]["oil"], 
                     gtfcar["condition"]["engine"], 
                     gtfcar["condition"]["transmission"],
-                    gtfcar["condition"]["suspension"] ,gtfcar["condition"]["body"]]
+                    gtfcar["condition"]["suspension"] ,gtfcar["condition"]["body"]].map(function(x) {
+   if (x <= 0) {
+     x = 0
+   }
+      return x
+        })
   var weights = [0.06, 0.28, 0.13, 0.13, 0.2]
   var conditionavg = require(gtf.MATH).weightedaverage(conditions, weights)
   var icon = emote.carexcellent
   var name = "Excellent"
-  if (conditionavg <= 70) {
+  if (conditionavg < 70) {
     icon = emote.carnormal
     name = "Normal"
   }
-  if (conditionavg <= 45) {
+  if (conditionavg < 45) {
     icon = emote.carworn
     name = "Worn"
   } 
-  if (conditionavg <= 20) {
+  if (conditionavg < 20) {
     icon = emote.carbad
     name = "Bad"
   } 
@@ -48,15 +53,18 @@ module.exports.updatecondition = function(number, condition, userdata) {
   var conditionlist = userdata["garage"][stats.currentcarnum(userdata) - 1]["condition"];
 
   if (condition == "all") {
-    for (var i = 0; i < Object.keys(conditionlist); i++) {
-      condition = conditionlist[conditionlist[i]]
-       conditionlist[condition] = number
+    var keys = Object.keys(conditionlist)
+    for (var i = 0; i < keys.length; i++) {
+      conditionlist[keys[i]] = number
     }
   } else {
-  conditionlist[condition] = conditionlist[condition] + number
+  conditionlist[condition] = Math.round(conditionlist[condition] + number)
 
   if (conditionlist[condition] >= 100) {
     conditionlist[condition] = 100
+  }
+  if (conditionlist[condition] <= 0) {
+    conditionlist[condition] = 0
   }
   }
   userdata["garage"][stats.currentcarnum(userdata) - 1]["condition"] = conditionlist

@@ -501,7 +501,6 @@ module.exports.creategrid = function (racesettings, special) {
   var lowerpower = regulations["lowerpower"];
   var upperweight = regulations["upperweight"];
   var lowerweight = regulations["lowerweight"];
-  
   var special = regulations["special"]
   var prohibited = regulations["prohibited"]
   var grid = [];
@@ -918,7 +917,7 @@ finalgrid.slice().sort(function(a,b) {
   var exp = Math.round(prize / 20);
   //////CAREER/////
   if (racesettings["mode"] == "CAREER") {
-    exp = Math.round(Math.round(prize / 20) * 1.6);
+    exp = Math.round(Math.round(prize / 20) * 1.5);
   }
 
   if (stats.racemulti(userdata) > 1) {
@@ -1063,7 +1062,10 @@ module.exports.careerraceselect = function (event, query, callback, embed, msg, 
   var functionlist = []
 
   ////
-  var index = 0
+  var index = 0  
+  var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]]});
+  var repair = require(gtf.CONDITION).condition(gtfcar)["health"] < 70
+  var repaircost = 0
     for (index; index < tracks.length; index++) {
       if (event["championship"]) {
       emojilist.push({
@@ -1086,13 +1088,31 @@ module.exports.careerraceselect = function (event, query, callback, embed, msg, 
       
     }
     emojilist.push({
-        emoji: emote.credits, 
-        emoji_name: "credits",
-        name: "Prizes",
+        emoji: "🏆", 
+        emoji_name: "🏆",
+        name: "Standings",
         extra: "",
         button_id: index
     })
     index++
+    if (repair) {
+       var parts = ["Engine Repair", "Transmission Repair", "Suspension Repair", "Body Damage Repair"]
+      var costs = []
+      for (var x = 0; x < parts.length; x++) {
+        var type = parts[x]
+        var part = require(gtf.PARTS).find({ type: type })[0];
+        costs.push(require(gtf.PARTS).costcalc(part, gtfcar, ocar))
+      }
+      repaircost = Math.round(require(gtf.MATH).sum(costs))
+      emojilist.push({
+        emoji: "🛠", 
+        emoji_name: "🛠",
+        name: "Repair " + gtftools.numFormat(repaircost) + " Cr",
+        extra: "",
+        button_id: index
+    })
+    index++
+    }
     emojilist.push({
         emoji: emote.exit, 
         emoji_name: "gtfexit",
@@ -1185,6 +1205,19 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
               stats.redeemgift(emote.goldmedal + " Congrats! Completed " + event["title"] + " " + emote.goldmedal, event["prize"], embed, msg, userdata);
                 }
      }, 3000)
+    
+    function repaircar() {
+      //////
+      require(gtf.CONDITION).updatecondition(100, "all", userdata) 
+      stats.addcredits(-repaircost, userdata);
+
+      embed.setDescription(results + "\n\n" + "✅ Car repaired. **" + gtftools.numFormat(repaircost) + emote.credits + "**")
+      embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}])
+      stats.save(userdata)
+        repaircost = 0
+        msg.edit({embeds:[embed]})
+      }
+
     function creditrewards() {
       //////
       if (screen == true) {
@@ -1227,6 +1260,9 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
       functionlist.push(func)
     }
     functionlist.push(creditrewards)
+    if (repair) {
+       functionlist.push(repaircar)
+    }
     if (event["eventid"].includes("seasonal")) {
       functionlist.push(function(){
       require(dir + "commands/seasonal").execute(msg, {options:"list"}, userdata);
@@ -1326,7 +1362,6 @@ module.exports.preracedetails = function(racesettings, embed, msg, userdata) {
   }
 
   if (racesettings["type"] == "TIMETRIAL") {
-    console.log(racesettings["distance"]["km"])
     var lapntime = "**Distance:** " + [racesettings["distance"]["km"] + " km", racesettings["distance"]["mi"] + " mi"][userdata["settings"]["UNITS"]] + "\n"
   } 
   var racedetails = "__Session Details__" + "\n" +

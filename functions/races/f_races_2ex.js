@@ -200,6 +200,39 @@ module.exports.onlineracelength = function (racesettings, racedetails, finalgrid
 };
 
 ///////TIMETRIAL///////
+module.exports.licensecheck = function (racesettings, racedetails, finalgrid, embed, msg, userdata) {
+  var embed = new EmbedBuilder()
+  var option = racesettings["eventid"].replace("LICENSE", "").toLowerCase().split("-")[0]
+  var licenses = [...require(gtf.CAREERRACES).find({types: [ "LICENSE" + option] })]
+  var ids = Object.keys(licenses)
+         var bronzecomplete = stats.checklicensetests(option, "3rd", userdata);
+         var goldcomplete = stats.checklicensetests(option, "1st", userdata);
+        if (bronzecomplete && !stats.checklicense(option, "", msg, userdata)) {
+          stats.completelicense(option.toUpperCase(), userdata);
+          var option = option.toLowerCase()
+            var total = 6
+            if (option.includes("ic")) {
+              total = 4
+            }
+          var prize = licenses[ids[total-1]]["prize"]
+          stats.redeemgift("🎉 License " + option.toUpperCase() + " Achieved 🎉", prize, embed, msg, userdata);
+        }
+        if (goldcomplete) {
+          var option = option.toLowerCase()
+            var total = 6
+            if (option.includes("ic")) {
+              total = 4
+            }
+          var args = licenses[ids[total]]["prize"]["item"]
+          var car = require(gtf.CARS).random(args, 1)[0];
+          stats.addgift({
+      id: -1, type:"CAR", name: "License " + option.toUpperCase() + ": All Gold Reward", item: car, author: "GT FITNESS", inventory: true }, userdata)
+  
+        }
+  }
+
+
+////
 
 module.exports.timetrialracelength = function (racesettings, racedetails, finalgrid, checkpoint, difficulty, embed, msg, userdata) {
   var showcar =
@@ -239,6 +272,9 @@ var gold = (racelength * 0.94) + ((racelength * 0.94) * (jstat.gamma.mean(11, be
   
  var beta = 0.5 - (0.2 * ((stats.level(userdata)/50)))
 racelength = (racelength * 0.94) + ((racelength * 0.94) * (jstat.gamma.sample(11, beta)/10))
+  if (racelength < racesettings["positions"][0]["time"]) {
+    racelength = racelength + ((racesettings["positions"][0]["time"]-racelength)/3)
+  }
   return [showcar, racelength];
 };
 
@@ -255,7 +291,7 @@ module.exports.timetriallap = function (racesettings, racedetails, finalgrid, ch
   }
   var time = parseFloat(racelength)
   if (gtftools.randomInt(1,100) <= rfail) {
-    time = 0
+    time = 3600000
   }
 
       finalgrid[0]["laps"] = Object.assign([], userdata["raceinprogress"]["gridhistory"][0][0]["laps"])
@@ -272,7 +308,7 @@ module.exports.timetriallap = function (racesettings, racedetails, finalgrid, ch
          var medals = ["GOLD", "SILVER", "BRONZE"]
          var medalemotes = [emote.goldmedal, emote.silvermedal, emote.bronzemedal]
          for (var x = 0; x < medals.length; x++) {
-            if (newlap == 0) {
+            if (newlap["time"] == 3600000) {
               newlap["medal"] = "FAIL"
               newlap["medalemote"] = "❌"
               break;
@@ -285,7 +321,7 @@ module.exports.timetriallap = function (racesettings, racedetails, finalgrid, ch
          }
          finalgrid[0]["laps"].push(newlap)
          
-         var besttimeindex = finalgrid[0]["laps"].indexOf(finalgrid[0]["laps"].slice().sort(function (a, b) {return a.time - b.time})[0])
+         var besttimeindex = finalgrid[0]["laps"].indexOf(finalgrid[0]["laps"].slice().sort(function (a, b) {return a.time - b.time}).filter(x=> x["medal"] != "FAIL" || x["medal"] != "NONE")[0])
           finalgrid[0]["laps"].map(function(x, index) {
             if (index == besttimeindex) {
               x["best"] = true
@@ -316,16 +352,14 @@ module.exports.timetrialresults = function (racesettings, racedetails, finalgrid
   var places = ["3rd", "2nd", "1st"]
   var prize = 0
   var racemultibonus = ""
-  var oldraceplace = "4th"
   
   var eventid = racesettings["eventid"].replace("LICENSE", "").toLowerCase()
-  var currentnumber = userdata["licenses"][eventid][0];
+  var current = userdata["licenses"][eventid][0];
 
-  if (currentnumber == 0) {
-  } else if (currentnumber == "✅") {
-    oldraceplace = "1st"
-  } else {
-   oldraceplace = parseInt(currentnumber.split(/[A-Z]/gi)[0])
+  if (current == 0) {
+    current = "4th"
+  } else if (current == "✅") {
+    current = "1st"
   }
 
   if (bestlap["medal"] == "BRONZE") {
@@ -339,9 +373,9 @@ module.exports.timetrialresults = function (racesettings, racedetails, finalgrid
   for (var i = 0; i < places.length; i++) {
     console.log(place)
     console.log(parseInt(places[i].split(/[A-Z]/gi)[0]))
-    console.log(oldraceplace)
-    if (parseInt(places[i].split(/[A-Z]/gi)[0]) < oldraceplace && place != "4th") {
-      console.log(racesettings["positions"][(places.length-1)-i]["credits"])
+    console.log(parseInt(current.split(/[A-Z]/gi)[0]))
+    if (parseInt(places[i].split(/[A-Z]/gi)[0]) < parseInt(current.split(/[A-Z]/gi)[0]) && place != "4th") {
+      console.log("OK")
       prize = prize + racesettings["positions"][(places.length-1)-i]["credits"]
     }
     if (places[i] == place) {
@@ -373,7 +407,6 @@ module.exports.timetrialresults = function (racesettings, racedetails, finalgrid
   var results2 = "**Best Lap:** " + require(gtf.DATETIME).getFormattedLapTime(bestlap["time"]) + " **" + mileage[userdata["settings"]["UNITS"]] + ["km", "mi"][userdata["settings"]["UNITS"]] + emote.mileage + "\n" + 
    require(gtf.DATETIME).getFormattedLapTime(bestlap["medalemote"]) + " " + require(gtf.DATETIME).getFormattedLapTime(bestlap["medal"]) + " +" + gtftools.numFormat(prize) + emote.credits + " +" + gtftools.numFormat(exp) + emote.exp + "**"
   
-console.log(results2)
 /* else {
   var results2 = "**Best Lap In Session: **" + require(gtf.DATETIME).getFormattedLapTime(bestlap["time"]) +  " **+" + mileage[userdata["settings"]["UNITS"]] + " " + ["km", "mi"][userdata["settings"]["UNITS"]] + emote.mileage + "**"
 }(/)
@@ -570,12 +603,12 @@ module.exports.createfinalbuttons = function (racesettings, racedetails, finalgr
    gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
 };
 
-module.exports.updategrid = function (racesettings, racedetails, finalgrid, checkpoint, timeinterval, message, embed, msg, userdata) {
+module.exports.updategrid = function (racesettings, racedetails, finalgrid, checkpoint, timeinterval, number, message, embed, msg, userdata) {
   
   var playerpos = 0
   var difficulty = racesettings["difficulty"]
   var boost = 0
-  var weather = userdata["raceinprogress"]["weatherhistory"][i]
+  var weather = userdata["raceinprogress"]["weatherhistory"][number]
   
   if (racesettings["mode"] == "CAREER") {
     difficulty = require(gtf.PERF).careerdifficultycalc(difficulty, weather, racesettings)[0]
@@ -660,7 +693,6 @@ if (gtftools.randomInt(1,10) <= 2) {
     return x
   })
   var xx = finalgrid.filter(x => x["user"] == true)[0]
-  
 
   return message
 

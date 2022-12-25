@@ -95,13 +95,17 @@ module.exports = {
       }
     }
 
+    if (query["fpplimit"] === undefined) {
+      query["fpplimit"] = 9999
+    }
+
     delete query["manufacturer1"];
+    delete query["manufacturer2"];
+    delete query["manufacturer3"];
     delete query["type1"];
     delete query["drivetrain1"];
     delete query["engine1"];
     delete query["special1"];
-    delete query["manufacturer2"];
-    delete query["manufacturer3"];
 
     var sort = userdata["settings"]["DEALERSORT"];
 
@@ -159,7 +163,7 @@ module.exports = {
     if (query["options"] == "select" || query["options"] == "selectused") {
       
       if (typeof query["manufacturer"] !== "undefined" || typeof query["type"] !== "undefined" || typeof query["drivetrain"] !== "undefined" || typeof query["engine"] !== "undefined" || typeof query["special"] !== "undefined") {
-        var term = { makes: query["manufacturer"], types: query["type"], drivetrains: query["drivetrain"], engines: query["engine"], special: query["special"], sort: sort };
+        var term = { makes: query["manufacturer"], types: query["type"], drivetrains: query["drivetrain"], engines: query["engine"], special: query["special"], upperfpp: query["fpplimit"], sort: sort };
 
         if (searchname.length != 0) {
           term["fullname"] = [searchname];
@@ -184,6 +188,8 @@ module.exports = {
             x["discount"] = discount
             return x
           })
+        } else if (query["options"] == "selectrecommended") {
+          
         } else {
           var list = require(gtf.CARS).find(term);
         }

@@ -49,14 +49,12 @@ module.exports = {
     if (require(gtf.EMBED).checkgarageerror(embed, msg, userdata)) {
       return;
     }
-/*
-    if (parseFloat(stats.mileage(userdata)[0]) < 42.1 && parseFloat(stats.mileage(userdata)[1]) < 26.2) {
+    if (stats.mileage(userdata) < 42.10) {
       var mile = ["42.1 km", "26.2 mi"]
       var m = "**Mileage: " + userdata["mileage"][userdata["settings"]["UNITS"]] + [" km", " mi"][userdata["settings"]["UNITS"]] + emote.mileage + " -> " + mile[userdata["settings"]["UNITS"]] + emote.mileage + "**"
       require(gtf.EMBED).alert({ name: "❌ Insufficient Mileage", description: "You are unable to earn your daily workout car because you have not drove " + mile[userdata["settings"]["UNITS"]] + "." + "\n" + m, embed: "", seconds: 0 }, msg, userdata);
       return;
     }
-    */
 
     stats.setdailyworkout(true, userdata)
 

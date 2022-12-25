@@ -141,6 +141,11 @@ module.exports.perf = function (gtfcar, condition) {
       sell += require(gtf.MARKETPLACE).sellcalc(aeropart["cost"]);
     }
     ///////
+    var oil = gtfcar["condition"]['oil']
+    if (oil <= 60) {
+      power = power - (power * (0.05 * ((60-oil)/60) ) )
+    }
+    ///////
 
     var offset_dt = 1;
     if (drivetrain == "FF") {

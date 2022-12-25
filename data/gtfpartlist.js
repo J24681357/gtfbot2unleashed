@@ -215,26 +215,25 @@ module.exports.costcalc = function (part, gtfcar, ocar) {
   if (part["type"] == "Tires" || part["type"] == "Car Wash") {
     return part["cost"]
   }
-  console.log(ocar)
   var discount = require(gtf.PERF).perf(ocar, "DEALERSHIP")["fpp"]/500
   if (discount > 1) {
      discount = discount ** 2
   }
   if (part["type"] == "Engine Repair") {
     var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.28)
-    return require(gtf.MATH).round(totalcost * ((100-gtfcar["condition"]["engine"]) / 100), 2)
+    return Math.round(totalcost * ((100-gtfcar["condition"]["engine"]) / 100))
   }
   if (part["type"] == "Transmission Repair") {
     var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.13)
-    return require(gtf.MATH).round(totalcost * ( (100 -gtfcar["condition"]["transmission"]) / 100), 2)
+    return Math.round(totalcost * ( (100 -gtfcar["condition"]["transmission"]) / 100))
   }
   if (part["type"] == "Suspension Repair") {
     var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.13)
-    return require(gtf.MATH).round(totalcost * ((100 - gtfcar["condition"]["suspension"]) / 100), 2)
+    return Math.round(totalcost * ((100 - gtfcar["condition"]["suspension"]) / 100))
   }
   if (part["type"] == "Body Damage Repair") {
     var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.2)
-    return require(gtf.MATH).round(totalcost * ((100-gtfcar["condition"]["body"]) / 100), 2)
+    return Math.round(totalcost * ((100-gtfcar["condition"]["body"]) / 100))
   }
   return Math.round(part["cost"] * discount / 100) *100
 };

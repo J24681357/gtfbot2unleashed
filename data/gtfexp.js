@@ -19,6 +19,29 @@ module.exports.checklevel = function (level, embed, msg, userdata) {
   }
 };
 
+module.exports.createexpbar = function (userdata) {
+  var progress = userdata["settings"]["ICONS"]["bar"][0];
+    var progressb = userdata["settings"]["ICONS"]["bar"][1];
+    var expbar = [progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb];
+    
+    var nextlevel = stats.level(userdata) + 1;
+    if (nextlevel >= 50) {
+      nextlevel = 50;
+    }
+    var nextlevelexp = require(gtf.LISTS).gtfexp[nextlevel.toString()]["exp"];
+
+    var curr = stats.level(userdata)
+    var currexp = stats.exp(userdata);
+    var currlevelexp = require(gtf.LISTS).gtfexp[curr.toString()]["exp"];
+    for (var i = 0; i < expbar.length; i++) {
+      if (currlevelexp <= currexp) {
+        currlevelexp += nextlevelexp / 10
+        expbar[i] = progress;
+      }
+    }
+  return expbar
+}
+
 module.exports.islevelup = function (userdata) {
   var exp = stats.exp(userdata);
   var level = stats.level(userdata);

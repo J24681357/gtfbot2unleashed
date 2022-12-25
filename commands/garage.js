@@ -125,7 +125,7 @@ module.exports = {
         list = cars.map(function(i, index) {
           var favorite = i["favorite"] ? " ⭐" : ""
           var name = require(gtf.CARS).shortname(i["name"])
-          carname = "`" + (index + 1) + ".` " + name + " " + require(gtf.CONDITION).condition(i)["emote"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
+          carname = name + " " + require(gtf.CONDITION).condition(i)["emote"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
           if (stats.currentcarnum(userdata) == index+1)  {
             carname = "`🚘" + (index + 1) + "` **" + name + "** **" + i["fpp"] + emote.fpp + "**" + favorite 
           }
@@ -133,7 +133,7 @@ module.exports = {
             carname = "`🚘" + (index + 1) + "` " + name + " **" + i["fpp"] + emote.fpp + "**" + favorite
           }
           if (name != "") {
-            carname = "`" + (index + 1) + ".` " + name + " " + require(gtf.CONDITION).condition(i)["emote"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
+            carname = name + " " + require(gtf.CONDITION).condition(i)["emote"] + " **" + i["fpp"] + emote.fpp + "**" + favorite
           }
           return carname
         })

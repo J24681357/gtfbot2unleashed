@@ -581,23 +581,23 @@
       }
     ],
     "startposition": 8,
-   "tracks": [
-			[
-				1,
-				"Trial Mountain Circuit",
-				2
-			],
-			[
-				2,
-				"Alsace - Test Course Reverse",
-				4
-			],
-			[
-				3,
-				"Goodwood Motor Circuit",
-				3
-			]
-		],
+    "tracks": [
+      [
+        1,
+        "Trial Mountain Circuit",
+        2
+      ],
+      [
+        2,
+        "Alsace - Test Course Reverse",
+        4
+      ],
+      [
+        3,
+        "Goodwood Motor Circuit",
+        3
+      ]
+    ],
     "type": "LAPS",
     "time": [
       "Day",
@@ -616,7 +616,7 @@
     "gridstart": "STANDING",
     "difficulty": 90,
     "damage": true,
-    "bop": true,
+    "bop": false,
     "championship": true,
     "car": "GARAGE",
     "regulations": {
@@ -680,23 +680,23 @@
       }
     ],
     "startposition": 10,
-   "tracks": [
-			[
-				1,
-				"Autumn Ring",
-				4
-			],
-			[
-				2,
-				"Autodromo Nazionale Monza",
-				2
-			],
-			[
-				3,
-				"Watkins Glen International - Short Course",
-				3
-			]
-		],
+    "tracks": [
+      [
+        1,
+        "Autumn Ring",
+        4
+      ],
+      [
+        2,
+        "Autodromo Nazionale Monza",
+        2
+      ],
+      [
+        3,
+        "Watkins Glen International - Short Course",
+        3
+      ]
+    ],
     "type": "LAPS",
     "time": [
       "Day",
@@ -707,7 +707,7 @@
     "weather": [
       "Clear",
       "Partly Cloudy",
-	  "Cloudy"
+      "Cloudy"
     ],
     "weatherchange": 0,
     "grid": [
@@ -746,8 +746,8 @@
 
       ],
       "types": [
-            "Production",
-			"Aftermarket"
+        "Production",
+        "Aftermarket"
       ],
       "special": [
 
@@ -774,23 +774,23 @@
       }
     ],
     "startposition": 10,
-   "tracks": [
-			[
-				1,
-				"Twin Ring Motegi - Road Course",
-				2
-			],
-			[
-				2,
-				"Trial Mountain Circuit",
-				2
-			],
-			[
-				3,
-				"Autodromo De Interlagos",
-				3
-			]
-		],
+    "tracks": [
+      [
+        1,
+        "Twin Ring Motegi - Road Course",
+        2
+      ],
+      [
+        2,
+        "Trial Mountain Circuit",
+        2
+      ],
+      [
+        3,
+        "Autodromo De Interlagos",
+        3
+      ]
+    ],
     "type": "LAPS",
     "time": [
       "Day",
@@ -801,7 +801,7 @@
     "weather": [
       "Clear",
       "Partly Cloudy",
-	  "Cloudy"
+      "Cloudy"
     ],
     "weatherchange": 0,
     "grid": [
@@ -840,8 +840,8 @@
 
       ],
       "types": [
-            "Production",
-			"Aftermarket"
+        "Production",
+        "Aftermarket"
       ],
       "special": [
 
@@ -861,6 +861,301 @@
         ],
         "fullname": [
           "TVR Tuscan Speed 6 2000"
+        ]
+      }
+    }
+  },
+  "a3": {
+    "title": "FR Challenge",
+    "eventid": "A-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 6500
+      }
+    ],
+    "startposition": 10,
+    "tracks": [
+      [
+        1,
+        "WeatherTech Raceway Laguna Seca",
+        3
+      ],
+      [
+        2,
+        "Grand Valley Speedway",
+        2
+      ],
+      [
+        3,
+        "Brands Hatch - GP",
+        3
+      ]
+    ],
+    "type": "LAPS",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      12
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 75,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 450,
+      "upperfpp": 440,
+      "lowerfpp": 350,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Production",
+        "Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "CREDITS",
+      "item": 25000
+    }
+  },
+  "a4": {
+    "title": "MINI Challenge",
+    "eventid": "A-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 7500
+      }
+    ],
+    "startposition": 10,
+    "tracks": [
+      [
+        1,
+        "Goodwood Motor Circuit",
+        4
+      ],
+      [
+        3,
+        "Trial Mountain Circuit",
+        2
+      ],
+      [
+        2,
+        "London Circuit",
+        6
+      ]
+    ],
+    "type": "LAPS",
+    "time": [
+      "Day",
+      "Sunrise",
+      "Sunset"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      12
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 75,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 420,
+      "upperfpp": 410,
+      "lowerfpp": 230,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+        "Mini"
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Production",
+        "Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Mini"
+        ],
+        "fullname": [
+          "Mini Cooper S Works Rally Car 1964"
+        ]
+      }
+    }
+  },
+  "a5": {
+    "title": "GT National Championship",
+    "eventid": "A-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 30000
+      }
+    ],
+    "startposition": 14,
+    "tracks": [
+      [
+        1,
+        "Tokyo R246",
+        2
+      ],
+      [
+        2,
+        "Silverstone - International Circuit",
+        3
+      ],
+      [
+        3,
+        "Grand Valley Speedway",
+        2
+      ],
+      [
+        4,
+        "Dragon Trail - Seaside",
+        2
+      ]
+    ],
+    "type": "LAPS",
+    "time": [
+      "Day",
+      "Sunrise",
+      "Sunset"
+    ],
+    "timeprogression": 5,
+    "weather": [
+      "Clear",
+      "Partly Cloudy"
+    ],
+    "weatherchange": 40,
+    "grid": [
+      14
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 70,
+    "damage": true,
+    "bop": false,
+    "championship": true,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 500,
+      "upperfpp": 480,
+      "lowerfpp": 350,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Porsche"
+        ],
+        "fullname": [
+          "Porsche Cayman GT4 (718) 2019"
         ]
       }
     }
@@ -1376,7 +1671,7 @@
 
       ]
     },
-   "prize": {
+    "prize": {
       "id": -1,
       "name": "",
       "type": "RANDOMCAR",
@@ -1465,7 +1760,7 @@
 
       ]
     },
- "prize": {
+    "prize": {
       "id": -1,
       "name": "",
       "type": "RANDOMCAR",
@@ -2003,14 +2298,16 @@
 
       ]
     },
-   "prize": {
+    "prize": {
       "id": -1,
       "name": "",
       "type": "RANDOMCAR",
       "item": {
         "upperfpp": 450,
         "lowerfpp": 420,
-        "types": ["Production"]
+        "types": [
+          "Production"
+        ]
       }
     }
   },
@@ -2098,7 +2395,7 @@
 
       ]
     },
- "prize": {
+    "prize": {
       "id": -1,
       "name": "",
       "type": "RANDOMCAR",
@@ -2137,7 +2434,7 @@
       [
         1,
         "Special Stage Route 5 - Clubman Reverse",
-        "36.3%"
+        "22.9%"
       ]
     ],
     "type": "TIMETRIAL",
@@ -2159,7 +2456,7 @@
     "damage": false,
     "bop": false,
     "championship": false,
-    "car": "Toyota GR 86 2022",
+    "car": "Ford Mustang GT Premium Fastback 2015",
     "regulations": {
       "tires": "",
       "fpplimit": 9999,
@@ -2196,17 +2493,1637 @@
 
       ]
     },
- "prize": {
+    "prize": {
+
+    }
+  },
+  "licenseic2": {
+    "title": "License IC-2: Dirt Driving",
+    "eventid": "LICENSEIC-2",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 6000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 3000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 1000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Colorado Springs - Lake",
+        "29.4%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 80,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Toyota Tundra TRD Pro 2019",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+
+    }
+  },
+  "licenseic3": {
+    "title": "License IC-3: Starting & Stopping (Wet)",
+    "eventid": "LICENSEIC-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 6000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 3000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 1000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Special Stage Route X",
+        "1.32%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Storm"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 80,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Nissan Skyline GT-R V-Spec II Nur (R34) 2002",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+
+    }
+  },
+  "licenseic4": {
+    "title": "License IC-4: Driving In The Wet",
+    "eventid": "LICENSEIC-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 6000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 3000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 1000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Autodrome Lago Maggiore - GP Reverse",
+        "11.6%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Storm"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 80,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Toyota GR Yaris 2021",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "upperfpp": 520,
+        "lowerfpp": 490,
+        "types": [
+          "Production"
+        ]
+      }
+    }
+  },
+  "licenseic5": {
+    "title": "License IC-5: Final Test",
+    "eventid": "LICENSEIC-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 6000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 3000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 1000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Red Bull Ring",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Gran Turismo Red Bull X2014 Junior",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
       "id": -1,
       "name": "",
       "type": "RANDOMCAR",
       "item": {
         "makes": [
-          "Mazda"
+          "Toyota"
         ],
         "fullname": [
-          "Mazda Atenza Gr.3 Road Car (Gran Turismo) 2015"
+          "Toyota GR Supra GT4 2019"
         ]
+      }
+    }
+  },
+  "licenseib1": {
+    "title": "License IB-1: Advanced Cornering 1",
+    "eventid": "LICENSEIB-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 4000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 2000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Willow Springs - Big Willow",
+        "20.3%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Chevrolet Corvette Stingray (C7) 2014",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+
+    }
+  },
+  "licenseib2": {
+    "title": "License IB-2: Advanced Cornering 2",
+    "eventid": "LICENSEIB-2",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 4000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 2000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Cape Ring - Periphery",
+        "25.3%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Nissan GT-R SpecV 2009",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+
+    }
+  },
+  "licenseib3": {
+    "title": "License IB-3: Advanced Cornering 3",
+    "eventid": "LICENSEIB-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 4000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 2000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Citta di Aria",
+        "21.1%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "KTM X-Bow R 2012",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+
+    }
+  },
+  "licenseib4": {
+    "title": "License IB-4: Advanced Cornering 4",
+    "eventid": "LICENSEIB-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 4000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 2000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Sardegna - Road Track C",
+        "29.7%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Mercedes-Benz SLS AMG 2010",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+
+    }
+  },
+  "licenseib5": {
+    "title": "License IB-5: Driving In Snow",
+    "eventid": "LICENSEIB-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 4000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 2000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Chamonix - West",
+        "18.4%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Lancia Delta HF Integrale Evoluzione (Group A) 1992",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+
+    }
+  },
+  "licenseib6": {
+    "title": "License IB-6: Intermediate Driving",
+    "eventid": "LICENSEIB-6",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 4000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 2000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "WeatherTech Raceway Laguna Seca",
+        "15.8%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Dodge Charger SRT Hellcat 2015",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "upperfpp": 580,
+        "lowerfpp": 550,
+        "types": [
+          "Production",
+          "Aftermarket"
+        ]
+      }
+    }
+  },
+  "licenseib7": {
+    "title": "License IB-7: Final Test",
+    "eventid": "LICENSEIB-7",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 4000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 2000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Ascari - Full Track",
+        "40.0%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Alpine A110 GT4 2018",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+  "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Alpine"
+        ],
+        "fullname": [
+          "Alpine A110 GT4 2018"
+        ]
+      }
+    }
+  },
+  "licenseia1": {
+    "title": "License IA-1: High Speed Cornering 1",
+    "eventid": "LICENSEIA-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 9000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 4000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "High Speed Ring",
+        "29.9%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Lamborghini Aventador LP750 SV 2015",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+  "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Alpine"
+        ],
+        "fullname": [
+          "Alpine A110 GT4 2018"
+        ]
+      }
+    }
+  },
+  "licenseia2": {
+    "title": "License IA-2: High Speed Cornering 2",
+    "eventid": "LICENSEIA-2",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 9000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 4000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Watkins Glen International",
+        "26.6%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Chevrolet Corvette ZR1 (C7) 2019",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+  "prize": {}
+  },
+  "licenseia3": {
+    "title": "License IA-3: Consecutive Cornering (Race Car) 1",
+    "eventid": "LICENSEIA-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 9000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 4000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Circuit de la Sarthe",
+        "10.2%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Sunset"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Citroen GT Race Car (Gr.3) 2008",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+  "prize": {}
+  },
+  "licenseia4": {
+    "title": "License IA-4: Dirt Cornering (Rally Car)",
+    "eventid": "LICENSEIA-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 9000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 4000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Fishermans Ranch",
+        "12%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Sunset"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Audi Sport Quattro S1 Pikes Peak 1987",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+  "prize": {}
+  },
+  "licenseia5": {
+    "title": "License IA-5: Consecutive Corners 2",
+    "eventid": "LICENSEIA-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 9000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 4000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Autodromo Nazionale Monza",
+        "15.9%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Sunset"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Ferrari 488 GTB 2016",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+  "prize": {}
+  },
+  "licenseia6": {
+    "title": "License IA-6: Consecutive Corners (Race Car) 2",
+    "eventid": "LICENSEIA-6",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 9000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 4000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Grand Valley Speedway Reverse",
+        "35%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Mazda RX Vision GT3 Concept 2020",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+  "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": ["Maserati"],
+        "fullname": ["Maserati MC20 2022"]
+      }
+    }
+  },
+  "licenseia7": {
+    "title": "License IA-7: Final Test",
+    "eventid": "LICENSEIA-7",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 9000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 4000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Autodromo De Interlagos",
+        "38.4%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 40,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "McLaren MP4-4 1988",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "types": ["Race Car: GT3"]
       }
     }
   },
@@ -2219,41 +4136,41 @@
         "credits": 8000
       }
     ],
-   "startposition": 12,
-   "tracks": [
-			[
-				1,
-				"Special Stage Route 5",
-				4
-			],
-			[
-				2,
-				"Daytona Road Course",
-				3
-			],
-			[
-				3,
-				"Tokyo Expressway - South Clockwise",
-				3
-			],
-			[
-				4,
-				"Broad Bean Raceway",
-				10
-			]
-		],
+    "startposition": 12,
+    "tracks": [
+      [
+        1,
+        "Special Stage Route 5",
+        4
+      ],
+      [
+        2,
+        "Daytona Road Course",
+        3
+      ],
+      [
+        3,
+        "Tokyo Expressway - South Clockwise",
+        3
+      ],
+      [
+        4,
+        "Broad Bean Raceway",
+        10
+      ]
+    ],
     "type": "LAPS",
     "time": [
       "Day",
       "Sunrise",
-      "Sunset", 
+      "Sunset",
       "Night"
     ],
     "timeprogression": 1,
     "weather": [
       "Clear",
       "Partly Cloudy",
-	    "Cloudy"
+      "Cloudy"
     ],
     "weatherchange": 0,
     "grid": [
@@ -2292,8 +4209,8 @@
 
       ],
       "types": [
-      "Production",
-			"Aftermarket"
+        "Production",
+        "Aftermarket"
       ],
       "special": [
 
@@ -2319,24 +4236,24 @@
         "credits": 9500
       }
     ],
-   "startposition": 8,
-   "tracks": [
-			[
-				1,
-				"Sardegna - Windmills",
-				4
-			],
-			[
-				2,
-				"Toscana",
-				4
-			],
-			[
-				3,
-				"Colorado Springs - Lake Reverse",
-				4
-			]
-		],
+    "startposition": 8,
+    "tracks": [
+      [
+        1,
+        "Sardegna - Windmills",
+        4
+      ],
+      [
+        2,
+        "Toscana",
+        4
+      ],
+      [
+        3,
+        "Colorado Springs - Lake Reverse",
+        4
+      ]
+    ],
     "type": "LAPS",
     "time": [
       "Day",
@@ -2347,14 +4264,14 @@
     "weather": [
       "Clear",
       "Partly Cloudy",
-	    "Cloudy"
+      "Cloudy"
     ],
     "weatherchange": 0,
     "grid": [
       8
     ],
     "gridstart": "STANDING",
-    "difficulty": 60,
+    "difficulty": 65,
     "damage": true,
     "bop": false,
     "championship": false,
@@ -2371,6 +4288,7 @@
       "upperyear": 9999,
       "loweryear": 0,
       "countries": [
+
       ],
       "makes": [
 
@@ -2381,16 +4299,19 @@
       "engines": [
 
       ],
-      "drivetrains": ["4WD"
+      "drivetrains": [
+        "4WD"
       ],
       "types": [
-      "Production",
-			"Aftermarket"
+        "Production",
+        "Aftermarket"
       ],
       "special": [
 
       ],
-      "prohibited": []
+      "prohibited": [
+
+      ]
     },
     "prize": {
       "id": -1,
@@ -2403,6 +4324,1008 @@
         "fullname": [
           "Volvo Polestar 1 2020"
         ]
+      }
+    }
+  },
+  "ic3": {
+    "title": "Stars & Stripes",
+    "eventid": "IC-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 10000
+      }
+    ],
+    "startposition": 10,
+    "tracks": [
+      [
+        1,
+        "Daytona International Speedway",
+        4
+      ],
+      [
+        2,
+        "Indianapolis Road Course",
+        3
+      ],
+      [
+        3,
+        "Blue Moon Bay Speedway - Infield A Reverse",
+        4
+      ]
+    ],
+    "type": "LAPS",
+    "time": [
+      "Day",
+      "Sunrise",
+      "Sunset",
+      "Night"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      14
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 65,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 550,
+      "upperfpp": 540,
+      "lowerfpp": 400,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+        "USA"
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Production",
+        "Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Chevrolet"
+        ],
+        "fullname": [
+          "Chevrolet Corvette Stingray (C8) 2020"
+        ]
+      }
+    }
+  },
+  "ic4": {
+    "title": "Porsche Cup",
+    "eventid": "IC-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 9000
+      }
+    ],
+    "startposition": 12,
+    "tracks": [
+      [
+        1,
+        "Circuit de Sainte-Croix - A",
+        2
+      ],
+      [
+        2,
+        "Autodrome Lago Maggiore - West End",
+        8
+      ],
+      [
+        3,
+        "Matterhorn - Riffelsee",
+        5
+      ],
+      [
+        4,
+        "Nurburgring Nordschleife",
+        1
+      ]
+    ],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 5,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      16
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 65,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 550,
+      "upperfpp": 520,
+      "lowerfpp": 300,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+        "Porsche"
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Production",
+        "Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Porsche"
+        ],
+        "fullname": [
+          "Porsche 911 GT3 RS (991) 2016"
+        ]
+      }
+    }
+  },
+  "ic5": {
+    "title": "GT Fitness Cup",
+    "eventid": "IC-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 45000
+      }
+    ],
+    "startposition": 14,
+   "tracks": [
+			[
+				1,
+				"Suzuka Circuit - East",
+				6
+			],
+			[
+				2,
+				"Top Gear - Test Track",
+				5
+			],
+			[
+				3,
+				"Circuit de Sainte-Croix - B Reverse",
+				2
+			],
+			[
+				4,
+				"Dragon Trail - Gardens",
+				4
+			]
+   ],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 10,
+    "weather": [
+      "Clear",
+      "Partly Cloudy"
+    ],
+    "weatherchange": 40,
+    "grid": [
+      14
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": true,
+    "bop": false,
+    "championship": true,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 570,
+      "upperfpp": 565,
+      "lowerfpp": 450,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Honda"
+        ],
+        "fullname": [
+          "Honda NSX Gr.4 2017"
+        ]
+      }
+    }
+  },
+  "ib1": {
+    "title": "Professional League",
+    "eventid": "IB-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 15000
+      }
+    ],
+    "startposition": 14,
+    "tracks": [
+			[
+				1,
+				"Sardegna - Road Track A Reverse",
+				4
+			],
+			[
+				2,
+				"Circuit de la Sarthe",
+				2
+			],
+			[
+				3,
+				"Indianapolis Road Course",
+				5
+			],
+			[
+				4,
+				"Cote d'Azur",
+				6
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "Day",
+      "Sunrise",
+      "Sunset",
+      "Night"
+    ],
+    "timeprogression": 5,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 5,
+    "grid": [
+      16
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 590,
+      "upperfpp": 580,
+      "lowerfpp": 450,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Production",
+        "Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "CREDITS",
+      "item": 75000
+    }
+  },
+  "ib2": {
+    "title": "Special Stage Tour",
+    "eventid": "IB-2",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 17000
+      }
+    ],
+    "startposition": 14,
+    "tracks": [
+			[
+				1,
+				"Special Stage Route 5",
+				5
+			],
+			[
+				2,
+				"Special Stage Route 5 Reverse",
+				5
+			],
+			[
+				3,
+				"Special Stage Route 7",
+				2
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "Night"
+    ],
+    "timeprogression": 5,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      16
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 55,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 580,
+      "upperfpp": 580,
+      "lowerfpp": 450,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Production",
+        "Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Dodge"
+        ],
+        "fullname": [
+          "Dodge Charger SRT Hellcat 2015"
+        ]
+      }
+    }
+  },
+  "ib3": {
+    "title": "Praga Cup",
+    "eventid": "IB-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 30000
+      }
+    ],
+    "startposition": 16,
+    "tracks": [
+      [
+				1,
+				"Silverstone - National Circuit",
+				12
+			],
+			[
+				2,
+				"Silverstone - GP",
+				15
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 5,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 10,
+    "grid": [
+      16
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 55,
+    "damage": true,
+    "bop": true,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 9999,
+      "upperfpp": 480,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+        "Praga"
+      ],
+      "models": [
+        "R1"
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "BAC"
+        ],
+        "fullname": [
+          "BAC Mono 2016"
+        ]
+      }
+    }
+  },
+  "ib4": {
+    "title": "Japanese Legends",
+    "eventid": "IB-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 19000
+      }
+    ],
+    "startposition": 14,
+    		"tracks": [
+			[
+				1,
+				"Tokyo Expressway - South Clockwise",
+				3
+			],
+			[
+				2,
+				"Kyoto Driving Park - Yamagiwa",
+				4
+			],
+			[
+				3,
+				"Fuji International Speedway",
+				4
+			],
+			[
+				3,
+				"Autopolis - Full Course",
+				4
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 5,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      16
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 55,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 550,
+      "upperfpp": 550,
+      "lowerfpp": 400,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+        "Japan"
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Lexus"
+        ],
+        "fullname": [
+          "Lexus RC F Track Edition 2020"
+        ]
+      }
+    }
+  },
+  "ib5": {
+    "title": "GT4 World Championship",
+    "eventid": "IB-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 110000
+      }
+    ],
+    "startposition": 16,
+		"tracks": [
+			[
+				1,
+				"Brands Hatch - GP",
+				5
+			],
+			[
+				2,
+				"Trial Mountain Circuit",
+				5
+			],
+			[
+				3,
+				"Circuit de Spa-Francorchamps",
+				5
+			],
+      	[
+				4,
+				"Twin Ring Motegi - Road Course",
+				5
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 10,
+    "weather": [
+      "R"
+    ],
+    "weatherchange": 20,
+    "grid": [
+      16
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 60,
+    "damage": true,
+    "bop": true,
+    "championship": true,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Race Car: GT4"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Saleen"
+        ],
+        "fullname": [
+          "Saleen S1 GT4 Concept 2019"
+        ]
+      }
+    }
+  },
+  "ia1": {
+    "title": "Premium Sports Lounge",
+    "eventid": "IA-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 25000
+      }
+    ],
+    "startposition": 16,
+		"tracks": [
+			[
+				1,
+				"Blue Moon Bay Speedway",
+				10
+			],
+			[
+				2,
+				"Nurburgring GP",
+				6
+			],
+			[
+				3,
+				"Cape Ring",
+				5
+			],
+			[
+				4,
+				"Suzuka Circuit",
+				5
+			],
+			[
+				5,
+				"Matterhorn - Rotenboden",
+				6
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 10,
+    "weather": [
+      "Clear", "Partly Cloudy", "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      20
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 640,
+      "upperfpp": 640,
+      "lowerfpp": 530,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+	  "Production",
+	  "Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "CREDITS",
+      "item": 110000
+    }
+  },
+  "ia2": {
+    "title": "Ferrari v Lamborghini",
+    "eventid": "IA-2",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 30000
+      }
+    ],
+    "startposition": 12,
+		"tracks": [
+			[
+				1,
+				"Autodrome Lago Maggiore - GP Reverse",
+				4
+			],
+			[
+				2,
+				"Sardegna - Road Track A",
+				4
+			],
+			[
+				3,
+				"Autodromo Nazionale Monza",
+				4
+			],
+			[
+				4,
+				"Circuito di Roma",
+				6
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 0,
+    "weather": [
+      "Clear", "Partly Cloudy", "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      12
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 630,
+      "upperfpp": 630,
+      "lowerfpp": 500,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+"Ferrari", "Lamborghini"
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+	  
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Ferrari"
+        ],
+        "fullname": [
+          "Ferrari F40 1992"
+        ]
+      }
     }
   }
-}}
+}

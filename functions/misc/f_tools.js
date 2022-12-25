@@ -98,7 +98,7 @@ module.exports.formpage = function (args, userdata) {
   page = page * args["rows"];
   while (x < args["rows"] && args["list"][x + page] !== undefined) {
     if (args["numbers"]) {
-      listnumber = (x + 1 + page).toString() + ". ";
+      listnumber = "`" + (x + 1 + page).toString() + ".` ";
     }
     if (!args["numbers"]) {
       listnumber = "";
@@ -1251,6 +1251,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
               userdata[json["addobject"][0]] = json["addobject"][1];
             }
             for (var i = 0; i < userdata["garage"].length; i++) {
+              i
               if (typeof json["fppupdate"] !== "undefined") {
                 if (json["fppupdate"]) {
                   userdata["garage"][i]["fpp"] = require(gtf.PERF).perf(userdata["garage"][i], "GARAGE")["fpp"];
@@ -1261,15 +1262,6 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
                   userdata["garage"][i]["name"] = json["newcarname"];
                 }
               }
-            }
-            userdata["stats"] = {
-            numcarpurchases: 0,
-            numgifts: 0,
-            numreplays: 0,
-            numcourses: 0,
-            numraces: 0,
-            numwins:0,
-            numparts: 0,
             }
 
             console.log("Saved for " + userdata["id"]);

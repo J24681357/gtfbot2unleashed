@@ -152,7 +152,7 @@ module.exports = {
             var total = 6
             if (option.includes("ic")) {
               total = 4
-              }
+            }
           var args = licenses[ids[total]]["prize"]["item"]
           var car = require(gtf.CARS).random(args, 1)[0];
           stats.addgift({

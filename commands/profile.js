@@ -40,30 +40,9 @@ module.exports = {
       }, msg, userdata)
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
 
-    //////////EXP//////////
-    var progress = userdata["settings"]["ICONS"]["bar"][0];
-    var progressb = userdata["settings"]["ICONS"]["bar"][1];
-    var expbar = [progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb, progressb];
-    
-    var nextlevel = stats.level(userdata) + 1;
-    if (nextlevel >= 50) {
-      nextlevel = 50;
-    }
-    var nextlevelexp = require(gtf.LISTS).gtfexp[nextlevel.toString()]["exp"];
-
-    var curr = stats.level(userdata)
-    var currexp = stats.exp(userdata);
-    var currlevelexp = require(gtf.LISTS).gtfexp[curr.toString()]["exp"];
-
-    for (var i = 0; i < expbar.length; i++) {
-      if (currlevelexp <= currexp) {
-        currlevelexp += nextlevelexp / 10
-        expbar[i] = progress;
-      }
-    }
-
-    //////////////////////
-
+    var expbar = require(gtf.EXP).createexpbar(userdata)
+    var nextlevel = (stats.level(userdata) + 1) >= 50 ? 50 : (stats.level(userdata) + 1)
+  
     embed.setTitle("👤 " + "__My Profile__");
 
     results =
@@ -84,14 +63,11 @@ module.exports = {
       " " +
       expbar.join("") +
       " " +
-      "Lv." +
-      nextlevel +
+      "Lv." + nextlevel +
       "\n" +
-      "**Total Distance Driven: ** " +
-      "**" + gtftools.numFormat(stats.totalmileage( userdata)[0])+
-      "** km | " +
-      "**" + gtftools.numFormat(stats.totalmileage( userdata)[1]) +
-      "** mi " +
+      "__**Total Distance Driven**__" +
+      "**" + stats.totalmileageuser(userdata) +
+      " " + stats.mileageunits(userdata) + "** " + 
       emote.mileage +
       "\n" +
      "__**Total Play Time**__ " +
@@ -179,11 +155,13 @@ embed.setThumbnail(msg.guild.members.cache.get(userdata["id"]).user.displayAvata
           var value = require(gtf.PERF).perf(car, "GARAGE")["value"]
     garagevalue += value;
 })
+        var numparts = userdata["stats"]["numwins"]
         var results = "**Garage Count:** " +
       stats.garagecount(userdata) +
       " Cars" + "\n" + 
       "**Favorite Car:** " + favcar["name"] + " " + "**" + favcar["totalmileage"][userdata["settings"]["UNITS"]] + stats.mileageunits(userdata) + "**" + emote.mileage + "\n" + 
-        "**Total Garage Value:** " + "**" + gtftools.numFormat(garagevalue) + "**" + emote.credits
+        "**Total Garage Value:** " + "**" + gtftools.numFormat(garagevalue) + "**" + emote.credits + "\n" + 
+        "**# of Parts Purchased:** " + "**" + gtftools.numFormat(numparts) + "**" + emote.credits
         embed.setDescription(results);
         msg.edit({embeds:[embed], components: buttons})
       }

@@ -53,11 +53,11 @@ module.exports = {
       return cmd.execute(msg, {}, userdata);
     }
 
-    if (parseFloat(stats.mileage(userdata)[0]) == 0) {
+    if (stats.mileage(userdata) == 0) {
       notifications.push("**🔔 You have not driven in the last 24 hours. Complete at least one session to increase your credits multiplier the next day!**");
     }
 
-    if (parseFloat(stats.mileage(userdata)[0]) > 42.1 && !userdata["dailyworkout"]) {
+    if (stats.mileage(userdata) > 42.1 && !userdata["dailyworkout"]) {
       notifications.push("**🔔 You have enough daily mileage to receive your daily workout! Use __/daily__ to redeem.**");
     }
     if (stats.gifts(userdata).length >= 1) {
