@@ -63,6 +63,10 @@ module.exports = {
     } else {
       query["manufacturer"] = query["manufacturer"][0].replace(/,/g, "-")
     }
+        
+    if (typeof query["country1"] !== 'undefined') {
+      filterlist.push(function(x) {return require(gtf.CARS).get({ make: [x["make"]], fullname: [x["name"]], year: [x["year"]] })["country"].includes(query["country1"])})
+    }
     
     if (typeof query["type1"] !== 'undefined') {
       filterlist.push(function(x) {return require(gtf.CARS).get({ make: [x["make"]], fullname: [x["name"]], year: [x["year"]] })["type"].includes(query["type1"])})
@@ -100,6 +104,7 @@ module.exports = {
     }
     
     var makee = (typeof query["manufacturer"] == 'undefined') ? "" : " (" + query["manufacturer"] + ")"
+  var country = (typeof query["country1"] == 'undefined') ? "" : " (" + query["country1"] + ")"
     var type = (typeof query["type1"] == 'undefined') ? "" : " (" + query["type1"] + ")"
     var drivetrain = (typeof query["drivetrain1"] == 'undefined') ? "" : " (" + query["drivetrain1"] + ")"
     var engine = (typeof query["engine1"] == 'undefined') ? "" : " (" + query["engine1"] + ")"
@@ -116,7 +121,7 @@ module.exports = {
 
     if (query["options"] == "list") {
        delete query["number"]
-      embed.setTitle("🏠" + " __Garage: " + stats.garagecount(userdata) + "/" + require(gtf.GTF).garagelimit + " Cars (" + userdata["settings"]["GARAGESORT"] + ")" + makee + type + drivetrain + engine + special + name + "__");
+      embed.setTitle("🏠" + " __Garage: " + stats.garagecount(userdata) + "/" + require(gtf.GTF).garagelimit + " Cars (" + userdata["settings"]["GARAGESORT"] + ")" + makee + country + type + drivetrain + engine + special + name + "__");
         var cars = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))
         if (cars.length == 0) {
           require(gtf.EMBED).alert({ name: "❌ No Cars", description: "There are no cars with this type in your garage.", embed: "", seconds: 3 }, msg, userdata);

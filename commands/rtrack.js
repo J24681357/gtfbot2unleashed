@@ -100,7 +100,7 @@ module.exports = {
       }
     }*/
     embed.setDescription("**" + track["name"] + "**" + " `" + track["type"] + "`\n\n" + 
-    "**Length:** " + track["length"] + "km | " + (Math.round(100 * (track["length"] / 1.609)) / 100) + "mi " + "\n" + 
+    "**Length:** " + track["length"] + "km | " + require(gtf.MATH).round( (track["length"]  * 0.62137119), 2) + "mi " + "\n" + 
     "**Latest Version:** " + track["version"] + "\n" + 
     "**Corners:** " + track["corners"] + extra);
     //

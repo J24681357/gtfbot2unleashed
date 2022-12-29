@@ -124,7 +124,7 @@ module.exports = {
     }
 
        if (query["options"] == "clear") {
-      results = "⚠ Do you want to clear all items? This is permanent and you will not redeem any rewards from them.";
+      results = "⚠ Do you want to clear all gifts? This is permanent and you will not redeem any rewards from them.";
       embed.setDescription(results);
       embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}]);
   var emojilist = [
@@ -140,7 +140,7 @@ module.exports = {
    function itemsfunc2(msg) {
         function clear() {   
           stats.cleargifts(userdata)
-          require(gtf.EMBED).alert({ name: "✅ Success", description: "All items removed.", embed: embed, seconds: 3 }, msg, userdata);
+          require(gtf.EMBED).alert({ name: "✅ Success", description: "All gifts removed.", embed: embed, seconds: 3 }, msg, userdata);
           return;
         }
   var functionlist = [clear];

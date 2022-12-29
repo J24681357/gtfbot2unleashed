@@ -12,7 +12,7 @@ var gtflobby = require(dir + "index");
 module.exports = {
   name: "customrace",
   title: "GTF Custom Race",
-  level: 35,
+  level: 30,
   channels: ["gtf-mode", "testing"],
 
   availinmaint: false,

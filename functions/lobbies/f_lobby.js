@@ -62,8 +62,6 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
       lobby["racesettings"]["km"] = track["length"] * lobby["racesettings"]["laps"];
       lobby["racesettings"]["km"] = Math.round(lobby["racesettings"]["km"] * 100) / 100;
 
-      lobby["racesettings"]["mi"] = Math.round(100 * ((track["length"] * lobby["racesettings"]["laps"]) / 1.609)) / 100;
-      lobby["racesettings"]["mi"] = Math.round(lobby["racesettings"]["mi"] * 100) / 100;
       if (track["type"].includes("Dirt")) {
         lobby["racesettings"]["tires"] = "Rally: Dirt";
         lobby["racesettings"]["types"] = ["Production"];
@@ -160,8 +158,6 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
         lobby["racesettings"]["km"] = track["length"] * number;
         lobby["racesettings"]["km"] = Math.round(lobby["racesettings"]["km"] * 100) / 100;
 
-        lobby["racesettings"]["mi"] = Math.round(100 * ((track["length"] * number) / 1.609)) / 100;
-        lobby["racesettings"]["mi"] = Math.round(lobby["racesettings"]["mi"] * 100) / 100;
         changes.push("**Laps:** " + number);
       }
     };
@@ -553,9 +549,9 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         } else {
           userdata["raceinprogress"] = { active: false, messageid: "", channelid: "", expire: "" };
           stats.addcredits(prize, userdata);
-          stats.addmileage(racesettings["km"], racesettings["mi"], userdata);
-          stats.addtotalmileage(racesettings["km"], racesettings["mi"], userdata);
-          stats.addtotalmileagecar(racesettings["km"], racesettings["mi"], userdata);
+          stats.addmileage(racesettings["km"],userdata);
+          stats.addtotalmileage(racesettings["km"],userdata);
+          stats.addtotalmileagecar(racesettings["km"], userdata);
           //stats.addexp(exp, userdata);
           stats.save(userdata);
         }

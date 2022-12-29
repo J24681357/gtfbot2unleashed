@@ -22,10 +22,9 @@ module.exports.alert = function (object, msg, userdata) {
   }
   if (name.includes("✅") || name.includes("🎉") || name.includes(emote.goldmedal)) {
     color = 0x216c2a;
-    message = "";
   }
   var message = msg.content.split("***").join(" ");
-  if (message.length == 0) {
+  if (message.length == 0 || name.includes("✅") || name.includes("🎉") || name.includes(emote.goldmedal)) {
     message = "";
   } else {
     message = ' "' + message + '"'

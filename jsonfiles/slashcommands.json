@@ -14,7 +14,7 @@
             "value": "1"
         },
         {
-            "name": "Drift Trial | Lv.5",
+            "name": "Drift Trial | A",
             "value": "2"
         },
         {
@@ -586,10 +586,10 @@
 },
   "license": {
     "name": "license",
-    "description": "💳 Earn licenses in license tests.",
+    "description": "🏁 Earn licenses in the License Center.",
     "options": [{
       "name": "options",
-      "description": "Select an option to choose a league.",
+      "description": "Select an option to choose a type of license tests.",
       "type": 3,
       "required": true,
       "choices": [

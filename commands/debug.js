@@ -183,7 +183,7 @@ if (query["args"] == "announce_update") {
       //LICENSE
       if (query["args"] == "setlicense") {
         success = true;
-        userdata["license"] = query["string1"]
+        userdata["license"] = query["string"]
       }
 
       //CREDITS

@@ -51,7 +51,7 @@ module.exports.embedcounts = {};
 module.exports.bot = gtfbot;
 module.exports.emote = emote;
 
-gtftools.updateallsaves("GTF2SAVES", {})
+//gtftools.updateallsaves("GTF2SAVES", {})
 
 var listinmaint = [];
 client.commands = {};
@@ -445,13 +445,14 @@ var executecommand = function (command, args, msg, userdata) {
 ///FUNCTIONS
 function loademojis() {
   module.exports.update = "<:update:419605168510992394>";
+  module.exports.gtflogo = "<:gtfitness:912928750851752016>";
   module.exports.flag = "<:flag:646244286635180033>";
   module.exports.transparent = "<:t_:666878765552369684>";
 
-  module.exports.goldmedal = "<:gold:683881057589657650>";
-  module.exports.silvermedal = "<:silver:672660378047741982>";
-  module.exports.bronzemedal = "<:bronze:672715512937054208>";
-  module.exports.diamondmedal = "<:diamond:683880404855291918>";
+  
+  module.exports.aero = "<:aerowing:917615553852620850>";
+  module.exports.paint = "<:gtfpaint:934686343416643584>";
+  module.exports.livery = "<:livery:1032388666082983946>";
 
   module.exports.redlightb = "<:shadedredlight:638944391112818718>";
   module.exports.yellowlightb = "<:shadedyellowlight:638944449971617822>";
@@ -464,11 +465,24 @@ function loademojis() {
   module.exports.rightarrow = "<:rightarrow:973817070301118465>";
   module.exports.uparrow = "<:uparrow:973817070070427689>";
   module.exports.downarrow = "<:downarrow:973817070267539496>";
+  module.exports.yes = "<:Yes:973817070418554881>";
+  module.exports.exit = "<:exit:670134165806514206>";
+  module.exports.google = "<:google:923485130490785802>";
+  
   module.exports.upvote = "<:upvote:1011755439668613230>";
   module.exports.middlevote = "<:middlevote:1011753293455835277>";
   module.exports.downvote = "<:downvote:1011753294760251503>";
 
-  module.exports.yes = "<:Yes:973817070418554881>";
+    
+  module.exports.goldmedal = "<:gold:683881057589657650>";
+  module.exports.silvermedal = "<:silver:672660378047741982>";
+  module.exports.bronzemedal = "<:bronze:672715512937054208>";
+  module.exports.diamondmedal = "<:diamond:683880404855291918>";
+  
+  module.exports.driftflag = "<:driftflag:701499692877611139>";
+  module.exports.loading = "<a:gtfloading:695112393021325392>";
+  module.exports.bop = "<:bop:908564536989200417>";
+  module.exports.weather = "<:dynamicweather:991956491479298092>";
   module.exports.tracklogo = "<:trackgtfitness:647254741990244372>";
   module.exports.cargrid = "<:gtfcargrid:906447596632014859>";
   
@@ -476,18 +490,13 @@ function loademojis() {
   module.exports.carnormal = "<:car_condition_normal:1048864550461648956>"
   module.exports.carworn = "<:car_condition_worn:1048864548997845002>"
   module.exports.carbad = "<:car_condition_bad:1048864547047481356>"
-   module.exports.cardead = "<:car_condition_dead:1048864545826951208>"
+  module.exports.cardead = "<:car_condition_dead:1048864545826951208>"
   
-   module.exports.gtauto = "<:gtauto:1050304598780428329>"
+  module.exports.gtauto = "<:gtauto:1050304598780428329>"
 
-  module.exports.exit = "<:exit:670134165806514206>";
-  module.exports.gtflogo = "<:gtfitness:912928750851752016>";
-  module.exports.loading = "<a:gtfloading:695112393021325392>";
   module.exports.slowdown1 = "<:slow_down_1:816068685717438485>";
   module.exports.slowdown2 = "<:slow_down_2:816068685688209419>";
-  module.exports.driftflag = "<:driftflag:701499692877611139>";
-  module.exports.tire = "<:tire:805367277482409994>";
-  module.exports.brake = "<:brake:887861123158794281>";
+ 
 
   module.exports.credits = "<:credits:902359514492329984>";
   module.exports.exp = "<:experience:470270715900329985>";
@@ -495,11 +504,14 @@ function loademojis() {
   module.exports.fpp = "<:fpp:1030148104680382494>";
   module.exports.dailyworkout = "<:dailyworkout:895858086697390241>";
   module.exports.dailyworkoutman = "<a:dailyworkout_running:1048879274175774770>";
-  module.exports.bop = "<:bop:908564536989200417>";
-  module.exports.weather = "<:dynamicweather:991956491479298092>";
-  module.exports.aero = "<:aerowing:917615553852620850>";
-  module.exports.paint = "<:gtfpaint:934686343416643584>";
-  module.exports.livery = "<:livery:1032388666082983946>";
+  module.exports.tire = "<:tire:805367277482409994>";
+
+  module.exports.blicense = "<:blicense:1057907828184064081>"
+  module.exports.alicense = "<:alicense:1057907826565054514>"
+  module.exports.iclicense = "<:iclicense:1057907837696737282>"
+  module.exports.iblicense = "<:iblicense:1057907835566035065>"
+  module.exports.ialicense = "<:ialicense:1057907831191371836>"
+  module.exports.slicense = "<:slicense:1057907840452399166>"
 
   module.exports.jimmyb = "<:jimmybroadbent:902648416490909767>";
   module.exports.igorf = "<:igorfraga:975236447709827092>";
@@ -508,7 +520,8 @@ function loademojis() {
   module.exports.gtlogowhite = "<:gtlogowhite:682139679919046667>";
   module.exports.gtlogoblue = "<a:gtflogoa:485339455339888640>";
   module.exports.lobby = "<:lobby:919657582149402684>";
-  module.exports.google = "<:google:923485130490785802>";
+
+  module.exports.brake = "<:brake:887861123158794281>";
 
   module.exports.gt6progressbar = "<:gt6loading:905512462542045235>";
   module.exports.gt6progressbarblack = "<:gt6loadingblack:905512462319775755>";

@@ -47,7 +47,7 @@ module.exports.list = function (args) {
     }).sort();
     return results;
   }
-
+  
   if (args == "countries") {
     results = []
     
@@ -59,6 +59,10 @@ module.exports.list = function (args) {
         }
     }
     results = gtftools.removeDups(results)
+  }
+
+  if (args == "drivetrains") {
+    results = ["FF", "FR", "4WD", "4WD-MR", "MR", "RR"];
   }
   
   return results.sort();

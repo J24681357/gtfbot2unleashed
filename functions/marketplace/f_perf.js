@@ -31,7 +31,7 @@ module.exports.speedcalc = function (number, gtfcar) {
   } else {
     topspeed = topspeed * (1 + 0.01 * Math.abs(finalgear));
   }
-  return [Math.round(topspeed * 1.609), Math.round(topspeed)];
+  return [Math.round(topspeed * 1.60934), Math.round(topspeed)];
 };
 
 module.exports.perf = function (gtfcar, condition) {
@@ -132,10 +132,12 @@ module.exports.perf = function (gtfcar, condition) {
     }
     if (aeropart !== undefined) {
       var aeropartp = (100 + aeropart["percent"]) / 100;
-      if (aeropart["name"] == "Default" || gtfcar["perf"]["aerokits"]["tuning"][0] == 0 || gtfcar["perf"]["aerokits"]["tuning"][0] == -999)  {
-         aero = aero * aeropartp 
-      } else {
-        aero = aero * (aeropartp + (0.1*(gtfcar["perf"]["aerokits"]["tuning"][0]-3)));
+      if (aeropart["name"] != "Default") {
+        if (gtfcar["perf"]["aerokits"]["tuning"][0] == 0 || gtfcar["perf"]["aerokits"]["tuning"][0] == -999) { 
+         aero = aero * aeropartp
+        } else {
+          aero = aero * (aeropartp + (0.1*(gtfcar["perf"]["aerokits"]["tuning"][0]-3)));
+        }
       }
       value += aeropart["cost"]
       sell += require(gtf.MARKETPLACE).sellcalc(aeropart["cost"]);
@@ -185,7 +187,7 @@ module.exports.topspeed = function (car) {
   var highest = Math.floor(100 + sellperf ** 0.475);
 
   var speed = gtftools.randomInt(lowest, highest);
-  return [Math.round(speed * 1.609), speed];
+  return [Math.round(speed * 1.60934), speed];
 };
 
 module.exports.careerdifficultycalc = function (difficulty, weather, racesettings) {

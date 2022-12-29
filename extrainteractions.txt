@@ -6,24 +6,18 @@ A lv5 90
 IC lv10 80
 IB lv20 60
 A lv25 50
-S lv30 40
+S lv30 35-25
 
+C 8.000
 B 8.000
-A 8.000
-IC 12.000
-IB 15.000
-IA 20.000
+A 10.000
+IC 15.000
+IB 20.000
+IA 25.000
+S 30.000
 
 curl -I https://discordapp.com/api/v7/gateway
 
-client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({
-  data: {
-    "name": "update",
-    "description": "🏁 Updates your GTF save data to the latest version.",
-    "options": [
-        ]
-  }
-})
 
  /*
 async function a() {

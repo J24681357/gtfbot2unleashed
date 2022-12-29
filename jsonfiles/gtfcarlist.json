@@ -3586,7 +3586,7 @@
 			"engine": "NA",
 			"drivetrain": "MR",
 			"carcostm": 120,
-			"aerom": 15,
+			"aerom": 12,
 			"discount": 0,
 			"special": [
 				"Forumla"
@@ -4150,6 +4150,31 @@
 		},
 		{
 			"make": "Ford",
+			"name": "Ford GT Race Car",
+			"year": "2018",
+			"type": "Race Car: GT3",
+			"country": "USA",
+			"power": 527,
+			"weight": 2646,
+			"tires": "Racing: Hard",
+			"engine": "T",
+			"drivetrain": "MR",
+			"carcostm": 30,
+			"aerom": 5,
+			"discount": 0,
+			"special": [
+				"x1.5"
+			],
+			"livery": [
+				"Ford", "Ford (2)"
+			],
+			"image": [
+				"https://carsguide-res.cloudinary.com/image/upload/f_auto,fl_lossy,q_auto,t_cg_hero_large/v1/editorial/ford-imsa-gt-1001x565-%281%29.jpg",
+				"https://www.gannett-cdn.com/presto/2019/10/17/PDTN/12d5df71-255c-450c-aa75-95fc14b08f9f-fordgt_hill.JPG?crop=2948,1658,x186,y729&width=2948&height=1658&format=pjpg&auto=webp"
+			]
+		},
+		{
+			"make": "Ford",
 			"name": "Ford GT40 Mark I",
 			"year": "1966",
 			"type": "Production",
@@ -4417,7 +4442,7 @@
 			"engine": "TB",
 			"drivetrain": "MR",
 			"carcostm": 80,
-			"aerom": 10,
+			"aerom": 8,
 			"discount": 0,
 			"special": [
 				"Forumla"
@@ -4441,7 +4466,7 @@
 			"engine": "NA",
 			"drivetrain": "MR",
 			"carcostm": 90,
-			"aerom": 15,
+			"aerom": 12,
 			"discount": 0,
 			"special": [
 				"Forumla"
@@ -4489,7 +4514,7 @@
 			"engine": "NA",
 			"drivetrain": "MR",
 			"carcostm": 30,
-			"aerom": 15,
+			"aerom": 12,
 			"discount": 0,
 			"special": [
 				"Concept"
@@ -4513,7 +4538,7 @@
 			"engine": "NA",
 			"drivetrain": "MR",
 			"carcostm": 100,
-			"aerom": 15,
+			"aerom": 12,
 			"discount": 0,
 			"special": [
 				"Concept"
@@ -7331,7 +7356,7 @@
 			"engine": "NA",
 			"drivetrain": "FR",
 			"carcostm": 1.5,
-			"aerom": 1.5,
+			"aerom": 2,
 			"discount": 0,
 			"special": [""],
 			"livery": [],
@@ -7682,7 +7707,7 @@
 			"engine": "TB",
 			"drivetrain": "MR",
 			"carcostm": 160,
-			"aerom": 10,
+			"aerom": 8,
 			"discount": 0,
 			"special": [
 				"Forumla",
@@ -7835,7 +7860,7 @@
 			"engine": "TB",
 			"drivetrain": "MR",
 			"carcostm": 110,
-			"aerom": 15,
+			"aerom": 12,
 			"discount": 0,
 			"special": [
 				"Formula"
@@ -10708,7 +10733,7 @@
 			"engine": "TB",
 			"drivetrain": "MR",
 			"carcostm": 110,
-			"aerom": 15,
+			"aerom": 12,
 			"discount": 0,
 			"special": [
 				"Formula"

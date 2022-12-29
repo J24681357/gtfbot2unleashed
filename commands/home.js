@@ -202,7 +202,7 @@ function createlist() {
             track["version"] +
             "`\n" +
             "**Length:** " +
-            [Math.round(1000 * track["length"]) / 1000 + " km", Math.round(100 * (track["length"] / 1.609)) / 100 + " mi"].join(" | ") +
+            [track["length"] + " km", require(gtf.MATH).round( (track["length"] * 0.62137119), 2) + " mi"].join(" | ") +
             "\n" +
             emote.tracklogo +
             " **Drive over many tracks from the Gran Turismo series in GT Fitness!**" +

@@ -45,18 +45,33 @@ module.exports = {
     }
     if (parseInt(query["options"]) == 2) {
       query["options"] = "A";
+      if (!stats.checklicense("B", embed, msg, userdata)) {
+        return
+      }
     }
     if (parseInt(query["options"]) == 3) {
       query["options"] = "IC";
+      if (!stats.checklicense("A", embed, msg, userdata)) {
+        return
+      }
     }
     if (parseInt(query["options"]) == 4) {
       query["options"] = "IB";
+      if (!stats.checklicense("IC", embed, msg, userdata)) {
+        return
+      }
     }
     if (parseInt(query["options"]) == 5) {
       query["options"] = "IA";
+      if (!stats.checklicense("IB", embed, msg, userdata)) {
+        return
+      }
     }
     if (parseInt(query["options"]) == 6) {
       query["options"] = "S";
+      if (!stats.checklicense("IA", embed, msg, userdata)) {
+        return
+      }
     }
     
     pageargs["image"].push( "https://github.com/J24681357/gtfbot/raw/master/images/career/" + query["options"].toUpperCase() + "_level.png")

@@ -29,10 +29,10 @@ module.exports.speedtestresults = function (racesettings, racedetails, finalgrid
   }
   
   stats.updatecurrentcarclean(0, userdata)
-  stats.addmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
-  //stats.addplaytime(racelength, userdata);
-  stats.addtotalmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
-  stats.addtotalmileagecar(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addmileage(racesettings["distance"]["km"], userdata);
+  stats.addplaytime(racelength, userdata);
+  stats.addtotalmileage(racesettings["distance"]["km"], userdata);
+  stats.addtotalmileagecar(racesettings["distance"]["km"], userdata);
   var speeduser = [speedkmh + " kmh", speedmph + " mph"]
   speeduser = speeduser[userdata["settings"]["UNITS"]]
   
@@ -173,8 +173,8 @@ module.exports.driftresults = function (racesettings, racedetails, finalgrid, ch
   }
 
   stats.addcredits(prize, userdata);
-  stats.addmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
-  stats.addtotalmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addmileage(racesettings["distance"]["km"], userdata);
+  stats.addtotalmileage(racesettings["distance"]["km"], userdata);
 
   var results2 = "**" + medal + "**" + " " + "**+" + prize + emote.credits + racemultibonus + "**" + "\n" + "**Points:** " + racesettings["points"] + " pts";
 
@@ -203,6 +203,7 @@ module.exports.onlineracelength = function (racesettings, racedetails, finalgrid
 module.exports.licensecheck = function (racesettings, racedetails, finalgrid, embed, msg, userdata) {
   var embed = new EmbedBuilder()
   var option = racesettings["eventid"].replace("LICENSE", "").toLowerCase().split("-")[0]
+
   var licenses = [...require(gtf.CAREERRACES).find({types: [ "LICENSE" + option] })]
   var ids = Object.keys(licenses)
          var bronzecomplete = stats.checklicensetests(option, "3rd", userdata);
@@ -230,6 +231,8 @@ module.exports.licensecheck = function (racesettings, racedetails, finalgrid, em
   
         }
   }
+
+
 
 
 ////
@@ -273,7 +276,7 @@ var gold = (racelength * 0.94) + ((racelength * 0.94) * (jstat.gamma.mean(11, be
  var beta = 0.5 - (0.2 * ((stats.level(userdata)/50)))
 racelength = (racelength * 0.94) + ((racelength * 0.94) * (jstat.gamma.sample(11, beta)/10))
   if (racelength < racesettings["positions"][0]["time"]) {
-    racelength = racelength + ((racesettings["positions"][0]["time"]-racelength)/3)
+    racelength = racelength * (1+(racelength/racesettings["positions"][0]["time"]))
   }
   return [showcar, racelength];
 };
@@ -354,7 +357,12 @@ module.exports.timetrialresults = function (racesettings, racedetails, finalgrid
   var racemultibonus = ""
   
   var eventid = racesettings["eventid"].replace("LICENSE", "").toLowerCase()
-  var current = userdata["licenses"][eventid][0];
+  if (typeof userdata["licenses"][eventid] === 'undefined') {
+    var current = "2nd"
+  } else {
+    var current = userdata["licenses"][eventid][0];
+  }
+  
 
   if (current == 0) {
     current = "4th"
@@ -371,11 +379,7 @@ module.exports.timetrialresults = function (racesettings, racedetails, finalgrid
   }
   
   for (var i = 0; i < places.length; i++) {
-    console.log(place)
-    console.log(parseInt(places[i].split(/[A-Z]/gi)[0]))
-    console.log(parseInt(current.split(/[A-Z]/gi)[0]))
     if (parseInt(places[i].split(/[A-Z]/gi)[0]) < parseInt(current.split(/[A-Z]/gi)[0]) && place != "4th") {
-      console.log("OK")
       prize = prize + racesettings["positions"][(places.length-1)-i]["credits"]
     }
     if (places[i] == place) {
@@ -396,11 +400,21 @@ module.exports.timetrialresults = function (racesettings, racedetails, finalgrid
 
   stats.addcredits(prize, userdata);
   var mileage = [racesettings["distance"]["km"] * finalgrid[0]["laps"].length, racesettings["distance"]["mi"] * finalgrid[0]["laps"].length]
-  stats.addmileage(mileage[0], mileage[1], userdata);
-  stats.addtotalmileage(mileage[0], mileage[1], userdata);
+  stats.addmileage(mileage[0], userdata);
+  stats.addtotalmileage(mileage[0], userdata);
   stats.addexp(exp, userdata);
   if (racesettings["mode"] == "LICENSE") {
+    var option = racesettings["eventid"].replace("LICENSE", "").toLowerCase().split("-")[0]
+    if (option == "b" || option == "a" ||option == "ic" || option == "ib" || option == "ia" || option == "s") {
     stats.updatelicensetest(racesettings, place, userdata);
+    } else {
+      if (place == "1st") {
+        setTimeout(function() {
+        stats.redeemgift("🎉 Completed " + racesettings["title"] + " 🎉", racesettings["prize"], embed, msg, userdata);
+        }, 2000)
+      }
+      
+    }
   }
   
 
@@ -589,6 +603,13 @@ module.exports.createfinalbuttons = function (racesettings, racedetails, finalgr
   if (racesettings["mode"] == "CAREER") {
     if (racesettings["championship"]) {
         var functionlist = [continuechampionship, savereplay, sessiondetails]
+    if (userdata["raceinprogress"]["championshipnum"] != "DONE") {
+      setTimeout(function() {
+        continuechampionship()
+      }, 1000 *10)
+    }
+
+    
     } else {
       var functionlist = [restart, savereplay, sessiondetails, goback]
     }
@@ -687,8 +708,11 @@ if (finalgrid[i]["position"] == 1) {
   message = "\n" + require(gtf.ANNOUNCER).emote(racesettings["title"]) + " `" + require(gtf.ANNOUNCER).say({name1:"race-overtake-bad", name2: name}) + "`"
     }
   }
+    
 if (gtftools.randomInt(1,10) <= 2) {
-  x["damage"] = x["damage"] + 2.5
+  var alpha = 2.5 * (timeinterval/15000)
+  console.log("a" + alpha)
+  x["damage"] = x["damage"] + alpha
 }
     return x
   })

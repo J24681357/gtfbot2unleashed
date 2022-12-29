@@ -81,7 +81,7 @@ options.push({
   required: true,
   choices: [
     { name: "❗ Menu", value: "list" },
-    { name: "Select [manufacturer/type1/drivetrain1..]", value: "select" },
+    { name: "Select All [manufacturer/type1/drivetrain1..]", value: "select" },
     { name: "Car Discounts", value: "selectused" },
     { name: "Car Search [name]", value: "search" },
     { name: "📊 Show Statistics", value: "info" },
@@ -96,7 +96,7 @@ var name = "manufacturer__" + label[indexcarcommand - 1];
 for (var i = 0; i < list.length; i++) {
   choices.push({ name: list[i].split(",").join(" "), value: list[i].split(",").join(" ") });
   if (choices.length >= 25 || i == list.length - 1) {
-    var variable = { name: name.toString(), description: "Select a manufacturer (Only 1 manufacturer).", type: 3, required: false, choices: choices };
+    var variable = { name: name.toString(), description: "(Select All) Select a manufacturer (1 Only).", type: 3, required: false, choices: choices };
     options.push(variable);
     choices = [];
     name = "manufacturer" + "__" + label[indexcarcommand];
@@ -110,6 +110,7 @@ var options2 = [];
 var indexcarcommand = 1;
 
 var name = "manufacturer__" + label[indexcarcommand - 1];
+  /*
 for (var y = 0; y < list.length; y++) {
   choices2.push({ name: list[y].split(",").join(" "), value: list[y].split(",").join(" ") });
   if (choices2.length >= 25 || y == list.length - 1) {
@@ -121,13 +122,23 @@ for (var y = 0; y < list.length; y++) {
   }
 }
 
+  */
+
 var list2 = ["Production", "Aftermarket", "Race Car", "Race Car: GT4", "Race Car: GT3", "Race Car: GT500", "Race Car: GT300", "Race Car: LMP", "Formula", "Rally Car", "Concept", "Vision Gran Turismo", "Kart"];
 choices = [];
 name = "type1";
 for (var i = 0; i < list2.length; i++) {
   choices.push({ name: list2[i], value: list2[i] });
 }
-options.push({ name: name.toString(), description: "Select a type (Only 1 type).", type: 3, required: false, choices: choices });
+options.push({ name: name.toString(), description: "(Select All) Select a type (1 Only).", type: 3, required: false, choices: choices });
+
+var list22 = require(gtf.CARS).list("countries");
+choices = [];
+name = "country1";
+for (var i = 0; i < list22.length; i++) {
+  choices.push({ name: list22[i], value: list22[i] });
+}
+options.push({ name: name.toString(), description: "(Select All) Select a country (1 Only).", type: 3, required: false, choices: choices });
 
 var list3 = ["FF", "FR", "MR", "4WD", "RR"];
 choices = [];
@@ -135,7 +146,7 @@ name = "drivetrain1";
 for (var i = 0; i < list3.length; i++) {
   choices.push({ name: list3[i], value: list3[i] });
 }
-options.push({ name: name.toString(), description: "Select a drivetrain (Only 1 drivetrain).", type: 3, required: false, choices: choices });
+options.push({ name: name.toString(), description: "(Select All) Select a drivetrain (1 Only).", type: 3, required: false, choices: choices });
 
 var list3 = ["NA", "TB", "SC", "TB-SC", "EV"];
 choices = [];
@@ -143,7 +154,7 @@ name = "engine1";
 for (var i = 0; i < list3.length; i++) {
   choices.push({ name: list3[i], value: list3[i] });
 }
-options.push({ name: name.toString(), description: "Select an engine aspiration (Only 1 engine).", type: 3, required: false, choices: choices });
+options.push({ name: name.toString(), description: "(Select All) Select an engine aspiration (1 Only).", type: 3, required: false, choices: choices });
 
 var list4 = ["Truck", "SUV"];
 choices = [];
@@ -151,7 +162,14 @@ name = "special1";
 for (var i = 0; i < list4.length; i++) {
   choices.push({ name: list4[i], value: list4[i] });
 }
-options.push({ name: name.toString(), description: "Select a special type (Only 1 item).", type: 3, required: false, choices: choices });
+options.push({ name: name.toString(), description: "(Select All) Select a special tage (1 Only).", type: 3, required: false, choices: choices });
+
+options.push({
+          name: "fpplimit",
+          description: "(Select All) Type a number of a FPP limit to filter by.",
+          type: 4,
+          required: false
+})
   
 options.push({ name: "name", description: "Type the name of the car to search (Case-Insensitive).", type: 3, required: false });
 options.push({
@@ -205,13 +223,7 @@ module.exports.garageoptions = function () {
               value: "enable",
             },
           ],
-        },
-        {
-          name: "fpplimit",
-          description: "Type a FPP limit to view in your garage.",
-          type: 4,
-          required: false,
-        },
+        }
       ],
     }
   return garage

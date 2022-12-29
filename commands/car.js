@@ -62,6 +62,13 @@ module.exports = {
         query["manufacturer"][0] = query["manufacturer"][0].replace(/,/g, "-");
       }
     }
+    if (typeof query["country"] === "undefined") {
+      query["country"] = Object.fromEntries(Object.entries(query).filter(([key]) => key.includes("country")));
+      query["country"] = [Object.values(query["country"])[0]];
+      if (query["country"][0] === undefined) {
+        query["country"] = [];
+      }
+    }
 
     if (typeof query["type"] === "undefined") {
       query["type"] = Object.fromEntries(Object.entries(query).filter(([key]) => key.includes("type")));
@@ -133,6 +140,8 @@ module.exports = {
       delete query["manufacturer1"];
       delete query["manufacturer2"];
       delete query["manufacturer3"];
+      delete query["country"];
+      delete query["country1"];
       delete query["type"];
       delete query["type1"];
       delete query["drivetrain"];
@@ -146,7 +155,11 @@ module.exports = {
         var cars = require(gtf.CARS).find({ makes: [m] });
         var count = cars.length;
         var country = gtftools.toEmoji(cars[0]["country"]);
-        list.push(m + " " + country + " `🚘" + count + "`");
+        if (require(gtf.GTF).invitationlist.includes(m) && !stats.checkitem(m + " Invitation", "", userdata)) {
+          list.push(country + " " + m + " " + "`🚘" + count + "` ✉");
+        } else {
+        list.push(country + " " + m + " " + "`🚘" + count + "`");
+        }
       }
       embed.setTitle("🏢 __GTF Car Dealerships (" + list.length + " Makes)" + "__");
       pageargs["selector"] = "manufacturer";
@@ -162,8 +175,8 @@ module.exports = {
 
     if (query["options"] == "select" || query["options"] == "selectused") {
       
-      if (typeof query["manufacturer"] !== "undefined" || typeof query["type"] !== "undefined" || typeof query["drivetrain"] !== "undefined" || typeof query["engine"] !== "undefined" || typeof query["special"] !== "undefined") {
-        var term = { makes: query["manufacturer"], types: query["type"], drivetrains: query["drivetrain"], engines: query["engine"], special: query["special"], upperfpp: query["fpplimit"], sort: sort };
+      if (typeof query["manufacturer"] !== "undefined" || typeof query["country"] !== "undefined" || typeof query["type"] !== "undefined" || typeof query["drivetrain"] !== "undefined" || typeof query["engine"] !== "undefined" || typeof query["special"] !== "undefined") {
+        var term = { makes: query["manufacturer"], countries: query["country"], types: query["type"], drivetrains: query["drivetrain"], engines: query["engine"], special: query["special"], upperfpp: query["fpplimit"], sort: sort };
 
         if (searchname.length != 0) {
           term["fullname"] = [searchname];
@@ -206,28 +219,36 @@ module.exports = {
         }
 
         var make = query["manufacturer"].length == 0 ? "" : query["manufacturer"][0];
+        var country = query["country"].length == 0 ? "" : query["country"][0];
         var type = query["type"].length == 0 ? "" : query["type"][0];
         var drivetrain = query["drivetrain"].length == 0 ? "" : query["drivetrain"][0];
         var engine = query["engine"].length == 0 ? "" : query["engine"][0];
         var special = query["special"].length == 0 ? "" : query["special"][0];
 
-        if (make == "Ferrari") {
-          /*
-          if (stats.checkinvitation(make, userdata)) {
+        if (require(gtf.GTF).invitationlist.includes(make)) {
+          if (!stats.checklicense("IC", embed, msg, userdata)) {          
+            return
+          } else {
+            if (!stats.checkitem(make + " Invitation", "", userdata)) {
+              console.log("OK")
+              require(dir + "commands/license").execute(msg, {options: make.toLowerCase(), number: 1}, userdata);
+              return 
+            }
           }
-          */
         }
 
         var carlist = [];
         for (var i = 0; i < list.length; i++) {
           var fpp = require(gtf.PERF).perf(list[i], "DEALERSHIP")["fpp"];
           var cost = require(gtf.MARKETPLACE).costcalc(list[i], fpp);
+          var make = list[i]["make"]
           var name = list[i]["name"];
           var year = list[i]["year"];
           var image = list[i]["image"][0];
-          var numbercost = list[i]["carcostm"] == 0 ? "❌" : gtftools.numFormat(cost);
+          var numbercost = list[i]["carcostm"] == 0 ? "❌ " : gtftools.numFormat(cost) + emote.credits + " ";
+          numbercost = (require(gtf.GTF).invitationlist.includes(make) && !stats.checkitem(make + " Invitation", "", userdata)) ? "✉ " : numbercost
           var discount = list[i]["discount"] == 0 ? "" : "`⬇ " + list[i]["discount"] + "%" + "` ";
-          carlist.push(discount + "**" + numbercost + emote.credits + "** " + name + " " + year + " **" + fpp + emote.fpp + "**" + stats.checkcar(name + " " + year, userdata));
+          carlist.push(discount + "**" + numbercost + "**" + name + " " + year + " **" + fpp + emote.fpp + "**" + stats.checkcar(name + " " + year, userdata));
           pageargs["image"].push(image);
         }
         if (query["number"] !== undefined) {
@@ -245,6 +266,18 @@ module.exports = {
               require(gtf.EMBED).alert({ name: "❌ Car Unavailable", description: "You cannot purchase this car.", embed: "", seconds: 3 }, msg, userdata);
               return;
             }
+           
+        if (require(gtf.GTF).invitationlist.includes(item["make"])) {
+          if (!stats.checklicense("IC", embed, msg, userdata)) {          
+            return
+          } else {
+            if (!stats.checkitem(item["make"] + " Invitation", "", userdata)) {
+            
+              require(dir + "commands/license").execute(msg, {options: item["make"].toLowerCase(), number: 1}, userdata);
+              return 
+            }
+          }
+        }
             require(gtf.MARKETPLACE).purchase(item, "CAR", "", embed, msg, userdata);
             return;
           }
@@ -253,12 +286,15 @@ module.exports = {
           embed.setTitle("__All (" + carlist.length + " Cars) (" + userdata["settings"]["DEALERSORT"] + ")__");
         } else if (query["options"] == "selectused") {
           embed.setTitle("__GTF Dealership: Discounts" + searchname + make + type + drivetrain + engine + special + " (" + userdata["settings"]["DEALERSORT"] + ")__");
-        } else {
+        } else { 
           var emot = gtftools.toEmoji(list[0]["country"]) + " ";
           if (type.length == 0 || drivetrain.length == 0 || engine.length == 0 || special.length == 0 || searchname.length == 0) {
             emot = "";
           }
-          embed.setTitle(emot + "__" + searchname + make + type + drivetrain + engine + special + " (" + carlist.length + " Cars) (" + userdata["settings"]["DEALERSORT"] + ")__");
+          if (country.length != 0) {
+           emot = gtftools.toEmoji(list[0]["country"]) + " ";
+          }
+          embed.setTitle(emot + "__" + searchname + make + country + type + drivetrain + engine + special + " (" + carlist.length + " Cars) (" + userdata["settings"]["DEALERSORT"] + ")__");
         }
 
         pageargs["selector"] = "number";

@@ -130,7 +130,7 @@ module.exports.tuninglist = function (part, gtfcar, embed, msg, userdata) {
       ],
     ];
   }
-  var tunevalues = gtfcar[part["type"].toLowerCase()]["tuning"];
+  var tunevalues = gtfcar["perf"][part["type"].toLowerCase()]["tuning"];
 
   var list = [];
 

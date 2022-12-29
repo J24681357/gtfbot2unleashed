@@ -175,10 +175,10 @@ module.exports = {
       "__**Daily Workouts - /daily**__" + "\n" + 
      "1. Using **/daily**, you are able to earn credits & random cars every day by driving at least 26.2mi/42.1 km." + "\n" + 
      "2. Your daily mileage will be reset every 24 hours. You can set the time zone for daily workouts in **/settings - Time Zone**, to match with your time zone." + "\n" + 
-     "__**Items - /items**__" + "\n" +  
-     "1. In this GTF game, you can earn rewards that can be redeemable in **/items**." + "\n" +
-     "2. This command will open the list of items that you have earned. Selecting one of them will redeem the item to your save data accordingly." + "\n" +
-     "3. You can quickly redeem your latest item by using **/items - Redeem Latest Reward**"
+     "__**Gifts - /gifts**__" + "\n" +  
+     "1. In this GTF game, you can earn rewards that can be redeemable in **/gifts**." + "\n" +
+     "2. This command will open the list of gifts that you have earned. Selecting one of them will redeem the item to your save data accordingly." + "\n" +
+     "3. You can quickly redeem your latest item by using **/gifts - Redeem Latest Reward**"
     ]
 
 

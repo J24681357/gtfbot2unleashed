@@ -46,12 +46,12 @@ module.exports = {
     embed.setTitle("👤 " + "__My Profile__");
 
     results =
-      "__**Current Credits**__" +
-      "\n" +
+      "__**License:**__ " + gtftools.toEmoji(userdata["license"]) + "\n" +
+      "__**Current Credits:**__ "
       "**" +
       gtftools.numFormat(stats.credits(userdata))+
       emote.credits +
-      "**\n" +
+      "**" + "\n" +
       "__**Experience Points**__ " +
       "\n" +
       "**" +
@@ -75,7 +75,6 @@ module.exports = {
       "\n\n" +
       "**Total Races:** " + userdata["stats"]["numraces"] + "\n" + 
       "**# of Wins:** " + userdata["stats"]["numwins"]
-    
 
     embed.setDescription(results);
     if (userdata["id"] == "237450759233339393") {
@@ -149,7 +148,7 @@ embed.setThumbnail(msg.guild.members.cache.get(userdata["id"]).user.displayAvata
       }
       function garageprofile() {
         embed.setTitle("👤 " + "__My Profile__");
-        var favcar = userdata["garage"].sort((x, y) => parseInt(y["totalmileage"]) - parseInt(x["totalmileage"]))[0]
+        var favcar = userdata["garage"].sort((x, y) => parseFloat(y["totalmileage"]) - parseFloat(x["totalmileage"]))[0]
         var garagevalue = 0
         userdata["garage"].forEach(car => {
           var value = require(gtf.PERF).perf(car, "GARAGE")["value"]
@@ -159,7 +158,7 @@ embed.setThumbnail(msg.guild.members.cache.get(userdata["id"]).user.displayAvata
         var results = "**Garage Count:** " +
       stats.garagecount(userdata) +
       " Cars" + "\n" + 
-      "**Favorite Car:** " + favcar["name"] + " " + "**" + favcar["totalmileage"][userdata["settings"]["UNITS"]] + stats.mileageunits(userdata) + "**" + emote.mileage + "\n" + 
+      "**Favorite Car:** " + favcar["name"] + " " + "**" + stats.mileagecaruser(favcar, userdata) + stats.mileageunits(userdata) + "**" + emote.mileage + "\n" + 
         "**Total Garage Value:** " + "**" + gtftools.numFormat(garagevalue) + "**" + emote.credits + "\n" + 
         "**# of Parts Purchased:** " + "**" + gtftools.numFormat(numparts) + "**" + emote.credits
         embed.setDescription(results);

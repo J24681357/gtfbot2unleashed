@@ -1,20 +1,22 @@
-var stats = require("../../functions/profile/f_stats");
-var emote = require("../../index");
-var gtftools = require("../../functions/misc/f_tools");
+var dir = "../../"
+var stats = require(dir + "functions/profile/f_stats");
+var emote = require(dir + "index");
+var gtftools = require(dir + "functions/misc/f_tools");
 
 const { Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, SelectMenuBuilder } = require("discord.js");
 const client = new Client({
   partials: [Partials.Channel],
   intents: [GatewayIntentBits.DirectMessages, GatewayIntentBits.DirectMessageTyping, GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]});
-var gtf = require("../../files/directories");
+var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
-var gtfuser = require("../../index");
+var gtfuser = require(dir + "index");
 var fs = require("fs");
 
 module.exports.userid = function (userdata) {
   return userdata["id"];
 };
 
+///COUNT
 module.exports.count = function (userdata) {
   var num = require(gtf.MAIN).embedcounts[userdata["id"]];
   if (isNaN(num)) {
@@ -24,7 +26,13 @@ module.exports.count = function (userdata) {
     return num;
   }
 };
-
+module.exports.addcount = function (userdata) {
+  require(gtf.MAIN).embedcounts[userdata["id"]]++;
+};
+module.exports.removecount = function (userdata) {
+  require(gtf.MAIN).embedcounts[userdata["id"]]--;
+};
+///CREDITS
 module.exports.credits = function (userdata) {
   if (userdata["credits"] >= 9999999) {
     userdata["credits"] = 9999999;
@@ -32,7 +40,14 @@ module.exports.credits = function (userdata) {
   userdata["credits"] = Math.round(userdata["credits"]);
   return userdata["credits"];
 };
-
+module.exports.addcredits = function (number, userdata) {
+  userdata["credits"] = parseInt(userdata["credits"]);
+  userdata["credits"] += parseInt(number);
+  if (userdata["credits"] >= 9999999) {
+    userdata["credits"] = 9999999;
+  }
+};
+///TOTALPLAYTIME
 module.exports.totalplaytime = function (userdata, type) {
   if (type == "MILLISECONDS") {
     return userdata["totalplaytime"]
@@ -40,9 +55,25 @@ module.exports.totalplaytime = function (userdata, type) {
   return require(gtf.DATETIME).getFormattedTime(userdata["totalplaytime"])
   }
 };
-
+module.exports.addplaytime = function (number, userdata) {
+  userdata["totalplaytime"] = parseFloat(userdata["totalplaytime"]);
+  
+  userdata["totalplaytime"] = userdata["totalplaytime"] + parseFloat(number);
+  
+};
+//RACEMULTI
 module.exports.racemulti = function (userdata) {
   return userdata["racemulti"];
+};
+module.exports.addracemulti = function (number, userdata) {
+  userdata["racemulti"] = userdata["racemulti"] + parseFloat(number);
+  userdata["racemulti"] = Math.round(userdata["racemulti"] * 10) / 10;
+  if (userdata["racemulti"] >= 2) {
+    userdata["racemulti"] = 2;
+  }
+  if (userdata["racemulti"] <= 1) {
+    userdata["racemulti"] = 1;
+  }
 };
 
 module.exports.exp = function (userdata) {
@@ -51,13 +82,34 @@ module.exports.exp = function (userdata) {
   }
   return userdata["exp"];
 };
-
+module.exports.addexp = function (number, userdata) {
+  userdata["exp"] = parseInt(userdata["exp"]);
+  if (parseInt(number) < 0) {
+  } else {
+    userdata["exp"] += parseInt(number);
+  }
+};
+///LEVEL
 module.exports.level = function (userdata) {
   return userdata["level"];
 };
+module.exports.levelup = function (number, userdata) {
+  if (number == 0) {
+    return;
+  } else {
+    userdata["level"] += number;
+  }
+};
+module.exports.setlevel = function (number, userdata) {
+  if (number == 0) {
+    return;
+  } else {
+    userdata["level"] = number;
+  }
+};
 
 module.exports.racedetails = function (userdata) {
-  return gtfuser.allraces[id]["racedetails"];
+  return userdata["racedetails"];
 };
 
 /*
@@ -70,33 +122,87 @@ module.exports.lastonline = function (userdata) {
   return userdata["lastonline"];
 };
 
-//units
+///MILEAGE
 module.exports.mileage = function (userdata) {
     return userdata["mileage"]
 };
-
+module.exports.addmileage = function (km, userdata) {
+  km = require(gtf.MATH).round(km, 2)
+  userdata["mileage"] += km;
+};
+module.exports.setmileage = function (km, userdata) {
+  userdata["mileage"] = parseFloat(km);
+};
+module.exports.mileagecaruser = function (car, userdata) {
+  var mileage = [car["totalmileage"], require(gtf.MATH).round(car["totalmileage"] * 0.62137119, 2)]
+  return mileage[userdata["settings"]["UNITS"]]
+};
 module.exports.mileageuser = function (userdata) {
   var mileage = [userdata["mileage"], require(gtf.MATH).round(userdata["mileage"] * 0.62137119, 2)]
   return mileage[userdata["settings"]["UNITS"]]
 };
-
 module.exports.mileageunits = function (userdata) {
   return ["km", "mi"][userdata["settings"]["UNITS"]]
 };
-
+//TOTALMILEAGE
 module.exports.totalmileage = function (userdata) {
     return userdata["totalmileage"]
 };
-
+module.exports.addtotalmileage = function (km, userdata) {
+  km = require(gtf.MATH).round(km, 2)
+  userdata["totalmileage"] += km;
+};
+module.exports.settotalmileage = function (km, mi, userdata) {
+  userdata["totalmileage"] = parseFloat(km);
+};
 module.exports.totalmileageuser = function (userdata) {
   var totalmileage = [userdata["totalmileage"], require(gtf.MATH).round(userdata["totalmileage"] * 0.62137119, 2)]
-    return totaalmileage[userdata["settings"]["UNITS"]]
+    return totalmileage[userdata["settings"]["UNITS"]]
 };
+module.exports.addtotalmileagecar = function (km, userdata) {
+  km = require(gtf.MATH).round(km, 2)
+  var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
 
+  userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"] += km
+
+  id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
+  userdata["currentcar"] = id;
+};
+///CURRENTCAR
+module.exports.currentcar = function (userdata) {
+  if (userdata["garage"].length == 0) {
+    return {};
+  }
+  return stats.garage(userdata)[stats.currentcarnum(userdata) - 1];
+};
+module.exports.currentcarmain = function (userdata) {
+  var gtfcar = stats.currentcar(userdata);
+  if (Object.keys(gtfcar).length == 0) {
+    return "No car.";
+  } else {
+    var carcondition = require(gtf.CONDITION).condition(gtfcar)
+    return (
+      "`" + userdata["currentcar"] + "` " + carcondition["emote"] + " `" + carcondition["health"] + "%`" + " " + require(gtf.CARS).shortname(gtfcar["name"]) + 
+" " + "**" + gtfcar["fpp"] + emote.fpp +
+      emote.tire +
+      gtfcar["perf"]["tires"]["current"]
+        .split(" ")
+        .map(x => x[0])
+        .join("") +
+      "**"
+    );
+  }
+};
+module.exports.currentcarnum = function (userdata) {
+  if (userdata["currentcar"] > userdata["garage"].length && userdata["garage"].length != 0) {
+    userdata["currentcar"] = userdata["garage"].length;
+  }
+  return userdata["currentcar"];
+};
+///MESSAGES
 module.exports.messages = function (userdata) {
   return userdata["messages"]
 }
-
 module.exports.addmessage = function (name, message, userdata) {
   if (typeof userdata["messages"][name] == 'undefined') {
       userdata["messages"][name] = {"ids": []}
@@ -104,22 +210,21 @@ module.exports.addmessage = function (name, message, userdata) {
   userdata["messages"][name]["ids"].push(message["id"])
 }
 
+///DAILY
 module.exports.dailyworkout = function (userdata) {
   return userdata["dailyworkout"]
 };
-
 module.exports.setdailyworkout = function (bool, userdata) {
   userdata["dailyworkout"]["done"] = bool;
 };
-
 module.exports.achievements = function (userdata) {
   return userdata["achievements"];
 };
 
+///GARAGE
 module.exports.garage = function (userdata) {
   return userdata["garage"];
 };
-
 module.exports.garagesort = function (userdata, sort) {
   if (userdata["garage"].length == 0) {
     return userdata["garage"];
@@ -157,10 +262,10 @@ module.exports.garagesort = function (userdata, sort) {
   return userdata["garage"];
 };
 
+///GIFTS
 module.exports.gifts = function (userdata) {
   return userdata["gifts"];
 };
-
 module.exports.addgift = function (gift, userdata) {
   userdata["stats"]["numgifts"]++;
   if (gift["inventory"]) {
@@ -171,34 +276,79 @@ module.exports.addgift = function (gift, userdata) {
      stats.redeemgift(gift["name"], gift, embed, msg, userdata)
   }
 };
+module.exports.redeemgift = function (title, gift, embed, msg, userdata) {
+  var description = "";
+  if (gift["type"] == "CREDITS") {
+    stats.addcredits(parseInt(gift["item"]), userdata);
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    description = "**Credits: +" + gtftools.numFormat(gift["item"]) + emote.credits + "**";
+    require(gtf.EMBED).alert({ name: title, description: description, embed: "", seconds: 0 }, msg, userdata);
+    stats.save(userdata);
+  } 
+  else if (gift["type"] == "RANDOMCAR") {
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    delete gift["id"];
+    var prizes = require(gtf.CARS).random(gift["item"], 4).map(function(x) {
+      x = {id: -1, 
+           type:"CAR", 
+           name: x["name"] + " " + x["year"], 
+           item: x, author: "GT FITNESS", inventory: false 
+          }
+      return x
+    })
+    require(gtf.MARKETPLACE).fourgifts(title, "**" + title + "**", prizes, embed, msg, userdata);
+  } 
+  else if (gift["type"] == "CAR") {
+    var car = gift["item"];
+    var ocar = require(gtf.CARS).find({ makes: [car["make"]], fullname: [car["name"] + " " + car["year"]] })[0];
+    stats.addcar(car, "SORT", userdata);
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    stats.save(userdata);
 
+    description = "**" + car["name"] + " " + car["year"] + " acquired.\nAdded to your garage.**";
+    embed.setImage(ocar["image"][0]);
+    require(gtf.EMBED).alert({ name: title, description: description, embed: embed, seconds: 0 }, msg, userdata);
+  }
+  else if (gift["type"] == "ITEM") {
+    stats.additem(gift["item"], userdata);
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    description = "**Item: " + gift["item"] + "**";
+    require(gtf.EMBED).alert({ name: title, description: description, embed: "", seconds: 0 }, msg, userdata);
+    stats.save(userdata);
+  }
+};
 module.exports.cleargifts = function (userdata) {
   userdata["gifts"] = [];
 };
-
-module.exports.addcount = function (userdata) {
-  require(gtf.MAIN).embedcounts[userdata["id"]]++;
+///ITEMS
+module.exports.items = function (userdata) {
+  return userdata["items"];
 };
-
-module.exports.removecount = function (userdata) {
-  require(gtf.MAIN).embedcounts[userdata["id"]]--;
+module.exports.additem = function (item, userdata) {
+   userdata["items"].unshift(item);
 };
-
+module.exports.checkitem = function(item, embed, userdata) {
+  return userdata["items"].includes(item)
+}
+  
 module.exports.careerraces = function (userdata) {
   return userdata["careerraces"];
 };
 
+module.exports.garagecount = function (userdata) {
+  return userdata["garage"].length;
+};
+
+///SPONSER
 module.exports.sponsor = function (userdata) {
   return userdata["sponsor"];
 };
-
 module.exports.addsponsor = function (sponsor, userdata) {
   userdata["sponsor"] = {
     name: sponsor["name"],
     level: 0,
   };
 };
-
 module.exports.resetsponsor = function (userdata) {
   userdata["sponsor"] = {
     name: "None",
@@ -206,99 +356,10 @@ module.exports.resetsponsor = function (userdata) {
   };
 };
 
-module.exports.garagecount = function (userdata) {
-  return userdata["garage"].length;
-};
-
-module.exports.addcredits = function (number, userdata) {
-  userdata["credits"] = parseInt(userdata["credits"]);
-  userdata["credits"] += parseInt(number);
-  if (userdata["credits"] >= 9999999) {
-    userdata["credits"] = 9999999;
-  }
-};
-
-module.exports.addplaytime = function (number, userdata) {
-  userdata["totalplaytime"] = parseFloat(userdata["totalplaytime"]);
-  
-  userdata["totalplaytime"] = userdata["totalplaytime"] + parseFloat(number);
-  
-};
-
-module.exports.addracemulti = function (number, userdata) {
-  userdata["racemulti"] = userdata["racemulti"] + parseFloat(number);
-  userdata["racemulti"] = Math.round(userdata["racemulti"] * 10) / 10;
-  if (userdata["racemulti"] >= 2) {
-    userdata["racemulti"] = 2;
-  }
-  if (userdata["racemulti"] <= 1) {
-    userdata["racemulti"] = 1;
-  }
-};
-
-module.exports.addmileage = function (km, userdata) {
-  km = require(gtf.MATH).round(km, 2)
-  userdata["mileage"] += km;
-};
-
-module.exports.setmileage = function (km, userdata) {
-  userdata["mileage"] = parseFloat(km);
-};
-
-module.exports.addtotalmileagecar = function (km, userdata) {
-  km = require(gtf.MATH).round(km, 2)
-  var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
-
-  userdata["garage"][stats.currentcarnum(userdata) - 1]["totalmileage"] += km
-
-  id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
-  userdata["currentcar"] = id;
-};
-
-module.exports.addtotalmileage = function (km, userdata) {
-  km = require(gtf.MATH).round(km, 2)
-  userdata["totalmileage"] += km;
-};
 
 
 
-module.exports.settotalmileage = function (km, mi, userdata) {
-  userdata["totalmileage"] = parseFloat(km);
-};
 
-///CURRENTCAR
-module.exports.currentcar = function (userdata) {
-  if (userdata["garage"].length == 0) {
-    return {};
-  }
-  return stats.garage(userdata)[stats.currentcarnum(userdata) - 1];
-};
-
-module.exports.currentcarmain = function (userdata) {
-  var gtfcar = stats.currentcar(userdata);
-  if (Object.keys(gtfcar).length == 0) {
-    return "No car.";
-  } else {
-    var carcondition = require(gtf.CONDITION).condition(gtfcar)
-    return (
-      "`" + userdata["currentcar"] + "` " + carcondition["emote"] + " `" + carcondition["health"] + "%`" + " " + require(gtf.CARS).shortname(gtfcar["name"]) + 
-" " + "**" + gtfcar["fpp"] + emote.fpp +
-      emote.tire +
-      gtfcar["perf"]["tires"]["current"]
-        .split(" ")
-        .map(x => x[0])
-        .join("") +
-      "**"
-    );
-  }
-};
-
-module.exports.currentcarnum = function (userdata) {
-  if (userdata["currentcar"] > userdata["garage"].length && userdata["garage"].length != 0) {
-    userdata["currentcar"] = userdata["garage"].length;
-  }
-  return userdata["currentcar"];
-};
 
 //////
 //Starts at 1
@@ -332,13 +393,6 @@ module.exports.favoritecar = function (number, bool, filter, userdata) {
   }
 };
 
-module.exports.addexp = function (number, userdata) {
-  userdata["exp"] = parseInt(userdata["exp"]);
-  if (parseInt(number) < 0) {
-  } else {
-    userdata["exp"] += parseInt(number);
-  }
-};
 
 module.exports.seasonalcheck = function (userdata) {
   return userdata["seasonalcheck"];
@@ -938,40 +992,7 @@ module.exports.checkachievements = function (member, userdata) {
   }
 };
 
-module.exports.redeemgift = function (title, gift, embed, msg, userdata) {
-  var description = "";
-  if (gift["type"] == "CREDITS") {
-    stats.addcredits(parseInt(gift["item"]), userdata);
-    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
-    description = "**Credits: +" + gtftools.numFormat(gift["item"]) + emote.credits + "**";
-    require(gtf.EMBED).alert({ name: title, description: description, embed: "", seconds: 0 }, msg, userdata);
-    stats.save(userdata);
-  } 
-  else if (gift["type"] == "RANDOMCAR") {
-    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
-    delete gift["id"];
-    var prizes = require(gtf.CARS).random(gift["item"], 4).map(function(x) {
-      x = {id: -1, 
-           type:"CAR", 
-           name: x["name"] + " " + x["year"], 
-           item: x, author: "GT FITNESS", inventory: false 
-          }
-      return x
-    })
-    require(gtf.MARKETPLACE).fourgifts(title, "**" + title + "**", prizes, embed, msg, userdata);
-  } 
-  else if (gift["type"] == "CAR") {
-    var car = gift["item"];
-    var ocar = require(gtf.CARS).find({ makes: [car["make"]], fullname: [car["name"] + " " + car["year"]] })[0];
-    stats.addcar(car, "SORT", userdata);
-    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
-    stats.save(userdata);
 
-    description = "**" + car["name"] + " " + car["year"] + " acquired.\nAdded to your garage.**";
-    embed.setImage(ocar["image"][0]);
-    require(gtf.EMBED).alert({ name: title, description: description, embed: embed, seconds: 0 }, msg, userdata);
-  }
-};
 
 module.exports.completeevent = function (event, userdata) {
   var eventid = event["eventid"].toLowerCase();
@@ -1098,20 +1119,7 @@ module.exports.inlobby = function (bool, mid, userdata) {
   }
   return [bool, mid];
 };
-module.exports.levelup = function (number, userdata) {
-  if (number == 0) {
-    return;
-  } else {
-    userdata["level"] += number;
-  }
-};
-module.exports.setlevel = function (number, userdata) {
-  if (number == 0) {
-    return;
-  } else {
-    userdata["level"] = number;
-  }
-};
+
 
 module.exports.main = function (userdata) {
   userdata["count"]++;
@@ -1137,7 +1145,7 @@ module.exports.main = function (userdata) {
       stats.addracemulti(-100, userdata);
     }
     */
-    stats.setmileage(0, 0, userdata);
+    stats.setmileage(0, userdata);
   }
   userdata["lastonline"] = currdate;
   stats.addracemulti(-100, userdata);
@@ -1232,7 +1240,7 @@ module.exports.resumerace = function (userdata, client) {
       console.log(userdata["id"] + ": Race Resumed");
       }
       
-require("../../functions/races/f_races_2").startsession(racesettings, racedetails, finalgrid, [true], embed, msg, userdata);
+require(dir + "functions/races/f_races_2").startsession(racesettings, racedetails, finalgrid, [true], embed, msg, userdata);
     });
     return true;
   }
@@ -1261,7 +1269,12 @@ module.exports.checkmessages = function(command, callback, msg, userdata) {
     var message = {}
     for (var x = 0; x < commandmessages.length; x++) {
         if (stats.triggermessage(name, commandmessages[x], userdata)) {
-        embed.setDescription(commandmessages[x]["messages"].join("\n\n")); 
+          if (commandmessages[x]["emote"].length == 0) {
+            var character = ""
+          } else {
+        var character = {"igorf":emote.igorf + " __**Igor Fraga**__:", "jimmyb": emote.jimmyb + " __**Jimmy Broadbent**__:"}[commandmessages[x]["emote"]]
+          }
+        embed.setDescription(character + " " + commandmessages[x]["messages"].join("\n\n")); 
         message = commandmessages[x]
         break;
         }

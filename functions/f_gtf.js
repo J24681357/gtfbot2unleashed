@@ -51,7 +51,7 @@ module.exports.defaultsettings = {
             MENUSELECT: 0,
             GRIDNAME: 0
 }
-module.exports.invitationlist = ["Ferrari", "Lamborghini"]
+module.exports.invitationlist = ["Ayrton Senna", "Bugatti", "Ferrari", "Koenigsegg", "Lamborghini", "McLaren", "Pagani", "Porsche", "Rimac", "Vector Motors"]
 
 module.exports.defaultuserdata = function(id) {
   return { id: id, 

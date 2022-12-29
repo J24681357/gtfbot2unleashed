@@ -119,12 +119,12 @@ module.exports.settingsmenu = function (query, pageargs, embed, msg, userdata) {
       minutes = "0" + minutes;
     }
     var applysetting = function () {
-      if (userdata["dailyworkout"] || userdata["mileage"][0] == 0) {
+      if (userdata["dailyworkout"] || userdata["mileage"] == 0) {
         require(gtf.EMBED).alert({ name: "❌ Invalid", description: "You can only apply this setting when you have not completed a daily workout and have 0 mileage.", embed: "", seconds: 3 }, msg, userdata);
           return "ERROR"
         }
       userdata["settings"]["TIMEOFFSET"] = query["number"] - 1;
-      stats.setmileage(0, 0, userdata);
+      stats.setmileage(0, userdata);
       stats.addracemulti(-100, userdata)
       userdata["dailyworkout"] = true;
       require(dir + "commands/settings").execute(msg, {options:"list", extra:"Local time has been set to **" + pageargs["list"][query["number"] - 1] + "**." + "\n⚠ Daily workout and race multiplier have been reset."}, userdata);

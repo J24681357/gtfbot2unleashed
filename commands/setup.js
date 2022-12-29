@@ -49,12 +49,11 @@ module.exports = {
     var selectedtype = false;
     var list = [];
 
-    var engine = require(gtf.PARTS).find({ name: gtfcar["engine"]["current"], type: "engine" });
-    var transmission = require(gtf.PARTS).find({ name: gtfcar["transmission"]["current"], type: "transmission" });
-    var turbo = require(gtf.PARTS).find({ name: gtfcar["turbo"]["current"], type: "turbo" });
-    var suspension = require(gtf.PARTS).find({ name: gtfcar["suspension"]["current"], type: "suspension" });
-    var aerokit = require(gtf.PARTS).find({ name: gtfcar["aero kits"]["current"], type: "aero kits" });
-  
+    var engine = require(gtf.PARTS).find({ name: gtfcar["perf"]["engine"]["current"], type: "engine" });
+    var transmission = require(gtf.PARTS).find({ name: gtfcar["perf"]["transmission"]["current"], type: "transmission" });
+    var turbo = require(gtf.PARTS).find({ name: gtfcar["perf"]["turbo"]["current"], type: "turbo" });
+    var suspension = require(gtf.PARTS).find({ name: gtfcar["perf"]["suspension"]["current"], type: "suspension" });
+    var aerokit = require(gtf.PARTS).find({ name: gtfcar["perf"]["aerokits"]["current"], type: "aerokits" });
 
     /*if (engine.length != 0) {
       list.push("__**Engine**__ - !tuning [engine|eng|e]")
@@ -66,7 +65,7 @@ module.exports = {
       list.push("__**Suspension**__");
     }
     if (aerokit.length != 0) {
-      list.push("__**Aero**__");
+      list.push("__**Aerodynamics**__");
     }
     /*
     if (turbo.length != 0) {
@@ -74,7 +73,7 @@ module.exports = {
     }*/
 
     if (list.length == 0) {
-      require(gtf.EMBED).alert({ name: "❌ No Tunable Parts", description: "There are no custom parts to tune for the **" + gtfcar["name"] + "**.", embed: "", seconds: 3 }, msg, userdata);
+      require(gtf.EMBED).alert({ name: "❌ No Tunable Parts", description: "There are no custom parts to tune for the **" + gtfcar["name"] + "**.", embed: "", seconds: 0 }, msg, userdata);
       return;
     }
     var part = [];
@@ -176,9 +175,9 @@ module.exports = {
       
       function tuningf(msg) {
         function back() {
-          gtfcar[part["type"].toLowerCase()]["tuning"][select]--;
+          gtfcar["perf"][part["type"].toLowerCase()]["tuning"][select]--;
           var list = require(gtf.PARTS).tuninglist(part, gtfcar, embed, msg, userdata);
-          part["tuning"] = gtfcar[part["type"].toLowerCase()]["tuning"]
+          part["tuning"] = gtfcar["perf"][part["type"].toLowerCase()]["tuning"]
 
           list[select] = userdata["settings"]["PROGRESSBAR"][0] + " " + list[select]
 list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PERF).partpreview(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
@@ -187,16 +186,16 @@ list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gt
           msg.edit({ embeds: [embed], components: buttons });
         }
         function selectoption() {
-          stats.currentcar(userdata)[part["type"].toLowerCase()]["tuning"] = gtfcar[part["type"].toLowerCase()]["tuning"];
+          stats.currentcar(userdata)[part["type"].toLowerCase()]["tuning"] = gtfcar["perf"][part["type"].toLowerCase()]["tuning"];
           stats.updatefpp(stats.currentcar(userdata), userdata)
           require(dir + "commands/setup").execute(msg, {type:"list", extra: "**" + part["type"] + "** settings saved for **" + gtfcar["name"] + "**."}, userdata);
           stats.save(userdata)
         }
 
         function next() {
-          gtfcar[part["type"].toLowerCase()]["tuning"][select]++;
+          gtfcar["perf"][part["type"].toLowerCase()]["tuning"][select]++;
           var list = require(gtf.PARTS).tuninglist(part, gtfcar, embed, msg, userdata);
-          part["tuning"] = gtfcar[part["type"].toLowerCase()]["tuning"]
+          part["tuning"] = gtfcar["perf"][part["type"].toLowerCase()]["tuning"]
 
           list[select] = userdata["settings"]["PROGRESSBAR"][0] + " " + list[select] 
    list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PERF).partpreview(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
@@ -238,7 +237,7 @@ list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gt
           var index = 0;
           select = 0;
 
-          gtfcar[part["type"].toLowerCase()]["tuning"] = gtfcar[part["type"].toLowerCase()]["tuning"].map(function(x) {
+          gtfcar["perf"][part["type"].toLowerCase()]["tuning"] = gtfcar["perf"][part["type"].toLowerCase()]["tuning"].map(function(x) {
             if (part["type"].toLowerCase() == "aero kits") {
               return 3
             } else {

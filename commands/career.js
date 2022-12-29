@@ -62,10 +62,10 @@ module.exports = {
     if (parseInt(query["options"]) == 8) {
       query["options"] = "S";
     }
-    /*
+    
     if (!stats.checklicense(query["options"], embed, msg, userdata)) {
         return;
-    }*/
+    }
     
     /*
     if (parseInt(query["options"]) == 7) {
@@ -104,27 +104,19 @@ module.exports = {
       results =
         "__**C Level**__ " +
         "\n" +
-        "__**B Level**__ " +
+        "__**B Level**__ " + emote.blicense +
         "\n" +
-        "__**A Level**__ " +
-        emote.exp +
-        " `Lv.5`" +
+        "__**A Level**__ " + emote.alicense +
         "\n" +
         "__**IC Level**__ " +
-        emote.exp +
-        " `Lv.10`" +
-        "\n" +
+        emote.iclicense +
         "__**IB Level**__ " +
-        emote.exp +
-        " `Lv.15`" +
-        "\n" +
+        emote.iblicense +
         "__**IA Level**__ " +
-        emote.exp +
-        " `Lv.20`" +
+        emote.ialicense +
         "\n" +
         "__**S Level**__ " +
-        emote.exp +
-        " `Lv.25`" 
+        emote.slicense
         /*+ "/n/n" + 
         "__Special Events__" + "\n" + 
         "__**Kart**__ " +  emote.exp +
@@ -137,7 +129,7 @@ module.exports = {
         var list = results.split("\n")
       pageargs["list"] = list;
       if (userdata["settings"]["TIPS"] == 0) {
-        pageargs["footer"] = "**❓ Select a league from the list above using the numbers associated with the buttons.\n`Lv.XX` represents that the driver level that is required.**";
+        pageargs["footer"] = "**❓ Select a level from the list above using the numbers associated with the buttons.\n`Lv.XX` represents that the driver level that is required.**";
       }
       pageargs["selector"] = "options"
       pageargs["query"] = query
@@ -150,7 +142,6 @@ module.exports = {
       require(gtf.EMBED).alert({ name: "❌ Invaild", description: "There are no events in this level.", embed: "", seconds: 3 }, msg, userdata);
       return
     }
-
 
     //list of x races
     if (typeof query["number"] === 'undefined') {

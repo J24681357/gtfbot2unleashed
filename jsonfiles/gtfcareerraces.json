@@ -4127,6 +4127,611 @@
       }
     }
   },
+  "licenses1": {
+    "title": "License S-1: Time Attack",
+    "eventid": "LICENSES-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 20000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 10000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 5000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Twin Ring Motegi - Road Course",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear",
+      "Partly Cloudy",
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 35,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Toyota Supra GT500 1997",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {}
+  },
+  "licenses2": {
+    "title": "License S-2: Time Attack",
+    "eventid": "LICENSES-2",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 20000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 10000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 5000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Daytona Road Course",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Sunrise"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 35,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Ford GT Race Car 2018",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {}
+  },
+  "licenses3": {
+    "title": "License S-3: Time Attack",
+    "eventid": "LICENSES-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 20000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 10000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 5000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Sardegna - Windmills Reverse",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 35,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Toyota GR Corolla 2023",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {}
+  },
+  "licenses4": {
+    "title": "License S-4: Time Attack",
+    "eventid": "LICENSES-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 20000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 10000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 5000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Nurburgring GP",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 35,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Porsche 911 GT3 RS (992) 2023",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {}
+  },
+  "licenses5": {
+    "title": "License S-5: Time Attack",
+    "eventid": "LICENSES-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 20000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 10000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 5000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Tsukuba Circuit",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 35,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "HKS CT230R 2008",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {}
+  },
+  "licenses6": {
+    "title": "License S-6: Time Attack",
+    "eventid": "LICENSES-6",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 20000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 10000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 5000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Nurburgring Nordschleife",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Ford GT40 Mark I 1966",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "name": ["Lamborghini"],
+        "fullname": ["Lamborghini Lambo V12 Vision Gran Turismo 2020"]
+      }
+    }
+  },
+  "licenses7": {
+    "title": "License S-7: Final Test",
+    "eventid": "LICENSES-7",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 20000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 10000,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 5000,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Silverstone - GP",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Storm"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 25,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Gran Turismo Red Bull X2019 Competition 2019",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "RANDOMCAR",
+      "item": {
+        "types": ["Race Car: LMP"]
+      }
+    }
+  },
   "ic1": {
     "title": "International IC League",
     "eventid": "IC-1",
@@ -5327,5 +5932,825 @@
         ]
       }
     }
-  }
+  },
+  "ia3": {
+    "title": "Rainmasters",
+    "eventid": "IA-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 35000
+      }
+    ],
+    "startposition": 12,
+	"tracks":[
+				[1,
+				"Circuit de Spa-Francorchamps",
+				4
+			],
+			[
+				2,
+				"Red Bull Ring",
+				5
+			],
+			[
+				3,
+				"Tokyo Expressway - East Clockwise",
+				4
+			],
+			[
+				4,
+				"Circuito de la Sierra",
+				1
+			]
+		],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 0,
+    "weather": [
+      "Storm"
+    ],
+    "weatherchange": 5,
+    "grid": [
+      12
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 550,
+      "upperfpp": 550,
+      "lowerfpp": 500,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+	    "Production",
+		"Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Subaru"
+        ],
+        "fullname": [
+          "Subaru Impreza WRC 2008"
+        ]
+      }
+    }
+},
+  "ia4": {
+    "title": "Schwarzwald League",
+    "eventid": "IA-4",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 30000
+      }
+    ],
+    "startposition": 16,
+	"tracks":[
+			[
+				1,
+				"Nurburgring GP Short",
+				6
+			],
+			[
+				2,
+				"Circuit de Barcelona-Catalunya - Grand Prix",
+				5
+			],
+			[
+				3,
+				"Red Bull Ring",
+				5
+			],
+			[
+				4,
+				"Circuit de Valencia",
+				5
+			]
+  ],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 0,
+    "weather": [
+      "Clear", "Partly Cloudy", "Cloudy"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      20
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 600,
+      "upperfpp": 600,
+      "lowerfpp": 450,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+        "Germany"
+      ],
+      "makes": [
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+	    "Production",
+		"Aftermarket"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Volkswagen"
+        ],
+        "fullname": [
+          "Volkswagen Scirocco GT24 2008"
+        ]
+      }
+    }
+},
+  "ia5": {
+    "title": "FIA GT World Championship",
+    "eventid": "IA-5",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 150000
+      }
+    ],
+    "startposition": 20,
+	"tracks":[
+			[
+				1,
+				"Circuit de la Sarthe",
+				2
+			],
+			[
+				2,
+				"Fuji International Speedway",
+				6
+			],
+			[
+				3,
+				"Trial Mountain Circuit Reverse",
+				5
+			],
+			[
+				4,
+				"Mount Panorama Circuit",
+				4
+			],
+			[
+				5,
+				"Nurburgring Nordschleife",
+				2
+			]
+  ],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 10,
+    "weather": [
+      "R"
+    ],
+    "weatherchange": 30,
+    "grid": [
+      24
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": true,
+    "bop": true,
+    "championship": true,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+      ],
+      "makes": [
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+	    "Race Car: GT3",
+			"Race Car: GTE",
+			"Race Car: GT2",
+			"Race Car: GT1"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+        "Truck",
+        "SUV"
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Suzuki"
+        ],
+        "fullname": [
+          "Suzuki Vision Gran Turismo 2022"
+        ]
+      }
+    }
+},
+  "s1": {
+    "title": "Apricot Hill 200km Endurance",
+    "eventid": "S-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 200000
+      }
+    ],
+    "startposition": 30,
+	"tracks":[
+			[
+				1,
+				"Apricot Hill Raceway",
+				52
+			]
+  ],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 10,
+    "weather": [
+      "R"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      30
+    ],
+    "gridstart": "ROLLINGSTART",
+    "difficulty": 40,
+    "damage": true,
+    "bop": false,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Sports: Soft",
+      "fpplimit": 510,
+      "upperfpp": 500,
+      "lowerfpp": 400,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+      ],
+      "makes": [
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Lamborghini"
+        ],
+        "fullname": [
+          "Lamborghini Countach LPI 800 2022"
+        ]
+      }
+    }
+},
+  "s2": {
+    "title": "LeMans 2h",
+    "eventid": "S-2",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 350000
+      }
+    ],
+    "startposition": 30,
+	"tracks":[
+			[
+				1,
+				"Circuit de la Sarthe",
+				"120m"
+			]
+  ],
+    "type": "TIME",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 12,
+    "weather": [
+      "R"
+    ],
+    "weatherchange": 20,
+    "grid": [
+      30
+    ],
+    "gridstart": "ROLLINGSTART",
+    "difficulty": 35,
+    "damage": true,
+    "bop": true,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+      ],
+      "makes": [
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+        "Race Car: LMP"
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Porsche"
+        ],
+        "fullname": [
+          "Porsche Vision Gran Turismo 2021"
+        ]
+      }
+    }
+},
+  "s3": {
+    "title": "1 Hour of Tsukuba",
+    "eventid": "S-3",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 250000
+      }
+    ],
+    "startposition": 20,
+	"tracks":[
+			[
+				1,
+				"Tsukuba Circuit",
+				"60m"
+			]
+  ],
+    "type": "LAPS",
+    "time": [
+      "R"
+    ],
+    "timeprogression": 10,
+    "weather": [
+      "R"
+    ],
+    "weatherchange": 5,
+    "grid": [
+      20
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 35,
+    "damage": true,
+    "bop": true,
+    "championship": false,
+    "car": "GARAGE",
+    "regulations": {
+      "tires": "Racing: Soft",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+      ],
+      "makes": [
+        "Mazda"
+      ],
+      "models": [
+        "Roadster Touring Car"
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "Gold Reward",
+      "type": "RANDOMCAR",
+      "item": {
+        "makes": [
+          "Mazda"
+        ],
+        "fullname": [
+          "Mazda LM55 Vision Gran Turismo Gr.1 2017"
+        ]
+      }
+    }
+},
+  "LICENSEferrari-1": {
+    "title": "Ferrari Invitation: Time Trial",
+    "eventid": "LICENSEFERRARI-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 50000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 0,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 0,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Autodromo Nazionale Monza",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Ferrari Enzo Ferrari 2002",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "ITEM",
+      "item": "Ferrari Invitation"
+      }
+    },
+  "LICENSElamborghini-1": {
+    "title": "Lamborghini Invitation: Time Trial",
+    "eventid": "LICENSELAMBORGHINI-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 50000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 0,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 0,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Autodrome Lago Maggiore - GP",
+        "100%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Lamborghini Huracan LP640-4 Performante 2018",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "ITEM",
+      "item": "Lamborghini Invitation"
+      }
+    },
+  "LICENSEpagani-1": {
+    "title": "Pagani Invitation: Time Trial",
+    "eventid": "LICENSEPAGANI-1",
+    "positions": [
+      {
+        "place": "1st",
+        "credits": 50000,
+        "time": 16
+      },
+      {
+        "place": "2nd",
+        "credits": 0,
+        "time": 16.5
+      },
+      {
+        "place": "3rd",
+        "credits": 0,
+        "time": 18
+      }
+    ],
+    "startposition": 1,
+    "tracks": [
+      [
+        1,
+        "Circuito di Roma",
+        "200%"
+      ]
+    ],
+    "type": "TIMETRIAL",
+    "time": [
+      "Day"
+    ],
+    "timeprogression": 1,
+    "weather": [
+      "Clear"
+    ],
+    "weatherchange": 0,
+    "grid": [
+      1
+    ],
+    "gridstart": "STANDING",
+    "difficulty": 50,
+    "damage": false,
+    "bop": false,
+    "championship": false,
+    "car": "Pagani Zonda Cinque Roadster 2009",
+    "regulations": {
+      "tires": "",
+      "fpplimit": 9999,
+      "upperfpp": 9999,
+      "lowerfpp": 0,
+      "upperpower": 9999,
+      "lowerpower": 0,
+      "upperweight": 9999,
+      "lowerweight": 0,
+      "upperyear": 9999,
+      "loweryear": 0,
+      "countries": [
+
+      ],
+      "makes": [
+
+      ],
+      "models": [
+
+      ],
+      "engines": [
+
+      ],
+      "drivetrains": [
+
+      ],
+      "types": [
+
+      ],
+      "special": [
+
+      ],
+      "prohibited": [
+
+      ]
+    },
+    "prize": {
+      "id": -1,
+      "name": "",
+      "type": "ITEM",
+      "item": "Pagani Invitation"
+      }
+    }
 }

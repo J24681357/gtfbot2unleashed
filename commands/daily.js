@@ -51,7 +51,7 @@ module.exports = {
     }
     if (stats.mileage(userdata) < 42.10) {
       var mile = ["42.1 km", "26.2 mi"]
-      var m = "**Mileage: " + userdata["mileage"][userdata["settings"]["UNITS"]] + [" km", " mi"][userdata["settings"]["UNITS"]] + emote.mileage + " -> " + mile[userdata["settings"]["UNITS"]] + emote.mileage + "**"
+      var m = "**Mileage: " + stats.mileageuser(userdata) + " " + stats.mileageunits(userdata) + emote.mileage + " -> " + mile[userdata["settings"]["UNITS"]] + emote.mileage + "**"
       require(gtf.EMBED).alert({ name: "❌ Insufficient Mileage", description: "You are unable to earn your daily workout car because you have not drove " + mile[userdata["settings"]["UNITS"]] + "." + "\n" + m, embed: "", seconds: 0 }, msg, userdata);
       return;
     }

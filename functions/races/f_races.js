@@ -37,9 +37,10 @@ module.exports.setracesettings = function (raceprep, gtfcar, embed, msg, userdat
       } 
       else if (racesettings["type"] == "TIMETRIAL") {
           var km = require(gtf.MATH).round(track.length * (parseFloat(racesettings["laps"].split("%")[0]) / 100), 3)
-      racesettings["distance"] = {km: km, mi: require(gtf.MATH).round(km / 1.609, 2)}
+      racesettings["distance"] = {km: km, mi: require(gtf.MATH).round(km * 0.62137119, 2)}
         } else {    
-      racesettings["distance"] = {km: Math.round(1000 * (racesettings["laps"] * km)) / 1000, mi: Math.round(100 * ((racesettings["laps"] * km) / 1.609)) / 100}
+      km = require(gtf.MATH).round( (racesettings["laps"] * km), 3)
+      racesettings["distance"] = {km: km, mi:require(gtf.MATH).round(km * 0.62137119, 2)}
       }
     return racesettings
   } else {
@@ -209,20 +210,20 @@ module.exports.setracesettings = function (raceprep, gtfcar, embed, msg, userdat
   if (!isNaN(limit)) {
     var distance = require(gtf.RACE).lapcalc(km, limit);
   } else {
-    distance = [limit, "N/A", "N/A"];
+    distance = [limit, "N/A"];
   }
 
   racesettings["laps"] = distance[0]
-  racesettings["distance"] = {km:distance[1], mi:distance[2]}
+  racesettings["distance"] = {km:distance[1], mi: require(gtf.MATH).round(distance[1] * 1.60934, 2)}
   racesettings["time"] = require(gtf.TIME).random({}, 1)[0];
   racesettings["weather"] = require(gtf.WEATHER).random({}, 1)[0];
 
   if (racesettings["mode"] == "SSRX") {
     
-    
+    var km = require(gtf.MATH).round(raceprep["modearg"] / 1000, 3)
     racesettings["distance"] = {
-      km:parseInt(raceprep["modearg"]) / 1000,
-      mi:Math.round(100 * ((parseInt(raceprep["modearg"]) / 1000)/ 1.609)) / 100}
+      km: km,
+      mi: require(gtf.MATH).round(km * 0.62137119, 2)}
   }
 
 
@@ -618,8 +619,7 @@ module.exports.lapcalc = function (km, limit) {
     }
   }
   totalkm = Math.round(1000 * totalkm) / 1000;
-  var totalmi = Math.round(100 * (totalkm / 1.609)) / 100;
-  return [laps, totalkm, totalmi];
+  return [laps, totalkm];
 };
 
 module.exports.calculatecredits = function (racesettings, raceprep) {
@@ -829,9 +829,9 @@ module.exports.startssrx = function ([speedkmh, speedmph], racesettings, racedet
 
 /*  stats.updatecurrentcarclean(userdata)
 */
-  stats.addmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
-  stats.addtotalmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
-  stats.addtotalmileagecar(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addmileage(racesettings["distance"]["km"], userdata);
+  stats.addtotalmileage(racesettings["distance"]["km"], userdata);
+  stats.addtotalmileagecar(racesettings["distance"]["km"], userdata);
   
   var speeduser = [speedkmh + "kmh", speedmph + "mph"]
   speeduser = speeduser[userdata["settings"]["UNITS"]]
@@ -943,9 +943,9 @@ finalgrid.slice().sort(function(a,b) {
   userdata["stats"]["numraces"]++
   
   stats.addcredits(prize + sprize, userdata);
-  stats.addmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
-  stats.addtotalmileage(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
-  stats.addtotalmileagecar(racesettings["distance"]["km"], racesettings["distance"]["mi"], userdata);
+  stats.addmileage(racesettings["distance"]["km"], userdata);
+  stats.addtotalmileage(racesettings["distance"]["km"], userdata);
+  stats.addtotalmileagecar(racesettings["distance"]["km"], userdata);
   stats.addexp(exp, userdata);
 
   if (racesettings["mode"] == "CAREER") {
@@ -1203,7 +1203,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
                 if (complete) {
             stats.completeevent(event, userdata);
               stats.redeemgift(emote.goldmedal + " Congrats! Completed " + event["title"] + " " + emote.goldmedal, event["prize"], embed, msg, userdata);
-                }
+            }
      }, 3000)
     
     function repaircar() {

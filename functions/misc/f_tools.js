@@ -82,7 +82,7 @@ module.exports.lengthalpha = function (fpp, weather, track) {
   }
 
   var percentage = fpp / 1100;
-  percentage = (195 - 70) * percentage + 70;
+  percentage = (195 - 70) * percentage + 90;
   return (percentage - weatherx * 40) * offroad;
 };
 
@@ -123,6 +123,12 @@ module.exports.formpage = function (args, userdata) {
 
 module.exports.toEmoji = function (text) {
   var list = {
+    blicense: emote.blicense,
+    alicense: emote.alicense,
+    iclicense: emote.iclicense,
+    iblicense: emote.iblicense,
+    ialicense: emote.ialicense,
+    slicense: emote.slicense,
     blank: emote.transparent,
     playercar: emote.carright,
     playercarup: emote.carup,
@@ -290,7 +296,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
           }
           var pick = select + 1 + args["page"] * args["rows"];
         } else if (args["query"]["options"] == "list") {
-          var pick = [args["list"][select + args["page"] * args["rows"]].split(" `")[0].split(" ").slice(0, -1).join(" ")];
+          var pick = [args["list"][select + args["page"] * args["rows"]].split(" `")[0].split(" ").slice(1).join(" ")];
           args["query"]["options"] = "select";
         }
       }
@@ -1263,6 +1269,8 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
                 }
               }
             }
+            //userdata["mileage"] = 0
+            //userdata["totalmileage"] = 0
 
             console.log("Saved for " + userdata["id"]);
             dbo.collection(name).replaceOne({ id: userdata["id"] }, userdata);

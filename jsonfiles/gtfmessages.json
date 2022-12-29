@@ -1,41 +1,53 @@
 {
   "arcade": {"id": 1,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [[]],
-  "messages": ["Welcome to the Arcade menu.", "You can select from 3 modes: Single Race, Drift Trial, and Top Speed Run. Tracks are randomized but you can select what type you can use. From original tracks to user generated ones.", "In Arcade mode, damage and oil wear are disabled, so drive whenever you'll like without pay!"]
+  "messages": ["Welcome to the Arcade menu.", "You can select from 3 modes: Single Race, Drift Trial, and Top Speed Run. Tracks are randomized but you can select what type you can use; from original tracks to user generated courses.", "In Arcade mode, damage and oil conditions are disabled, so drive whenever you'll like without pay!"]
   },
   "career": [
   {"id": 1,
-  "unlock": [[]],
+  "emote": "jimmyb", "unlock": [[]],
   "ignore": [[]],
   "required": [[]],
-  "messages": ["Welcome to the start of your career!", "Here you will find career races to race agaisnt other opponents. As you level up and earn new licenses, you will have more access to more staggering races up to the top. Can you reach up to the S level?"]
+  "messages": ["Welcome to the start of your career! I'm Jimmy Broadbent, the race announcer of Gran Turismo Fitness.", "Here you will find career races to race against other opponents. As you level up and earn new licenses, you will have more access to more staggering races up to the top. Can you reach up to the IA level?"]
+  },
+  {"id": 2,
+  "emote": "igorf", "unlock": [[]],
+  "ignore": [[]],
+  "required": [["level", ">=", 5]],
+  "messages": ["Hello, I am Igor Fraga, the Gran Turismo World Series Champion of 2018.", "I invite you to enter the **Karting Experience** program, where you have the feel of driving go karts; a preliminary into motorsport racing! Once you purchase the **Gran Turismo Racing Kart 125 Shifter**, you will be all set for entry. See you there!"]
   }
 ],
   "car": [
   {"id": 1,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["currentcar", "==", 0]],
-  "messages": ["Welcome to the GTF Car Dealership where you can purchase your first car!", "Before you start driving supercars and hardcore race cars, you have to start from the beginning. Maybe you should purchase a Honda or a Toyota?"]
+  "messages": ["Welcome to the GTF Car Dealership where you can purchase your first car!", "Before you start driving supercars and hardcore race cars, you have to start from the beginning. Maybe you should purchase a **Honda** or a **Toyota**?"]
   },
   {"id": 2,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["garage", ">=", 1]],
-  "messages": ["__**❗ Quick Tip**__: For some manufacturers, you need to have an invitation before purchasing cars from that manufacturer. Invitations can be earned via completing **Gold** in special **Time Trials** for that manufacturer."]
-  }
+  "messages": ["__**❗ Quick Tip**__: For some manufacturers, you need to have an invitation before purchasing cars from that manufacturer. Invitations can be earned via completing **Gold** in special **Time Trials** for that manufacturer. In order to participate, you need be at least Lv.15."]
+  },
+    {"id": 3,
+  "emote": "", "unlock": [],
+  "ignore": [[]],
+  "required": [["level", ">=", 15]],
+  "messages": ["You are now able to participate in special Time Trial for certain manufacturers.", "Achieving **Gold** in each manufacturer **Time Trial** will allow you to purchase cars from that manufacturer."]
+  } 
 ],
   "course": [{"id": 1,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [[]],
   "messages": ["You can create your own courses with the GTF Course Maker!", "You can create your own courses by using **/course - Generate Course** and using the parameters used in the slash command menu. You are able to create circuit & sprint courses on asphalt, gravel, and snow.", "Course Maker courses can be used in Arcade mode. Check out <> for more information."]
   }],
   "daily": [
   {"id": 1,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [[]],
   "messages": ["Welcome to the Daily Workout spin where you can earn credits & random cars daily. You must drive at least **26.2 miles** or **42.1 kilometers** in order to spin for a prize.", "Your daily workout resets every 24 hours. You can set the time zone for daily workouts in **/settings - Time Zone**, to match with your time zone."]
@@ -43,47 +55,61 @@
 ],
   "garage": [
   {"id": 1,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["garage", ">=", 1]],
   "messages": ["Welcome to your garage where you can manage all of your garage!", "Viewing your cars, their car details, and inspecting their conditions will be crucial into become a professional GTF driver. You can also sell your cars here."]
   }
 ],
   "license": [ {"id": 1,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["license", "==", "N"]],
   "messages": ["Welcome to the license center where you can take license tests & learn driving techniques that will help you become a racing driver." , "In order to earn a license, you must achieve at least Bronze in a set of license tests.", "Licenses will help you unlock events to continue your career.", "Now, the first step is to achieve your B License. Good luck! If you are have any difficulties, increasing your experience level will help improve your driving skills in license tests.", "Did I tell you that there are car prizes?"]
   },
     {"id": 2,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["license", "==", "B"]],
   "messages": ["Congrats on getting your first license! I hope you'll enjoy your first set of B level races. ","The A License is the next license for you to achieve. These set of tests are a bit more difficult than B, so I recommend starting once you reach **Lv.5**; however, this is not a requirement and you may freely try them at your own pace."]
   },
       {"id": 3,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["license", "==", "A"]],
   "messages": ["Good job, you have an A License!", "Your next objective in the License Center is earning an IC License, which stands for International C. This set of tests contain some offroad and rainy sections, so I recommend reaching **Lv.10**. And unlike other tests, there is only 5 that you need to pass, but the final test will push you to the utmost limit!"]
   },
     {"id": 4,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["license", "==", "IC"]],
   "messages": ["I hope you enjoyed your IC License!" , "The IB License is up next in the License Center. There are some advanced corners and faster sports cars that you need to master. **Lv.20** is the experience level that I would recommend before attempting, good luck!"]
   },
     {"id": 5,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["license", "==", "IB"]],
   "messages": ["Great job on obtaining your IB License, it may be difficult for some!", "The IA License is coming up and there some tough tests to master, including driving race cars! **Lv.25** is recommended for the IA License, good luck!"]
   },
     {"id": 6,
-  "unlock": [],
+  "emote": "", "unlock": [],
   "ignore": [[]],
   "required": [["license", "==", "IA"]],
   "messages": ["This are the final set of tests, the S License or the Super License! These are the most difficult tests that you will encounter in GT Fitness. Use all the skills you have learned, good luck!"]
   }
-  ]
+  ],
+  "tune": [
+  {"id": 1,
+  "emote": "", "unlock": [],
+  "ignore": [[]],
+  "required": [[]],
+  "messages": ["Welcome to GTF Auto!", "This is where you are able to tune the performance of your cars to help you win races more efficiently. When you purchase a part, they are added to the car's inventory and can be reapplied with no extra cost."]
+  },
+    {"id": 2,
+  "emote": "", "unlock": [],
+  "ignore": [[]],
+  "required": [[]],
+  "messages": ["GTF Auto is also a place where you can repair and perform maintanence on cars after racing for long durations.", "Make sure you take of your car.", "When a car's condition is bad, it is unable to race and a car repair is required."]
+  }
+]
 }

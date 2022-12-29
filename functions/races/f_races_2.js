@@ -383,21 +383,11 @@ function race2func(msg) {
               stats.redeemgift(emote.goldmedal + " Congrats! Completed " + racesettings["title"].split(" - ")[0] + " " + emote.goldmedal, racesettings["prize"], embed, msg, userdata);
                 }
           } else if (racesettings["mode"] == "LICENSE") {
+             var option = racesettings["eventid"].replace("LICENSE", "").toLowerCase().split("-")[0]
+    if (option == "b" || option == "a" ||option == "ic" || option == "ib" || option == "ia" || option == "s") {
             require(gtf.RACEEX).licensecheck(racesettings, racedetails, finalgrid, embed, msg, userdata)
+    }
           }
-/*
-  if (racesettings["mode"] == "LICENSE") {
-         var complete = stats.checklicenseevent(racesettings, "1st", userdata);
-                if (complete) {
-            stats.completeevent(racesettings, userdata);
-                  */
-  /*
-              stats.redeemgift(emote.goldmedal + " Congrats! Completed " + racesettings["title"].split(" - ")[0] + " " + emote.goldmedal, racesettings["prize"], embed, msg, userdata);
-              
-                }
-              
-  }
-  */
           if (racesettings["mode"] != "ONLINE") {
           stats.save(userdata);
           }
