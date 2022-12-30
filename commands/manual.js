@@ -11,13 +11,13 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "manual",
   cooldown: 3,
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode","gtf-demo"],
 
   delete: false,
   availinmaint: false,
   description: ["Test"],
-  aliases: ["help"],
+  license: "N", aliases: ["help"],
   requirecar: false,
   requireuserdata: true,
   usedduringrace: true,

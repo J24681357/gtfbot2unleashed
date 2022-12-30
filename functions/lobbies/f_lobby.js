@@ -148,7 +148,7 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
       changes.push("LIST");
     };
     apply = function () {
-      if (!gtftools.betweenInt(number, 1, 10)) {
+      if (!require(gtf.MATH).betweenInt(number, 1, 10)) {
         require(gtf.EMBED).alert({ name: "❌ Invalid Laps", description: "You can only set laps between 1 and 10 in a lobby.", embed: "", seconds: 0 }, msg, userdata);
         changes.push("ERROR");
       } else {
@@ -173,7 +173,7 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
       changes.push("LIST");
     };
     apply = function () {
-      if (!gtftools.betweenInt(number, 0, 15)) {
+      if (!require(gtf.MATH).betweenInt(number, 0, 15)) {
         require(gtf.EMBED).alert({ name: "❌ Invalid Number", description: "You can only set a grid count between 2 and 16 in a lobby.", embed: "", seconds: 0 }, msg, userdata);
         changes.push("ERROR");
       } else {
@@ -247,7 +247,7 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
       changes.push("LIST");
     };
     apply = function () {
-      if (!gtftools.betweenInt(number, 1, 2000)) {
+      if (!require(gtf.MATH).betweenInt(number, 1, 2000)) {
         if (number > 2000) {
           number = 9999;
         } else {
@@ -274,7 +274,7 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
       changes.push("LIST");
     };
     apply = function () {
-      if (!gtftools.betweenInt(number, 1, 2000)) {
+      if (!require(gtf.MATH).betweenInt(number, 1, 2000)) {
         if (number > 2000) {
           number = 9999;
         } else {
@@ -304,7 +304,7 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
       changes.push("LIST");
     };
     apply = function () {
-      if (!gtftools.betweenInt(number, 10, 2000)) {
+      if (!require(gtf.MATH).betweenInt(number, 10, 2000)) {
         if (number > 2000) {
           number = 9999;
         } else {
@@ -330,7 +330,7 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
       changes.push("LIST");
     };
     apply = function () {
-      if (!gtftools.betweenInt(number, 100, 9999)) {
+      if (!require(gtf.MATH).betweenInt(number, 100, 9999)) {
         if (number > 9999) {
           number = 9999;
         } else {
@@ -475,7 +475,7 @@ module.exports.settingsnregulations = function (setting, changes, lobby, pagearg
     }
     return;
   }
-  if (!gtftools.betweenInt(number, 1, pageargs["list"].length) || number == 0) {
+  if (!require(gtf.MATH).betweenInt(number, 1, pageargs["list"].length) || number == 0) {
     if (typeof name === "undefined") {
       listapply();
     } else {

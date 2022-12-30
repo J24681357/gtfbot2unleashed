@@ -12,7 +12,7 @@ module.exports = {
   name: "setup",
   title: "🛠 Car Setup",
   cooldown: 3,
-  level: 6,
+  license: "N", level: 6,
   channels: ["testing", "gtf-mode", "gtf-test-mode"],
 
   delete: false,
@@ -166,7 +166,7 @@ module.exports = {
     }
 
       var list = require(gtf.PARTS).tuninglist(part, gtfcar, embed, msg, userdata);
-    list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PERF).partpreview(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
+    list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PARTS).previewpart(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
       //list[select] = userdata["settings"]["PROGRESSBAR"][0] + " " + list[select];
       results = list.join("\n").replace(/\/n/ig, "\n")
       embed.setDescription(results + pageargs["footer"]);
@@ -180,7 +180,7 @@ module.exports = {
           part["tuning"] = gtfcar["perf"][part["type"].toLowerCase()]["tuning"]
 
           list[select] = userdata["settings"]["PROGRESSBAR"][0] + " " + list[select]
-list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PERF).partpreview(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
+list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PARTS).previewpart(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
           results = list.join("\n").replace(/\/n/ig, "\n");
           embed.setDescription(results + pageargs["footer"]);
           msg.edit({ embeds: [embed], components: buttons });
@@ -198,7 +198,7 @@ list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gt
           part["tuning"] = gtfcar["perf"][part["type"].toLowerCase()]["tuning"]
 
           list[select] = userdata["settings"]["PROGRESSBAR"][0] + " " + list[select] 
-   list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PERF).partpreview(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
+   list[list.length - 1] = list[list.length - 1] + "/n**Calculation: " + require(gtf.PARTS).previewpart(part, gtfcar, "GARAGE")["fpp"] + emote.fpp + "**";
           results = list.join("\n").replace(/\/n/ig, "\n");
           embed.setDescription(results + pageargs["footer"]);
           msg.edit({ embeds: [embed], components: buttons });

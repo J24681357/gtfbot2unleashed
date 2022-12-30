@@ -45,7 +45,7 @@ module.exports.alert = function (object, msg, userdata) {
     } else {
       embed.setFields([{name:name + message, value: desc + help_desc}]);
     }
-    
+
     return msg.channel.send({ embeds: [embed] }).then(msg => {
       if (seconds > 0) {
         setTimeout(() => {
@@ -67,17 +67,4 @@ module.exports.alert = function (object, msg, userdata) {
     });
   }
   return;
-};
-
-module.exports.checkgarageerror = function (embed, msg, userdata) {
-  if (stats.garagecount(userdata) >= require(gtf.GTF).garagelimit) {
-    require(gtf.EMBED).alert({ name: "❌ Garage Full", description: "You have reached your garage limit of " + require(gtf.GTF).garagelimit + " or above.\nSell one of your cars using **/garage - Sell Car** in order to add more cars to your garage.", embed: "", seconds: 7 }, msg, userdata);
-    return true;
-  } else {
-    return false;
-  }
-};
-
-module.exports.checknocars = function (userdata) {
-  return stats.currentcarmain(userdata) == "No car.";
 };

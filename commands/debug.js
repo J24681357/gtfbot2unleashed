@@ -12,7 +12,7 @@ var fs = require("fs");
 module.exports = {
   name: "debug",
   title: "DEBUG",
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing"],
 
   availinmaint: false,
@@ -297,7 +297,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         success = true;
         var cars = require(gtf.CARS).random({}, parseInt(query["number"]));
         for (var i = 0; i < cars.length; i++) {
-          stats.addcar(cars[i], "SORT", userdata);
+          require(gtf.CARS).addcar(cars[i], "SORT", userdata);
         }
         results = "`" + query["args"] + "` success to " + msg.guild.members.cache.get(userdata["id"]).user.username + "." + "\n" + "Added " + query["number"] + " random cars to garage.";
       }

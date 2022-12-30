@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "arcade",
   title: "Arcade Mode",
-  level: 0,
+  license: "N", level: 0,
   roles: [],
   channels: ["testing", "gtf-mode", "bot-mode"],
 
@@ -442,7 +442,7 @@ module.exports = {
 
       function callback(track) {
         var gtfcar = stats.currentcar(userdata);
-        var randomid = "#" + gtftools.randomInt(0, 9).toString() + gtftools.randomInt(0, 9).toString() + gtftools.randomInt(0, 9).toString() + gtftools.randomInt(0, 9).toString();
+        var randomid = "#" + require(gtf.MATH).randomInt(0, 9).toString() + require(gtf.MATH).randomInt(0, 9).toString() + require(gtf.MATH).randomInt(0, 9).toString() + require(gtf.MATH).randomInt(0, 9).toString();
         track["name"] = "Generic Track " + randomid;
         track["options"] = ["Drift"];
         track["author"] = "GTFITNESS";

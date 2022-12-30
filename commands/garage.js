@@ -11,8 +11,8 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "garage",
   title: "My Garage",
-  level: 0,
-  aliases: ["g"],
+  license: "N", level: 0,
+  license: "N", aliases: ["g"],
   channels: ["testing", "gtf-mode"],
 
   availinmaint: false,
@@ -121,7 +121,7 @@ module.exports = {
 
     if (query["options"] == "list") {
        delete query["number"]
-      embed.setTitle("🏠" + " __Garage: " + stats.garagecount(userdata) + "/" + require(gtf.GTF).garagelimit + " Cars (" + userdata["settings"]["GARAGESORT"] + ")" + makee + country + type + drivetrain + engine + special + name + "__");
+      embed.setTitle("🏠" + " __Garage: " + stats.garage(userdata).length + "/" + require(gtf.GTF).garagelimit + " Cars (" + userdata["settings"]["GARAGESORT"] + ")" + makee + country + type + drivetrain + engine + special + name + "__");
         var cars = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))
         if (cars.length == 0) {
           require(gtf.EMBED).alert({ name: "❌ No Cars", description: "There are no cars with this type in your garage.", embed: "", seconds: 3 }, msg, userdata);
@@ -161,7 +161,7 @@ module.exports = {
       var number = query["number"];
       var number2 = query["number"];
 
-      if (number <= 0 || isNaN(number) || number === undefined || number > stats.garagecount(userdata)) {
+      if (number <= 0 || isNaN(number) || number === undefined || number > stats.garage(userdata).length) {
         require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your garage.", embed: "", seconds: 3 }, msg, userdata);
         return;
       }
@@ -180,14 +180,14 @@ module.exports = {
     }
     if (query["options"] == "view") {
       var number = query["number"];
-      if (number <= 0 || isNaN(number) || number > stats.garagecount(userdata)) {
+      if (number <= 0 || isNaN(number) || number > stats.garage(userdata).length) {
         require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your garage.", embed: "", seconds: 3 }, msg, userdata);
         return;
       }
       var gtfcar = stats.garage(userdata).filter(x => filterlist.map(filter => filter(x)).every(p => p === true))[number - 1]
       var favorite = gtfcar["favorite"] ? "⭐" : ""
       embed.setTitle("🚘 __" + gtfcar["name"] + "__ " + favorite);
-      results = stats.view(gtfcar, embed, userdata);
+      results = stats.viewcar(gtfcar, embed, userdata);
       stats.loadcarimage(gtfcar, embed, userdata, then)
 
       function then(attachment) {
@@ -257,7 +257,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         function view() {
           if (details == 0) {
             details = 1         
-            var results2 = stats.view2(gtfcar, userdata);
+            var results2 = stats.viewtuning(gtfcar, userdata);
           embed.setDescription(results2 + pageargs["footer"]);
           msg.edit({embeds: [embed], components:buttons});
           } else {

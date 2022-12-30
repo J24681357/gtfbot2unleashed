@@ -12,7 +12,7 @@ module.exports = {
   name: "profile",
   title: "My Profile",
   cooldown: 3,
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   delete: false,
@@ -49,13 +49,13 @@ module.exports = {
       "__**License:**__ " + gtftools.toEmoji(userdata["license"]) + "\n" +
       "__**Current Credits:**__ "
       "**" +
-      gtftools.numFormat(stats.credits(userdata))+
+      require(gtf.MATH).numFormat(stats.credits(userdata))+
       emote.credits +
       "**" + "\n" +
       "__**Experience Points**__ " +
       "\n" +
       "**" +
-      gtftools.numFormat(stats.exp(userdata)) +
+      require(gtf.MATH).numFormat(stats.exp(userdata)) +
       emote.exp +
       "**\n" +
       "Lv." +
@@ -156,11 +156,11 @@ embed.setThumbnail(msg.guild.members.cache.get(userdata["id"]).user.displayAvata
 })
         var numparts = userdata["stats"]["numwins"]
         var results = "**Garage Count:** " +
-      stats.garagecount(userdata) +
+      stats.garage(userdata).length +
       " Cars" + "\n" + 
       "**Favorite Car:** " + favcar["name"] + " " + "**" + stats.mileagecaruser(favcar, userdata) + stats.mileageunits(userdata) + "**" + emote.mileage + "\n" + 
-        "**Total Garage Value:** " + "**" + gtftools.numFormat(garagevalue) + "**" + emote.credits + "\n" + 
-        "**# of Parts Purchased:** " + "**" + gtftools.numFormat(numparts) + "**" + emote.credits
+        "**Total Garage Value:** " + "**" + require(gtf.MATH).numFormat(garagevalue) + "**" + emote.credits + "\n" + 
+        "**# of Parts Purchased:** " + "**" + require(gtf.MATH).numFormat(numparts) + "**" + emote.credits
         embed.setDescription(results);
         msg.edit({embeds:[embed], components: buttons})
       }

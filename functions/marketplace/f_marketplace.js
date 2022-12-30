@@ -20,46 +20,46 @@ module.exports.purchase = function (item, type, special, embed, msg, userdata) {
   var part_inv = false;
 
   if (type == "CAR") {
-    if (require(gtf.EMBED).checkgarageerror(embed, msg, userdata)) {
+    if (stats.checkgarageerror(embed, msg, userdata)) {
       return;
     }
     var name = item["name"] + " " + item["year"];
     var fpp = require(gtf.PERF).perf(item, "DEALERSHIP")["fpp"];
-    var mcost = require(gtf.MARKETPLACE).costcalc(item, fpp);
+    var mcost = require(gtf.CARS).costcalc(item, fpp);
     var image = item["image"][0];
-    
+
     var aeronum = (item["type"].includes("Race Car")) ? 0 : (item["image"].length - 1)
-    
-    
+
+
     var make = item["make"];
 
-    info = "\n**" + fpp + "**" + emote.fpp + "**" + " | " + gtftools.numFormat(item["power"]) + " hp" + " | " + gtftools.numFormat(item["weight"]) + " lbs** | **" + item["drivetrain"] + "** | **" + item["engine"] + "**" + "\n**" + aeronum + " " + emote.aero + " Aero Kits" + " | " + item["livery"].length + " " + emote.livery + " Liveries" + "**";
+    info = "\n**" + fpp + "**" + emote.fpp + "**" + " | " + require(gtf.MATH).numFormat(item["power"]) + " hp" + " | " + require(gtf.MATH).numFormat(item["weight"]) + " lbs** | **" + item["drivetrain"] + "** | **" + item["engine"] + "**" + "\n**" + aeronum + " " + emote.aero + " Aero Kits" + " | " + item["livery"].length + " " + emote.livery + " Liveries" + "**";
 var emojilist = [
-  { emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: 'Purchase', 
+  { emoji: emote.yes,
+  emoji_name: "Yes",
+  name: 'Purchase',
   extra: " ",
   button_id: 0,
   },
-  { emoji: "🚘", 
-  emoji_name: "🚘", 
-  name: 'Purchase & Change Car', 
+  { emoji: "🚘",
+  emoji_name: "🚘",
+  name: 'Purchase & Change Car',
   extra: " ",
   button_id: 1 },
-  { emoji: emote.google, 
-  emoji_name: "google", 
-  name: 'Car Info', 
+  { emoji: emote.google,
+  emoji_name: "google",
+  name: 'Car Info',
   extra: "https://www.google.com/search?q=" + name.replace(/ /ig, "+"),
   button_id: 2 }
 ]
-      var results = "**" + name + "**" + " | **" + gtftools.numFormat(mcost) + "**" + emote.credits + " " + info;
-    
+      var results = "**" + name + "**" + " | **" + require(gtf.MATH).numFormat(mcost) + "**" + emote.credits + " " + info;
+
   }
   if (type == "ROLE") {
         var emojilist = [
-  { emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: '', 
+  { emoji: emote.yes,
+  emoji_name: "Yes",
+  name: '',
   extra: " ",
   button_id: 0 }
 ]
@@ -74,7 +74,7 @@ var emojilist = [
     var type1 = item["type"];
     var name = item["type"] + " " + item["name"];
     var cost = item["cost"];
-    
+
     var mcost = cost;
 
     if (type1 != "Car Wash") {
@@ -97,15 +97,15 @@ var emojilist = [
     }
 
     oldpartmessage = "\nReplaced **" + gtfcar["perf"][type1.toLowerCase().replace(/ /g, " ")]["current"] + "**.";
-      
+
     if (gtfcar["perf"][type1.toLowerCase().replace(/ /g, " ")]["list"].includes(item["name"])) {
       cost = 0;
       mcost = 0;
       part_inv = true;
     }
 
-    var perf1 = require(gtf.PERF).partpreview(oldpart, gtfcar, "GARAGE");
-    var perf2 = require(gtf.PERF).partpreview(item, gtfcar, "GARAGE");
+    var perf1 = require(gtf.PARTS).previewpart(oldpart, gtfcar, "GARAGE");
+    var perf2 = require(gtf.PARTS).previewpart(item, gtfcar, "GARAGE");
 
     var powerdesc = "";
     var weightdesc = "";
@@ -113,7 +113,7 @@ var emojilist = [
       powerdesc = "\n" + "**Power: " + perf1["power"] + "hp -> " + perf2["power"] + "hp**";
     }
     if (perf1["weight"] != perf2["weight"]) {
-      weightdesc = "\n" + "**Weight: " + gtftools.numFormat(perf1["weight"]) + "lbs -> " + gtftools.numFormat(perf2["weight"]) + "lbs**";
+      weightdesc = "\n" + "**Weight: " + require(gtf.MATH).numFormat(perf1["weight"]) + "lbs -> " + require(gtf.MATH).numFormat(perf2["weight"]) + "lbs**";
     }
 
     info = "\n**FPP: " + perf1["fpp"] + emote.fpp + " -> " + perf2["fpp"] + "**" + emote.fpp + powerdesc + weightdesc;
@@ -134,17 +134,17 @@ var emojilist = [
   } else if (item["name"] == "Default") {
     var results = "Revert to **Default**? " + info;
   } else {
-  var results = "**" + name + "**" + " | **" + gtftools.numFormat(mcost) + "**" + emote.credits + " " + info;
+  var results = "**" + name + "**" + " | **" + require(gtf.MATH).numFormat(mcost) + "**" + emote.credits + " " + info;
   }
 
             var emojilist = [{
-      emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: 'Purchase', 
+      emoji: emote.yes,
+  emoji_name: "Yes",
+  name: 'Purchase',
   extra: "Once",
   button_id: 0 }
     ]
-    
+
   }
   if (type == "PAINT") {
 
@@ -164,16 +164,16 @@ var emojilist = [
     var mcost = cost;
 
     info = "\n**Paint: " + gtfcar[type1]["current"] + " -> " + name + "**\n";
-    
-    var results = "**" + name + "**" + " | **" + gtftools.numFormat(mcost) + "**" + emote.credits + " " + info;
+
+    var results = "**" + name + "**" + " | **" + require(gtf.MATH).numFormat(mcost) + "**" + emote.credits + " " + info;
 
       var oldpart = require(gtf.PAINTS).find({ name: gtfcar["color"]["current"], type: type1 })[0];
     oldpartmessage = "\nRepainted from **" + gtfcar["color"]["current"] + "**.";
-  
+
     var emojilist = [
-  { emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: 'Purchase', 
+  { emoji: emote.yes,
+  emoji_name: "Yes",
+  name: 'Purchase',
   extra: "Once",
   button_id: 0 }
 ]
@@ -196,25 +196,25 @@ var emojilist = [
     var mcost = cost;
 
     info = "\n**Rims: " + gtfcar[type1]["current"] + " -> " + name + "**\n";
-    
-    var results = "**" + name + "**" + " | **" + gtftools.numFormat(mcost) + "**" + emote.credits + " " + info;
+
+    var results = "**" + name + "**" + " | **" + require(gtf.MATH).numFormat(mcost) + "**" + emote.credits + " " + info;
 
       var oldpart = require(gtf.PAINTS).find({ name: gtfcar[type1]["current"], type: type1 })[0];
     oldpartmessage = "\nApplied from **" + gtfcar[type1]["current"] + "**.";
-  
+
     var emojilist = [
-  { emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: 'Purchase', 
+  { emoji: emote.yes,
+  emoji_name: "Yes",
+  name: 'Purchase',
   extra: "Once",
   button_id: 0 }
 ]
   }
   if (type == "DRIVER") {
     var emojilist = [
-  { emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: 'Purchase', 
+  { emoji: emote.yes,
+  emoji_name: "Yes",
+  name: 'Purchase',
   extra: "Once",
   button_id: 0 }
 ]
@@ -228,7 +228,7 @@ var emojilist = [
     oldpartmessage = ""
     //oldpartmessage = "\nRepainted from **" + car["color"]["current"] + "**.";
     return purchasefunc(msg)
-  }  
+  }
 
   if (image.length != 0) {
     embed.setImage(image);
@@ -238,7 +238,7 @@ var emojilist = [
     require(gtf.EMBED).alert(
       {
         name: "❌ Insufficient Credits",
-        description: "You have insufficient credits to purchase the **" + name + "**.\n\n" + "**Credits: " + gtftools.numFormat(stats.credits(userdata)) + emote.credits + "** -> **" + gtftools.numFormat(mcost) + "**",
+        description: "You have insufficient credits to purchase the **" + name + "**.\n\n" + "**Credits: " + require(gtf.MATH).numFormat(stats.credits(userdata)) + emote.credits + "** -> **" + require(gtf.MATH).numFormat(mcost) + "**",
         embed: "",
         seconds: 3,
       },
@@ -258,12 +258,12 @@ var emojilist = [
 
   var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
    require(gtf.DISCORD).send(msg, {embeds:[embed], components:buttons}, purchasefunc)
-   
+
    function purchasefunc(msg) {
     function purchase() {
       if (type == "CAR") {
         stats.addcredits(-mcost, userdata);
-        stats.addcar(item, "SORT", userdata);
+        require(gtf.CARS).addcar(item, "SORT", userdata);
         successmessage = "Purchased " + "**" + name + "**." + " **-" + mcost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "**" + emote.credits;
         cost = mcost;
       }
@@ -274,9 +274,9 @@ var emojilist = [
         successmessage = "\n" + "Purchased " + "**" + item[0] + "**." + " **-" + cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "**" + emote.credits;
       }
       if (type == "PART") {
-        
-          require(gtf.PERF).partinstall(item, userdata);
-        
+
+          require(gtf.PARTS).installpart(item, userdata);
+
         if (part_inv) {
           successmessage = "Reinstalled " + name + " on **" + gtfcar["name"] + "**.";
         } else {
@@ -288,8 +288,8 @@ var emojilist = [
           if (type1 == "Car Wash") {
             embed.setThumbnail("https://github.com/J24681357/gtfbot/raw/master/images/gtauto/carwash/bubbles.gif")
             embed.setColor(0x2069a9)
-            embed.setDescription("**🚿 Car Wash Successful! " + "-" + gtftools.numFormat(cost) + emote.credits + "**") 
-            require(gtf.PERF).carclean(100, userdata) 
+            embed.setDescription("**🚿 Car Wash Successful! " + "-" + require(gtf.MATH).numFormat(cost) + emote.credits + "**")
+            require(gtf.PERF).carclean(100, userdata)
             embed.fields = []
             embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}]);
             msg.edit({ embeds: [embed]})
@@ -306,33 +306,33 @@ var emojilist = [
       if (type == "PAINT") {
 
           stats.addcredits(-cost, userdata);
-          require(gtf.PERF).paint(item, userdata);
+          require(gtf.PAINTS).applypaint(item, userdata);
           successmessage = "Painted **" + name + "** on **" + gtfcar["name"] + "**.";
         require(dir + "commands/paint").execute(msg, {type:"list", extra:successmessage}, userdata);
-        
+
         stats.save(userdata);
         return
       }
       if (type == "WHEEL") {
         if (item["name"] == "Default") {
-          require(gtf.PERF).rimsinstall(item, userdata);
+          require(gtf.WHEEL).installwheels(item, userdata);
           successmessage = "Reinstalled " + name + " on **" + gtfcar["name"] + "**.";
         } else {
           stats.addcredits(-cost, userdata);
-          require(gtf.PERF).rimsinstall(item, userdata);
+          require(gtf.WHEEL).installwheels(item, userdata);
           successmessage = "Installed **" + name + "** on **" + gtfcar["name"] + "**." + " **-" + cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "**" + emote.credits;
         }
         require(dir + "commands/wheels").execute(msg, {make:"list", extra:successmessage}, userdata);
-        
+
         stats.save(userdata);
         return
       }
       if (type == "DRIVER") {
           userdata[type1][item["type"].toLowerCase() + "color"] = name
-        
+
           successmessage = "Painted **" + name + "** on **" + item["type"] + "**.";
         require(dir + "commands/driver").execute(msg, {type:"list", extra:successmessage}, userdata);
-        
+
         stats.save(userdata);
         return
       }
@@ -350,7 +350,7 @@ var emojilist = [
     }
     function purchasecarchange() {
         stats.addcredits(-mcost, userdata);
-        stats.addcar(item, undefined, userdata);
+        require(gtf.CARS).addcar(item, undefined, userdata);
         var changecar = stats.setcurrentcar(stats.garage(userdata).length, {function:function(x) {return x}}, userdata);
         userdata["garage"] = stats.garagesort(userdata)
         successmessage = "Purchased " + "**" + name + "**." + " **-" + mcost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "**" + emote.credits + "\n" + "Selected the **" + name + "**.";
@@ -370,15 +370,14 @@ var emojilist = [
     gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
   }
 };
-
 module.exports.sell = function (item, type, query, embed, msg, userdata) {
   var results = "";
   if (type == "CAR") {
     var id = item["ID"];
     var name = item["name"];
-    
+
     var sell = require(gtf.PERF).perf(item, "GARAGE")["sell"];
-    
+
     if (stats.currentcar(userdata) != null) {
       if (stats.currentcar(userdata)[0] == id) {
         require(gtf.EMBED).alert({ name: "❌ Current Car", description: "You cannot sell a car you are currently in." + "\n\n" + "❗ Choose another option when this message disappears", embed: "", seconds: 3 }, msg, userdata);
@@ -398,15 +397,15 @@ module.exports.sell = function (item, type, query, embed, msg, userdata) {
   embed.setDescription(results);
   embed.setFields([{name:stats.main(userdata), value: stats.currentcarmain(userdata)}]);
 var emojilist = [
-  { emoji: emote.yes, 
-  emoji_name: "Yes", 
-  name: '', 
+  { emoji: emote.yes,
+  emoji_name: "Yes",
+  name: '',
   extra: "Once",
   button_id: 0 }
 ]
   var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
    require(gtf.DISCORD).send(msg, {embeds:[embed], components:buttons}, sellfunc)
-   
+
    function sellfunc(msg) {
     function sell1() {
       if (type == "CAR") {
@@ -432,86 +431,13 @@ var emojilist = [
          gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
   }
 };
-
 module.exports.sellcalc = function (cost) {
   return -Math.ceil((-cost * 0.3 + 1) / 100) * 100;
 };
 
-module.exports.costcalc = function (car, fpp) {
-  if (car["carcostm"] <= 0.25) {
-    return (10000 * car["carcostm"]) - ((10000 * car["carcostm"]) * (car["discount"]/100))
-  }
-  var cost = car["carcostm"] * 10000;
-
-  if (fpp == undefined) {
-    
-  } else {
-    var offset = fpp - 250;
-    if (offset < 0) {
-      cost = -((-offset) ** 1.8) + cost;
-    } else {
-      cost = offset ** 1.8 + cost;
-    }
-  }
-  cost = cost - (cost * (car["discount"]/100))
-
-  return Math.round(cost / 100) * 100;
-};
-
-module.exports.fourgifts = function (title, results, prizes, embed, msg, userdata) {
-  var select = [
-    [emote.rightarrow + " ", emote.transparent + " ", emote.transparent + " ", emote.transparent + " "],
-    [emote.transparent + " ", emote.rightarrow + " ", emote.transparent + " ", emote.transparent + " "],
-    [emote.transparent + " ", emote.transparent + " ", emote.rightarrow + " ", emote.transparent + " "],
-    [emote.transparent + " ", emote.transparent + " ", emote.transparent + " ", emote.rightarrow + " "],
-  ];
-  embed.fields = [];
-  embed.setTitle("__" + title + "__");
-  
-  embed.setDescription(results);
-  require(gtf.DISCORD).send(msg, {embeds:[embed]}, fourgiftsfunc)
-  
-  function fourgiftsfunc(msg) {
-    var index = 0;
-    var results1 = function (index) {
-      return select[index][0] + "||" + prizes[0]["name"] + "||" + "\n" 
-      + select[index][1] + "||" + prizes[1]["name"] + "||" + "\n" 
-      + select[index][2] + "||" + prizes[2]["name"] + "||" + "\n"
-      + select[index][3] + "||" + prizes[3]["name"] + "||";
-    };
-
-    gtftools.interval(
-      function () {
-        index = Math.floor(Math.random() * select.length);
-        var final = results1(index);
-        embed.setDescription(final);
-        msg.edit({embeds: [embed]});
-      },
-      2000,
-      4
-    );
-
-    setTimeout(function () {
-    if (prizes[index]["type"] == "CREDITS") {
-      var item = prizes[index];
-
-      stats.redeemgift("🎉 " + item["name"], item, embed, msg, userdata);
-      } else if (prizes[index]["type"] == "CAR") {
-      var item = prizes[index];
-
-      stats.redeemgift("🎉 " + item["name"], item, embed, msg, userdata);
-      } else if (prizes[index]["type"] == "RANDOMCAR") {
-      var gift = prizes[index];
-      gift = { id: -1, type: "CAR", name: gift["name"], item: gift["item"], author: "", inventory: false }
-      stats.redeemgift("🎉 " + gift["name"], gift, embed, msg, userdata);
-      }
-    }, 9000);
-  }
-};
-
 /*
 module.exports.carwash = function(gtfcar, embed, msg, userdata) {
-    
+
 
     .read(car["image"][imagestyle], async function (err, image) {
   if (err) {
@@ -527,14 +453,14 @@ ctx.putImageData(imageData, 0, 0);
  const water = await Canvas.loadImage("https://github.com/J24681357/gtfbot/raw/master/images/gtauto/carwash/watertexture.jpg");
       ctx.globalAlpha = 0.2
       ctx.drawImage(water, 0,0, 2000,2000);
-      const attachment = new AttachmentBuilder(canvas.toBuffer(), {name: 'carwash.png'});  
+      const attachment = new AttachmentBuilder(canvas.toBuffer(), {name: 'carwash.png'});
       embed.setImage("attachment://carwash.png");
-      
+
 	    msg.edit({ embeds: [embed], files: [attachment] })
   }
 })
       //ctx.drawImage(image, 0,0);
 
-     
+
 }
 */

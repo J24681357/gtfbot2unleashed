@@ -66,9 +66,30 @@ module.exports.find = function (args) {
   return final.sort((x, y) => x["cost"] - y["cost"]);
 };
 
+module.exports.applypaint = function (paint, userdata) {
+  if (paint["type"] == "Livery") {
+     var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1]["livery"];
+  } else {
+  var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1]["color"];
+  }
+
+  if (paint["name"] == "Default") {
+    installedpart["current"] = paint["name"];
+  } else {
+  installedpart["current"] = paint["type"] + " " + paint["name"];
+  }
+
+
+if (paint["type"] == "Livery") {
+      userdata["garage"][stats.currentcarnum(userdata) - 1]["livery"] = installedpart
+  } else {
+   userdata["garage"][stats.currentcarnum(userdata) - 1]["color"] = installedpart
+  }
+
+};
 module.exports.checkpaintsavail = function (paint, gtfcar) {
   var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]], year: [gtfcar["year"]] });
-  
+
   if (ocar["type"].includes("Race Car")) {
     if (paint["name"] == "Default") {
       if (gtfcar["livery"]["current"] == paint["name"]) {
@@ -92,13 +113,13 @@ module.exports.checkpaintsavail = function (paint, gtfcar) {
       list[x] = ""
     }
     return list[nameid]
-    
-  } 
+
+  }
   else {
     if (paint["name"] == "Default" && gtfcar["color"]["current"] == "Default") {
       return "✅"
     }
-    
+
   if (gtfcar["color"]["current"] == paint["type"] + " " + paint["name"]) {
     return "✅";
   } else if (gtfcar["color"]["current"] == "Default") {
@@ -106,8 +127,6 @@ module.exports.checkpaintsavail = function (paint, gtfcar) {
   }
 
     return ""
-    
+
   }
 };
-
-///////////////////////////////////////////////////////////////////////////////////////////////

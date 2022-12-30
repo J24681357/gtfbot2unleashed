@@ -10,8 +10,8 @@ var gtf = require(dir + "files/directories");
 
 module.exports = {
   name: "gifts",
-  level: 0,
-  aliases: ["inv", "inventory", "gifts"],
+  license: "N", level: 0,
+  license: "N", aliases: ["inv", "inventory", "gifts"],
   channels: ["testing", "gtf-mode","gtf-demo"],
 
   availinmaint: false,
@@ -54,14 +54,14 @@ module.exports = {
 
     if (query["options"] == "accept" || query["options"] == "redeem") {
       var number = query["number"];
-      if (!gtftools.betweenInt(query["number"], 1, stats.gifts(userdata).length)) {
+      if (!require(gtf.MATH).betweenInt(query["number"], 1, stats.gifts(userdata).length)) {
         require(gtf.EMBED).alert({ name: "❌ Invalid Number", description: "This number does not exist in your inventory.", embed: "", seconds: 3 }, msg, userdata);
       return
       }
       
       var gift = stats.gifts(userdata)[number - 1];
       if (gift["type"] == "CAR") {
-          if (require(gtf.EMBED).checkgarageerror(embed, msg, userdata)) {
+          if (stats.checkgarageerror(embed, msg, userdata)) {
       return;
         }
       }
@@ -92,7 +92,7 @@ module.exports = {
 
     if (query["options"] == "delete" || query["options"] == "remove") {
       var number = query["number"];
-      if (!gtftools.betweenInt(query["number"], 1, stats.gifts(userdata).length)) {
+      if (!require(gtf.MATH).betweenInt(query["number"], 1, stats.gifts(userdata).length)) {
         require(gtf.EMBED).alert({ name: "❌ Invalid Number", description: "This number does not exist in your inventory.", embed: "", seconds: 3 }, msg, userdata);
       return
       }

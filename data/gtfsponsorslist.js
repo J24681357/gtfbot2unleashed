@@ -67,7 +67,7 @@ module.exports.find = function (args) {
           }
         }
       }
-      
+
       if (count == total) {
         final.push(idkey);
       }
@@ -93,7 +93,7 @@ module.exports.creditbonus = function (credits, gtfcar, userdata) {
     return 0
   }
   var sponsor = require(gtf.SPONSORS).find({"name":[userdata["sponsor"]["name"]]})[0]
-  
+
   if (sponsor["type"] == "Rims") {
     if (gtfcar["rims"]["current"].includes(sponsor["require"][0])) {
     return Math.round(credits * (sponsor["percent"] / 100))
@@ -112,5 +112,47 @@ module.exports.creditbonus = function (credits, gtfcar, userdata) {
   }
 
   return 0
- 
+
+};
+
+module.exports.audit = function (gtfcars, gtfwheels) {
+  var fs = require("fs");
+  var sponsors = {};
+
+  var makes = require(gtf.CARS).list("makes");
+  var makesfilter = makes
+    .filter(function (x) {
+      var list = require(gtf.CARS).find({ make: [x], types: ["Production", "Aftermarket"] });
+      return list.length >= 5;
+    })
+    .map(function (x) {
+      sponsors[x.toLowerCase()] = {
+        name: x,
+        license: "N", level: 10,
+        type: "Cars",
+        require: [x],
+        levels: [1000, 2500, 5000],
+        percent: 10,
+        bonus: "credits",
+      };
+    });
+
+  var wheelmakes = require(gtf.WHEELS).list("makes");
+  wheelmakes.map(function (x) {
+    sponsors[x.toLowerCase()] = {
+      name: x,
+      license: "N", level: 5,
+      type: "Rims",
+      require: [x],
+      levels: [700, 1500, 3000],
+      percent: 5,
+      bonus: "credits",
+    };
+  });
+
+  fs.writeFile("./jsonfiles/gtfsponsors.json", JSON.stringify(sponsors), function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };

@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "home",
   title: "My GTF Home",
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-demo", "gtf-mode"],
 
   availinmaint: false,
@@ -166,7 +166,7 @@ function createlist() {
           var track = require(gtf.COURSEMAKER).drawtrack(t, callback);
 
           function callback(track) {
-            var randomid = "#" + gtftools.randomInt(0, 9).toString() + gtftools.randomInt(0, 9).toString() + gtftools.randomInt(0, 9).toString() + gtftools.randomInt(0, 9).toString();
+            var randomid = "#" + require(gtf.MATH).randomInt(0, 9).toString() + require(gtf.MATH).randomInt(0, 9).toString() + require(gtf.MATH).randomInt(0, 9).toString() + require(gtf.MATH).randomInt(0, 9).toString();
             track["name"] = "Generic Track " + randomid;
             track["options"] = ["Drift"];
             track["author"] = "ARCADE";
@@ -222,7 +222,7 @@ function createlist() {
 
           embed.fields = [];
           var car = stats.currentcar(userdata);
-          results = stats.view(car, embed, userdata);
+          results = stats.viewcar(car, embed, userdata);
           stats.loadcarimage(car, embed, userdata, then);
 
           function then(attachment) {
@@ -242,7 +242,7 @@ function createlist() {
           return;
         }
   
-        showcasenumber = gtftools.randomInt(0, showcaselist.length-1);
+        showcasenumber = require(gtf.MATH).randomInt(0, showcaselist.length-1);
         showcaselist[showcasenumber]()
       }, 15 * 1000);
       gtftools.createbuttons(menu, emojilist, functionslist, msg, userdata);

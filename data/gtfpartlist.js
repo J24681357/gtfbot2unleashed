@@ -162,10 +162,10 @@ module.exports.checkpartsavail = function (part, gtfcar) {
   var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]]});
   var perf = require(gtf.PERF).perf(ocar, "DEALERSHIP");
   console.log(part)
-  var fpp = require(gtf.PERF).partpreview(part, gtfcar, "GARAGE")["fpp"].toString()
+  var fpp = require(gtf.PARTS).previewpart(part, gtfcar, "GARAGE")["fpp"].toString()
 
   var type = part["type"].toLowerCase().replace(/ /g, "")
-  
+
   if (part["type"] == "aerokits") {
     var nameid = parseInt(part["name"].split(" ").pop()) - 1
     var list = [["❌", "**" + "---" + "**"], ["❌", "**" + "---" + "**"]]
@@ -185,14 +185,14 @@ module.exports.checkpartsavail = function (part, gtfcar) {
   }
 
     var btype = part["eligible"].length == 0 ? true : part["eligible"].some(x => ocar["type"].includes(x))
-  
+
   var bfpplimit = perf["fpp"] < part["fpplimit"];
   var bweightlimit = perf["oweight"] > part["lowerweight"];
-  
+
   var prohibitcheck = part["prohibited"].length == 0 ? true : !part["prohibited"].some(x => ocar["special"].includes(x))
   var bengine = true
 
-  
+
   if (btype && bfpplimit && bweightlimit && bengine && prohibitcheck) {
     if (gtfcar["perf"][type]["current"] == "Default" && gtfcar["perf"][type]["current"] == part["name"]) {
       return ["✅", "**" + gtfcar["fpp"] + "**"]
@@ -210,6 +210,61 @@ module.exports.checkpartsavail = function (part, gtfcar) {
     return ["❌", "---"];
   }
 };
+module.exports.previewpart = function (part, car, condition) {
+    var car5 = JSON.stringify(car);
+    var car2 = JSON.parse(car5);
+    var type = part["type"].toLowerCase().replace(/ /g, "")
+
+  car2["perf"][type]["current"] = part["name"];
+    if (typeof part["tuning"] !== 'undefined') {
+      car2["perf"][type]["tuning"] = part["tuning"];
+    }
+    return require(gtf.PERF).perf(car2, condition);
+};
+module.exports.installpart = function (part, userdata) {
+  var type = part["type"].toLowerCase().replace(/ /g, "")
+
+  var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type];
+
+  installedpart["current"] = part["name"];
+  // update tuning values
+  for (var i = 0; i < installedpart["tuning"].length; i++) {
+    if (part["name"] == "Default") {
+      installedpart["tuning"][i] = -999;
+    } else {
+      if (type == "aerokits") {
+        installedpart["tuning"][i] = 3;
+      } else {
+    installedpart["tuning"][i] = 0;
+    }
+  }
+  }
+  ////
+
+  if (part["name"] != "Default" && !installedpart["list"].includes(part["name"])) {
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push(part["name"]);
+  }
+
+if (type == 'tires') {
+    if (part["name"].includes("Racing")) {
+     if (!installedpart["list"].includes("Racing: Intermediate")) {
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push("Racing: Intermediate");
+  }
+  if (!installedpart["list"].includes("Racing: Heavy Wet")) {
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push("Racing: Heavy Wet");
+  }
+  }
+  if (part["name"].includes("Intermediate") || part["name"].includes("Heavy Wet")) {
+      if (!installedpart["list"].includes("Racing: Hard")) {
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type]["list"].push("Racing: Hard");
+  }
+  }
+}
+
+  userdata["garage"][stats.currentcarnum(userdata) - 1]["perf"][type] = installedpart;
+
+  userdata["garage"][stats.currentcarnum(userdata) - 1]["fpp"] = require(gtf.PERF).perf(userdata["garage"][stats.currentcarnum(userdata) - 1], "GARAGE")["fpp"];
+};
 
 module.exports.costcalc = function (part, gtfcar, ocar) {
   if (part["type"] == "Tires" || part["type"] == "Car Wash") {
@@ -220,19 +275,19 @@ module.exports.costcalc = function (part, gtfcar, ocar) {
      discount = discount ** 2
   }
   if (part["type"] == "Engine Repair") {
-    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.28)
+    var totalcost = ((require(gtf.CARS).costcalc(ocar) * 0.25) * 0.28)
     return Math.round(totalcost * ((100-gtfcar["condition"]["engine"]) / 100))
   }
   if (part["type"] == "Transmission Repair") {
-    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.13)
+    var totalcost = ((require(gtf.CARS).costcalc(ocar) * 0.25) * 0.13)
     return Math.round(totalcost * ( (100 -gtfcar["condition"]["transmission"]) / 100))
   }
   if (part["type"] == "Suspension Repair") {
-    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.13)
+    var totalcost = ((require(gtf.CARS).costcalc(ocar) * 0.25) * 0.13)
     return Math.round(totalcost * ((100 - gtfcar["condition"]["suspension"]) / 100))
   }
   if (part["type"] == "Body Damage Repair") {
-    var totalcost = ((require(gtf.MARKETPLACE).costcalc(ocar) * 0.25) * 0.2)
+    var totalcost = ((require(gtf.CARS).costcalc(ocar) * 0.25) * 0.2)
     return Math.round(totalcost * ((100-gtfcar["condition"]["body"]) / 100))
   }
   return Math.round(part["cost"] * discount / 100) *100

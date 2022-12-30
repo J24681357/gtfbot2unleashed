@@ -18,16 +18,16 @@ module.exports.giftlimit = 20;
 module.exports.creditslimit = 9999999;
 module.exports.explimit = 1000000;
 module.exports.commandlist = [['career', "Career Mode", "🏁"],
-['arcade', "Arcade Mode", "🎮"], 
-['lobby', "Lobby Matchmaking | Lv.8", "👥"], 
-['seasonal', "Seasonal Events | Lv.13", "🎉"], 
-['customrace', "Custom Race | Lv.35", "♾"], 
+['arcade', "Arcade Mode", "🎮"],
+['lobby', "Lobby Matchmaking | Lv.8", "👥"],
+['seasonal', "Seasonal Events | Lv.13", "🎉"],
+['customrace', "Custom Race | Lv.35", "♾"],
 ['car', "GTF Car Dealerships", "🏢"],
 ['tune', "GTF Auto: Tuning & Maintenance", "🔧"],
 ['paint', "GTF Auto: Paints", "🎨"],
 ['wheels', "GTF Auto: Wheels", "🛞"],
-['setup', "Car Setups", "🛠"], 
-['garage', "Garage", "🚘"], 
+['setup', "Car Setups", "🛠"],
+['garage', "Garage", "🚘"],
 ["profile", "Profile", "👤"],
 ["gifts", "Items", "🎁"],
 ["daily", "Daily Workout | Lv.4", "🎽"],
@@ -54,24 +54,23 @@ module.exports.defaultsettings = {
 module.exports.invitationlist = ["Ayrton Senna", "Bugatti", "Ferrari", "Koenigsegg", "Lamborghini", "McLaren", "Pagani", "Porsche", "Rimac", "Vector Motors"]
 
 module.exports.defaultuserdata = function(id) {
-  return { id: id, 
-          settings: require(gtf.GTF).defaultsettings 
+  return { id: id,
+          settings: require(gtf.GTF).defaultsettings
          }
 }
 ////////////////////////////
 
-
 module.exports.checkregulations = function (gtfcar, regulations, func, embed, msg, userdata) {
   var car = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]]});
 
-  
+
   var perf = require(gtf.PERF).perf(gtfcar, "GARAGE")
 
   var fpplimit = regulations["fpplimit"];
   var powerlimit = regulations["upperpower"];
   var weightlimit = regulations["upperweight"];
   var yearlimit = regulations["upperyear"];
-  
+
   var makes = regulations["makes"];
   var models = regulations["models"];
   var types = regulations["types"];
@@ -93,12 +92,12 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
   if (typeof prohibiteds === 'undefined') prohibiteds = []
 
   if (typeof favorite === 'undefined') favorite = false
-  
+
   var fppexist = fpplimit != "";
   var powerexist = powerlimit != "";
   var weightexist = weightlimit != "";
   var yearexist = yearlimit != "";
-  
+
   var makeexist = makes.length > 0;
   var modelexist = models.length > 0;
   var typeexist = types.length > 0;
@@ -107,7 +106,7 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
   var engineexist = engines.length > 0;
   var specialexist = specials.length > 0;
   var prohibitexist = prohibiteds.length > 0;
-  
+
   var favoriteexist = favorite
 
   var errors = [];
@@ -133,7 +132,7 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
     errors.push("**Power Limit:** " + "**" + power + " HP**"+ " -> " + "**" + powerlimit + " HP**");
   }
   }
- 
+
   var weightsuccess = false;
   if (weightexist) {
     var weight = perf["weight"];
@@ -167,7 +166,7 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
       index++;
     }
     if (!makesuccess) {
-      errors.push("**Makes:** " + car["make"] + " -> " + gtftools.removeDups(makes).join(", "));
+      errors.push("**Makes:** " + car["make"] + " -> " + gtftools.unique(makes).join(", "));
     }
   }
 
@@ -230,7 +229,7 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
       errors.push("**Engine Aspiration:** " + car["engine"] + " -> " + engines.join(", "));
     }
   }
- 
+
   var dtsuccess = false;
   if (dtexist) {
     var index = 0;
@@ -245,7 +244,7 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
       errors.push("**Drivetrain:** " + car["drivetrain"] + " -> " + drivetrains.join(", "));
     }
   }
-  
+
   var specialsuccess = false;
   if (specialexist) {
     var index = 0;
@@ -260,7 +259,7 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
       errors.push("**Special:** " + specials.join(", "));
     }
   }
-  
+
   var prohibitsuccess = true;
   if (prohibitexist) {
     var index = 0;
@@ -276,7 +275,7 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
     }
   }
 
-  
+
   var favoritesuccess = false;
   if (favoriteexist) {
       if (gtfcar["favorite"]) {
@@ -299,15 +298,15 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
     return [false, errors]
 }
 }
-  
+
   if (errors.length == 0) {
     func()
     return true
   } else {
-    
+
   var garagepage = 0;
   var hundredpage = 0
-    
+
   var totallength = stats.garage(userdata).length
   var gmenulist = []
   var gmenulistselect = []
@@ -318,25 +317,25 @@ module.exports.checkregulations = function (gtfcar, regulations, func, embed, ms
   var functionlist2 = []
   var buttons = []
   var args = {carselectmessage: false}
-    
-  
+
+
   //////
   var [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength] = require(gtf.GTF).garagemenu(regulations, func, args, [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength], msg, embed, userdata)
   //////
-  
+
 if (gmenulist.length == 0) {
   embed.setColor(0x460000)
 embed.setTitle("❌ Regulations Breached")
 embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the tire regulations for this event." + "\n\n" + errors.join("\n") + "\n\n" + "**❗ None of your garage cars are eligible.**")
 require(gtf.DISCORD).send(msg, {embeds:[embed]})
 return
-}     
+}
 embed.setColor(0x460000)
 embed.setTitle("❌ Regulations Breached")
 embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulations for this event." + "\n\n" + errors.join("\n") + "\n\n" + "**❗ See the menu below for eligible cars in your garage.**")
 
  require(gtf.DISCORD).send(msg, { embeds:[embed], components: [menu]}, garagefunc)
- 
+
  function garagefunc(msg) {
     [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength] = require(gtf.GTF).garagemenufunctions(regulations, func, args, [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength], msg, embed, userdata)
     gtftools.createbuttons(menu, emojilist, functionlist2, msg, userdata)
@@ -344,10 +343,9 @@ embed.setDescription("Your **" + gtfcar["name"] + "** does not meet the regulati
     return false
 }
 }
-
 module.exports.randomdriver = function() {
   var random_name = require('node-random-name');
-var name = random_name({ random: Math.random, gender: "male" }) 
+var name = random_name({ random: Math.random, gender: "male" })
 name = name.split(" ").map(function(x, index) {
   if (index == 0) {
     return x[0] + ". "
@@ -357,9 +355,8 @@ name = name.split(" ").map(function(x, index) {
 })
 return name.join("")
 }
-
 module.exports.checktireregulations = function (gtfcar, regulations, func, embed, msg, userdata) {
-  
+
   var tires = regulations["tires"]
   if (tires == "") {
     tires = "Racing: Soft"
@@ -380,9 +377,9 @@ module.exports.checktireregulations = function (gtfcar, regulations, func, embed
     "Rally: Snow": 10,
     "Rally: Dirt": 11
   }
-  
+
  var uppertire = tireranking[tires]
-  
+
 var errors = [];
 
   var tiresuccess = false
@@ -444,7 +441,7 @@ function regfunc(msg) {
        for (var j = 0; j < tmenulist.length; j++) {
       functionlist.push(function(int) {
         gtfcar["perf"]["tires"]["current"] = tireslist[int]
-        func() 
+        func()
         setTimeout(() => msg.delete(),2000);
       })
       }
@@ -453,7 +450,6 @@ function regfunc(msg) {
     return false;
   }
 }
-
 module.exports.loadingscreen = function (title, carname) {
   if (carname === undefined) {
     carname = "";
@@ -463,7 +459,6 @@ module.exports.loadingscreen = function (title, carname) {
 
   return title + "\n" + emote.loading + " **Loading** " + emote.loading + carname;
 };
-
 module.exports.garagemenu = function (regulations, func, args, [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength], msg, embed, userdata) {
   var sorting = userdata["settings"]["GARAGESORT"]
   var filterlist = []
@@ -472,7 +467,7 @@ module.exports.garagemenu = function (regulations, func, args, [garagepage, gmen
     filterlist = []
     if (favorite) {
         filterlist.push(function (x) {return x["favorite"]})
-    } 
+    }
     if (typeof regulations !== 'string') {
       filterlist.push(function(x) {return require(gtf.GTF).checkregulations(x, regulations, "", embed, msg, userdata)[0]})
     }
@@ -481,8 +476,8 @@ module.exports.garagemenu = function (regulations, func, args, [garagepage, gmen
   var value = require(gtf.GTF).garagemenucars(0, 100, regulations, filterlist, sorting, totallength, userdata)
   gmenulist = value[0]
   totallength = value[1]
- 
-  
+
+
   gmenulistselect = gmenulist.slice(22 * garagepage, 22 + 23 * garagepage);
   gmenulistselect.unshift({
     emoji: "↩",
@@ -512,25 +507,24 @@ module.exports.garagemenu = function (regulations, func, args, [garagepage, gmen
   }
   return [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength]
 }
-
 module.exports.garagemenufunctions = function (regulations, func, args, [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength], msg, embed, userdata) {
     var sorting = userdata["settings"]["GARAGESORT"]
     var fav = false
     var filterlist = []
-    
+
   filterlist = setfilter(filterlist, regulations, fav)
   function setfilter(filterlist, regulations, favorite) {
     filterlist = []
     if (favorite) {
         filterlist.push(function (x) {return x["favorite"]})
-    } 
+    }
     if (typeof regulations !== "string") {
      filterlist.push(function(x) {return require(gtf.GTF).checkregulations(x, regulations, "", embed, msg, userdata)[0]})
     }
     return filterlist
   }
 
-    
+
     for (var j = 0; j < gmenulist.length; j++) {
       functionlist2.push(function (int) {
         if (typeof args["nochange"] !== "undefined") {
@@ -545,11 +539,11 @@ module.exports.garagemenufunctions = function (regulations, func, args, [garagep
           garagepage = 0
           hundredpage = 0
         filterlist = setfilter(filterlist, regulations, fav)
-          
+
       var sig = require(gtf.GTF).garagemenucars(100 * hundredpage, 100 * (hundredpage + 1), [], filterlist, sorting, totallength, userdata)
     gmenulist = sig[0]
     totallength = sig[1]
-          
+
           if (gmenulist.length <= 0 + (23 * garagepage) - 1) {
             garagepage = 0;
           }
@@ -568,7 +562,7 @@ module.exports.garagemenufunctions = function (regulations, func, args, [garagep
     description: "",
     menu_id: "FAVORITES",
   });
-          
+
           gmenulistselect.push({
             emoji: "↪",
             name: "Next Page",
@@ -587,10 +581,10 @@ module.exports.garagemenufunctions = function (regulations, func, args, [garagep
   }
           /*
           if (gmenulist.length <= (0 + (23 * garagepage) - 1)) {
-            garagepage = 0;            
+            garagepage = 0;
           }
 */
-          
+
           gmenulistselect = gmenulist.slice((22 * garagepage), 22 + (23 * garagepage) - garagepage);
             gmenulistselect.unshift({
     emoji: "↩",
@@ -613,12 +607,12 @@ module.exports.garagemenufunctions = function (regulations, func, args, [garagep
           menu = gtftools.preparemenu(namex, gmenulistselect, gemojilist, msg, userdata);
           buttons[0] = menu;
           msg.edit({ components: buttons});
-          
+
           return;
         } else if (int == "PREVPAGE") {
           filterlist = setfilter(filterlist, regulations, fav)
           garagepage--;
-          /* 
+          /*
 gmenulist = []
 while (gmenulist.length <= 0)
           */
@@ -654,14 +648,14 @@ while (gmenulist.length <= 0)
         if (args["carselectmessage"]) {
           gmenulist = []
           var number = parseInt(int);
-          
+
           filterlist = setfilter(filterlist, regulations, fav)
           stats.setcurrentcar(
             number + 1 + (100 * hundredpage),filterlist,
             userdata
           );
 
-          
+
           stats.save(userdata);
           setTimeout(() => {
             require(dir + "commands/" + args["command"]).execute(msg, args["oldquery"], userdata);
@@ -673,9 +667,9 @@ while (gmenulist.length <= 0)
           filterlist = setfilter(filterlist, regulations, fav)
           require(dir + "commands/garage").execute(msg, { options: "select", number: int + 1 + (100 * hundredpage), filter: filterlist, extra: "silent" }, userdata);
           if (userdata["settings"]["GARAGESORT"] == "Recently Used") {
-          gmenulist.some((item, index) => item["menu_id"] == (int) && 
-  gmenulist.unshift( 
-    gmenulist.splice(index,1)[0] 
+          gmenulist.some((item, index) => item["menu_id"] == (int) &&
+  gmenulist.unshift(
+    gmenulist.splice(index,1)[0]
   )
   )
   gmenulist = gmenulist.map(function(x, index) {
@@ -683,7 +677,7 @@ while (gmenulist.length <= 0)
     x["menu_id"] = index
     return x
   })
-  
+
   gmenulistselect = gmenulist.slice((22 * garagepage), 22 + (23 * garagepage) - garagepage)
     gmenulistselect.unshift({
     emoji: "↩",
@@ -717,7 +711,6 @@ while (gmenulist.length <= 0)
     }
     return [garagepage, gmenulist, gmenulistselect, gemojilist, namex, menu, functionlist2, buttons, hundredpage, totallength]
   }
-
 module.exports.garagemenucars = function (min, max, regulations, filterlist, sorting, totallength, userdata) {
 
   var garage = userdata["garage"].filter(x => filterlist.map(f => f(x)).every(p => p === true))
@@ -731,15 +724,15 @@ module.exports.garagemenucars = function (min, max, regulations, filterlist, sor
   totallength = garage.length
   }
   */
-  
+
   return [garage.map(function (car, index) {
     var ocar = require(gtf.PERF).perf(car, "GARAGE")
     var health = require(gtf.CONDITION).condition(car)["health"]
     var favorite = car["favorite"] ? " ⭐" : ""
-    
-    var desc = "🚘" + (index+min+1) + " | " + health + "% " + ocar["fpp"] + "FPP" + " " + gtftools.numFormat(ocar["power"]) + "hp" + " " + gtftools.numFormat(ocar["weight"]) + "lbs" + favorite
+
+    var desc = "🚘" + (index+min+1) + " | " + health + "% " + ocar["fpp"] + "FPP" + " " + require(gtf.MATH).numFormat(ocar["power"]) + "hp" + " " + require(gtf.MATH).numFormat(ocar["weight"]) + "lbs" + favorite
     if (sorting.includes("Power")) {
-      desc = "🚘" + (index + min + 1) + " | " + gtftools.numFormat(ocar["power"]) + "hp" + " " + ocar["fpp"] + "FPP" + " " + gtftools.numFormat(ocar["weight"]) + "lbs" + favorite
+      desc = "🚘" + (index + min + 1) + " | " + require(gtf.MATH).numFormat(ocar["power"]) + "hp" + " " + ocar["fpp"] + "FPP" + " " + require(gtf.MATH).numFormat(ocar["weight"]) + "lbs" + favorite
     }
     return {
       emoji: "",
@@ -747,6 +740,77 @@ module.exports.garagemenucars = function (min, max, regulations, filterlist, sor
       description: desc,
       menu_id: index,
     }
-  
+
 }), totallength]
 }
+
+module.exports.lengthalpha = function (fpp, weather, track) {
+  var offroad = 1;
+  if (track["type"].includes("Dirt") || track["type"].includes("Snow")) {
+    offroad = 0.85;
+  }
+  if (typeof weather === "string") {
+    weather = parseInt(weather.split(" ").pop());
+    var weatherx = weather / 100;
+  } else {
+    var weatherx = parseFloat(weather["wetsurface"]);
+    if (weatherx != 0) {
+      weatherx = weatherx / 100;
+    }
+  }
+
+  var percentage = fpp / 1100;
+  percentage = (195 - 70) * percentage + 90;
+  return (percentage - weatherx * 40) * offroad;
+};
+
+module.exports.fourgifts = function (title, results, prizes, embed, msg, userdata) {
+  var select = [
+    [emote.rightarrow + " ", emote.transparent + " ", emote.transparent + " ", emote.transparent + " "],
+    [emote.transparent + " ", emote.rightarrow + " ", emote.transparent + " ", emote.transparent + " "],
+    [emote.transparent + " ", emote.transparent + " ", emote.rightarrow + " ", emote.transparent + " "],
+    [emote.transparent + " ", emote.transparent + " ", emote.transparent + " ", emote.rightarrow + " "],
+  ];
+  embed.fields = [];
+  embed.setTitle("__" + title + "__");
+
+  embed.setDescription(results);
+  require(gtf.DISCORD).send(msg, {embeds:[embed]}, fourgiftsfunc)
+
+  function fourgiftsfunc(msg) {
+    var index = 0;
+    var results1 = function (index) {
+      return select[index][0] + "||" + prizes[0]["name"] + "||" + "\n"
+      + select[index][1] + "||" + prizes[1]["name"] + "||" + "\n"
+      + select[index][2] + "||" + prizes[2]["name"] + "||" + "\n"
+      + select[index][3] + "||" + prizes[3]["name"] + "||";
+    };
+
+    gtftools.interval(
+      function () {
+        index = Math.floor(Math.random() * select.length);
+        var final = results1(index);
+        embed.setDescription(final);
+        msg.edit({embeds: [embed]});
+      },
+      2000,
+      4
+    );
+
+    setTimeout(function () {
+    if (prizes[index]["type"] == "CREDITS") {
+      var item = prizes[index];
+
+      stats.redeemgift("🎉 " + item["name"], item, embed, msg, userdata);
+      } else if (prizes[index]["type"] == "CAR") {
+      var item = prizes[index];
+
+      stats.redeemgift("🎉 " + item["name"], item, embed, msg, userdata);
+      } else if (prizes[index]["type"] == "RANDOMCAR") {
+      var gift = prizes[index];
+      gift = { id: -1, type: "CAR", name: gift["name"], item: gift["item"], author: "", inventory: false }
+      stats.redeemgift("🎉 " + gift["name"], gift, embed, msg, userdata);
+      }
+    }, 9000);
+  }
+};

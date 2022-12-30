@@ -11,8 +11,8 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "career",
   title: "Career Mode",
-  level: 0,
-  aliases: ["c"],
+  license: "N", level: 0,
+  license: "N", aliases: ["c"],
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   availinmaint: false,
@@ -38,7 +38,7 @@ module.exports = {
       other: "",
     }, msg, userdata)
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
-    
+
     var mode = "CAREER";
     if (parseInt(query["options"]) == 1) {
       query["options"] = "C";
@@ -62,11 +62,11 @@ module.exports = {
     if (parseInt(query["options"]) == 8) {
       query["options"] = "S";
     }
-    
+
     if (!stats.checklicense(query["options"], embed, msg, userdata)) {
         return;
     }
-    
+
     /*
     if (parseInt(query["options"]) == 7) {
       query["options"] = "KART";
@@ -93,7 +93,7 @@ module.exports = {
       query["options"] = "TESTING";
     }
 */
-    
+
 
     var races = [...require(gtf.CAREERRACES).find({types: [query["options"]] })]
 
@@ -117,8 +117,8 @@ module.exports = {
         "\n" +
         "__**S Level**__ " +
         emote.slicense
-        /*+ "/n/n" + 
-        "__Special Events__" + "\n" + 
+        /*+ "/n/n" +
+        "__Special Events__" + "\n" +
         "__**Kart**__ " +  emote.exp +
         " `Lv.5`" + "\n" +
         "__**Rally**__ " +  emote.exp +
@@ -151,7 +151,7 @@ module.exports = {
           raceevent["eventlength"] = raceevent["tracks"].length
           var regulations = raceevent["regulations"]
 
-          
+
           var rmake = regulations["makes"].length != 0 ? regulations["makes"].join(", ") + " | ": ""
           var rcountry = regulations["countries"].length != 0 ? regulations["countries"].join(", ") + " | " : ""
           var rmodel =  regulations["models"].length != 0 ?  regulations["models"].join(", ") + " | ": ""
@@ -161,11 +161,11 @@ module.exports = {
           var weather = (raceevent["weatherchange"] >= 1) ? (" " + emote.weather) : ""
           var championship = raceevent["championship"] ? ("🏆 ") : ""
           var types = regulations["types"].length != 0 ? regulations["types"].join(", ") : ""
-          
+
           var any = [rcountry,rmake,rmodel,drivetrain,engine,bop].join("").length != 0 ? "" : "None"
           var tires = regulations["tires"]
-          
-          
+
+
           if (raceevent["type"] == "TIMETRIAL") {
             results.push(
             "⌛" +
@@ -188,9 +188,9 @@ module.exports = {
             stats.eventstatus(query["options"] + "-" + (t + 1), userdata) +
             "/n" +
             "**" +
-            regulations["fpplimit"].toString().replace("9999", "--") + emote.fpp + " " + 
-            regulations["upperpower"].toString().replace("9999", "--") + " hp" + " " + 
-            gtftools.numFormat(regulations["upperweight"].toString().replace("9999", "--")) + " Lbs" + " " +
+            regulations["fpplimit"].toString().replace("9999", "--") + emote.fpp + " " +
+            regulations["upperpower"].toString().replace("9999", "--") + " hp" + " " +
+            require(gtf.MATH).numFormat(regulations["upperweight"].toString().replace("9999", "--")) + " Lbs" + " " +
             emote.tire  + tires + weather +
             "**/n" +
             "**Regulations:** " +
@@ -220,7 +220,7 @@ module.exports = {
         gtftools.formpages(pageargs, embed, msg, userdata);
       /*
         setTimeout(function() {
-          var t = 0 
+          var t = 0
             for (t; t < ids.length; t++) {
           raceevent = races[ids[t]];
           var achieve = stats.isracescomplete(query["options"].toLowerCase() + "-" + (t + 1), raceevent["tracks"].length, 1, userdata);
@@ -236,7 +236,7 @@ module.exports = {
     //
 
     var number = parseInt(query["number"])
-      if (!gtftools.betweenInt(number, 1, Object.keys(races).length) && !isNaN(number)) {
+      if (!require(gtf.MATH).betweenInt(number, 1, Object.keys(races).length) && !isNaN(number)) {
           require(gtf.EMBED).alert({ name: "❌ Invaild ID", description: "This event ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
           return
       }

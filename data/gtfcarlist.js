@@ -47,10 +47,10 @@ module.exports.list = function (args) {
     }).sort();
     return results;
   }
-  
+
   if (args == "countries") {
     results = []
-    
+
     for (var i = 0; i < Object.keys(gtfcars).length; i++) {
         var make = gtfcars[Object.keys(gtfcars)[i]]
         if ((make[0]["country"] in results)) {
@@ -58,13 +58,13 @@ module.exports.list = function (args) {
         results.push(make[0]["country"])
         }
     }
-    results = gtftools.removeDups(results)
+    results = gtftools.unique(results)
   }
 
   if (args == "drivetrains") {
     results = ["FF", "FR", "4WD", "4WD-MR", "MR", "RR"];
   }
-  
+
   return results.sort();
 };
 
@@ -94,17 +94,17 @@ module.exports.stats = function (embed) {
         }
       }
       countries = Object.keys(countries).sort().reduce(
-  (obj, key) => { 
-    obj[key] = countries[key]; 
+  (obj, key) => {
+    obj[key] = countries[key];
     return obj;
-  }, 
+  },
   {}
 );
       types = Object.keys(types).sort().reduce(
-  (obj, key) => { 
-    obj[key] = types[key]; 
+  (obj, key) => {
+    obj[key] = types[key];
     return obj;
-  }, 
+  },
   {}
 );
       var fcountries = []
@@ -147,11 +147,11 @@ module.exports.stats = function (embed) {
 
 module.exports.find = function (args) {
   var gtfcars = require(gtf.LISTS).gtfcarlist
-  
+
   if (args === undefined) {
     return "";
   }
-  
+
   if (args["sort"] !== undefined) {
     var sort = args["sort"];
     delete args["sort"];
@@ -221,7 +221,7 @@ module.exports.find = function (args) {
           }
         }
       }
-      
+
       if (args["engines"] !== undefined) {
         if (args["engines"].length == 0) {
           count++;
@@ -386,7 +386,7 @@ module.exports.find = function (args) {
           }
         }
       }
-  
+
       if (args["prohibited"] !== undefined) {
         if (args["prohibited"].length == 0) {
           count++;
@@ -430,12 +430,12 @@ module.exports.find = function (args) {
       } else if (sort == "fppdesc"|| sort == "Highest FPP") {
         return require(gtf.PERF).perf(b, "DEALERSHIP")["fpp"] - require(gtf.PERF).perf(a, "DEALERSHIP")["fpp"];
       } else if (sort == "costasc"|| sort == "Lowest Price") {
-        a = require(gtf.MARKETPLACE).costcalc(a, require(gtf.PERF).perf(a, "DEALERSHIP")["fpp"]);
-        b = require(gtf.MARKETPLACE).costcalc(b, require(gtf.PERF).perf(b, "DEALERSHIP")["fpp"]);
+        a = require(gtf.CARS).costcalc(a, require(gtf.PERF).perf(a, "DEALERSHIP")["fpp"]);
+        b = require(gtf.CARS).costcalc(b, require(gtf.PERF).perf(b, "DEALERSHIP")["fpp"]);
         return a - b;
       } else if (sort == "costdesc"|| sort == "Highest Price") {
-        a = require(gtf.MARKETPLACE).costcalc(a, require(gtf.PERF).perf(a, "DEALERSHIP")["fpp"]);
-        b = require(gtf.MARKETPLACE).costcalc(b, require(gtf.PERF).perf(b, "DEALERSHIP")["fpp"]);
+        a = require(gtf.CARS).costcalc(a, require(gtf.PERF).perf(a, "DEALERSHIP")["fpp"]);
+        b = require(gtf.CARS).costcalc(b, require(gtf.PERF).perf(b, "DEALERSHIP")["fpp"]);
         return b - a;
       } else {
         return a["name"].toString().localeCompare(b["name"]);
@@ -471,6 +471,7 @@ module.exports.random = function (args, num) {
   return rlist;
 };
 
+
 module.exports.shortname = function (fullname) {
   fullname = fullname.split(" ")
   var year = fullname.pop()
@@ -481,3 +482,261 @@ module.exports.shortname = function (fullname) {
   return fullname
   }
 }
+
+module.exports.checkcar = function (carname, userdata) {
+  if (userdata["garage"].some(x => x["name"] === carname)) {
+    return " ✅";
+  } else {
+    return "";
+  }
+};
+
+module.exports.addcar = function (car, arg, userdata) {
+  var fullname = car["name"] + " " + car["year"];
+
+  if (arg != "LOAN") {
+    if (stats.garage(userdata).length == 0) {
+      stats.setcurrentcar(1, undefined, userdata);
+      userdata["currentcar"]++;
+    }
+  }
+  car["condition"] = 100
+
+  var tires = { current: car["tires"], list: [car["tires"]], tuning: [0, 0, 0] };
+  if (car["tires"].includes("Racing")) {
+    tires["list"].push("Racing: Intermediate");
+    tires["list"].push("Racing: Heavy Wet");
+  }
+  if (car["tires"].includes("Dirt")) {
+    tires["list"].push("Rally: Snow");
+    tires["list"].push("Racing: Hard");
+    tires["list"].push("Racing: Intermediate");
+    tires["list"].push("Racing: Heavy Wet");
+  }
+  if (car["tires"].includes("Snow")) {
+    tires["list"].push("Rally: Dirt");
+    tires["list"].push("Racing: Hard");
+    tires["list"].push("Racing: Intermediate");
+    tires["list"].push("Racing: Heavy Wet");
+  }
+  var engine = { current: "Default", list: [], tuning: [-999, -999, -999] };
+  var trans = { current: "Default", list: [], tuning: [-999, -999, -999] };
+  var susp = { current: "Default", list: [], tuning: [-999, -999, -999] };
+  var weight = { current: "Default", list: [], tuning: [-999, -999, -999] };
+  var turbo = { current: "Default", list: [], tuning: [-999, -999, -999] };
+  var brakes = { current: "Default", list: [], tuning: [-999, -999, -999] };
+  var aerokits = { current: "Default", list: [], tuning: [-999, -999, -999] };
+
+  var condition = {oil:car["condition"], clean:car["condition"], engine:car["condition"], transmission: car["condition"], suspension:car["condition"], body:car["condition"]}
+
+  var fpp = require(gtf.PERF).perf(car, "DEALERSHIP")["fpp"];
+  var sell = require(gtf.MARKETPLACE).sellcalc(car, "DEALERSHIP");
+  if (arg != "LOAN") {
+    userdata["stats"]["numcarpurchases"]++;
+    var id1 = userdata["stats"]["numcarpurchases"];
+  } else {
+    var id1 = 0;
+  }
+  var newcar = {
+    id: id1,
+    name: fullname,
+    make: car["make"],
+    year: car["year"],
+    color: { current: "Default" },
+    livery: { current: "Default"},
+    fpp: fpp,
+    perf: {
+      engine: engine,
+      transmission: trans,
+      suspension: susp,
+      tires: tires,
+      weightreduction: weight,
+      turbo: turbo,
+      aerokits: aerokits,
+      brakes: brakes,
+      nitrous: { current: "Default", tuning: [-999, -999, -999]},
+      items: []
+    },
+    rims: { current: "Default", list: [], tuning: [-999, -999, -999] },
+    condition: condition,
+    totalmileage: 0
+  };
+  newcar["fpp"] = require(gtf.PERF).perf(newcar, "GARAGE")["fpp"];
+
+
+  if (arg == "ITEM" || arg == "LOAN") {
+    return newcar;
+  } else {
+    userdata["garage"].push(newcar);
+    if (arg == "SORT") {
+      userdata["garage"] = stats.garagesort(userdata);
+    }
+    stats.save(userdata);
+    return;
+  }
+};
+
+module.exports.costcalc = function (car, fpp) {
+  if (car["carcostm"] <= 0.25) {
+    return (10000 * car["carcostm"]) - ((10000 * car["carcostm"]) * (car["discount"]/100))
+  }
+  var cost = car["carcostm"] * 10000;
+
+  if (fpp == undefined) {
+
+  } else {
+    var offset = fpp - 250;
+    if (offset < 0) {
+      cost = -((-offset) ** 1.8) + cost;
+    } else {
+      cost = offset ** 1.8 + cost;
+    }
+  }
+  cost = cost - (cost * (car["discount"]/100))
+
+  return Math.round(cost / 100) * 100;
+};
+
+module.exports.audit = async function () {
+  var gtfcars = require(gtf.LISTS).gtfcarlist;
+  var fs = require("fs");
+  var newcars = [];
+  var fppupdate = [];
+
+  var index = 0;
+  var makes = Object.keys(gtfcars);
+
+  for (var make = 0; make < makes.length; make++) {
+    var group = [];
+    for (var i = 0; i < gtfcars[makes[make]].length; i++) {
+      var car = gtfcars[makes[make]][i];
+      var perf = require(gtf.PERF).perf(car, "DEALERSHIP");
+
+      var totalimages = car["image"].length;
+      var makee = car["make"].replace(/ /gi, "").toLowerCase();
+      var name = car["name"].replace(/ /gi, "").toLowerCase();
+
+      for (var j = 0; j < totalimages; j++) {
+        if (!car["image"][j].includes("raw.githubusercontent.com") && !car["image"][j].includes("github.com")) {
+          if (j >= 1) {
+            newcars.push(car["name"] + " " + car["year"] + " - " + j);
+          } else {
+            newcars.push(car["name"] + " " + car["year"]);
+          }
+          var oldcar = JSON.parse(JSON.stringify(car));
+          await downloadimage2(oldcar, oldcar["image"][j], j);
+          if (j >= 1) {
+            var extra = "-" + j.toString();
+          } else {
+            var extra = "";
+          }
+          var urll = "https://raw.githubusercontent.com/J24681357/gtfbot/master/" + "images/cars/" + makee + "/" + name + "" + car["year"] + extra + ".png";
+          car["image"][j] = urll;
+        }
+        delete car["id"];
+      }
+      group.push(car);
+    }
+    group = group.sort((a, b) => a["name"].toString().localeCompare(b["name"]));
+    gtfcars[makes[make]] = group;
+  }
+  fs.writeFile("./jsonfiles/gtfcarlist.json", JSON.stringify(gtfcars), function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+  if (newcars.length == 0) {
+    console.log("No new cars.");
+  }
+  fs.writeFile("./jsonfiles/newcars.json", JSON.stringify(newcars), function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+
+  /*
+  function downloadimage(oldcar, imagelink, j) {
+    var type = "error";
+
+    var download = function (uri, filename, callback) {
+      request.head(uri, function (err, res, body) {
+        if (res === undefined) {
+          console.log("The image may not be available for " + uri);
+          return;
+        }
+        if (res.headers["content-type"] === undefined) {
+          console.log("The image may not be available for " + uri);
+          return;
+        }
+        var type = res.headers["content-type"].toLowerCase();
+        var file = filename.split("/");
+        file.pop();
+        if (j >= 1) {
+          var extra = (filename = filename + "-" + j.toString() + ".png");
+        } else {
+          filename = filename + ".png";
+        }
+
+        var shell = require("shelljs");
+        shell.mkdir("-p", file.join("/"));
+        console.log(filename + " " + "image saved.");
+        if (!type.includes("image")) {
+          console.log("The image may not be available for " + uri);
+        }
+
+        setTimeout(function () {
+          request(uri).pipe(fs.createWriteStream(filename)).on("close", callback);
+        }, 2500);
+      });
+    };
+    var name = oldcar["name"].replace(/ /gi, "").toLowerCase();
+    var make = oldcar["make"].replace(/ /gi, "").toLowerCase();
+    download(imagelink, "./images/cars/" + make + "/" + name + "" + oldcar["year"], function () {});
+  }
+  */
+  async function downloadimage2(oldcar, imagelink, j) {
+    var { request } = require("undici");
+    var type = "error";
+    var name = oldcar["name"].replace(/ /gi, "").toLowerCase();
+    var make = oldcar["make"].replace(/ /gi, "").toLowerCase();
+    var download2 = async function (uri, filename, callback) {
+      try {
+        var { statusCode, headers, trailers, body } = await request(uri);
+        body = await body.arrayBuffer();
+      } catch (error) {
+        console.log("The image may not be available for " + uri);
+        return;
+      }
+
+      if (headers === undefined) {
+        console.log("The image may not be available for " + uri);
+        return;
+      }
+      if (headers["content-type"] === undefined) {
+        console.log("The image may not be available for " + uri);
+        return;
+      }
+
+      var type = headers["content-type"].toLowerCase();
+      var file = filename.split("/");
+      file.pop();
+      if (j >= 1) {
+        var extra = (filename = filename + "-" + j.toString() + ".png");
+      } else {
+        filename = filename + ".png";
+      }
+
+      var shell = require("shelljs");
+      shell.mkdir("-p", file.join("/"));
+      console.log(filename + " " + "image saved.");
+      if (!type.includes("image")) {
+        console.log("The image may not be available for " + uri);
+      }
+      fs.writeFileSync(filename, body);
+    };
+
+    await download2(imagelink, "./images/cars/" + make + "/" + name + "" + oldcar["year"], function () {});
+
+    //download2(imagelink, "", function () {});
+  }
+};

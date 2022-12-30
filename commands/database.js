@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "database",
   title: "GT Fitness: Database",
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   availinmaint: false,
@@ -72,7 +72,7 @@ module.exports = {
       var tracks = require(gtf.TRACKS).list("names");
       var number = query["number"];
       embed.setTitle(emote.tracklogo + " __**Track ID Database (" + tracks.length + " Tracks)**__");
-      if (gtftools.betweenInt(number, 1, tracks.length)) {
+      if (require(gtf.MATH).betweenInt(number, 1, tracks.length)) {
         var track = require(gtf.TRACKS).find({ name: [tracks[number - 1]] })[0];
         results =
           "__**" +
@@ -115,11 +115,11 @@ module.exports = {
       var number = query["number"];
       embed.setTitle(emote.exp + " __**GTF Level/EXP Database (" + Object.keys(explevels).length + " Levels)**__");
 
-      if (gtftools.betweenInt(number, 1, Object.keys(explevels).length)) {
+      if (require(gtf.MATH).betweenInt(number, 1, Object.keys(explevels).length)) {
         number = number - 1;
         var levelchosen = explevels[(number + 1).toString()];
 
-        results = "__**Level " + (number + 1).toString() + "**__" + "\n" + "**Experience Required: " + gtftools.numFormat(levelchosen["exp"]) + emote.exp + "**\n" + "**__Rewards__** " + "\n" + levelchosen["rewards"].join("\r");
+        results = "__**Level " + (number + 1).toString() + "**__" + "\n" + "**Experience Required: " + require(gtf.MATH).numFormat(levelchosen["exp"]) + emote.exp + "**\n" + "**__Rewards__** " + "\n" + levelchosen["rewards"].join("\r");
         if (userdata["settings"]["TIPS"] == 0) {
           pageargs["footer"] = "\n\n" + "**❓ This is the requirements and rewards for this experience level.**";
         }
@@ -130,7 +130,7 @@ module.exports = {
       delete query["number"];
       pageargs["numbers"] = false;
       var list = Object.keys(explevels).map(function (level) {
-        return "__**Lv. " + level + "**__ **" + gtftools.numFormat(explevels[level]["exp"]) + emote.exp + "**" + "\r" + explevels[level]["rewards"].join("\r");
+        return "__**Lv. " + level + "**__ **" + require(gtf.MATH).numFormat(explevels[level]["exp"]) + emote.exp + "**" + "\r" + explevels[level]["rewards"].join("\r");
       });
 
       pageargs["list"] = list;

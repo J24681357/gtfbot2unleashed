@@ -12,7 +12,7 @@ var gtflobby = require(dir + "index");
 module.exports = {
   name: "customrace",
   title: "GTF Custom Race",
-  level: 30,
+  license: "N", level: 30,
   channels: ["gtf-mode", "testing"],
 
   availinmaint: false,
@@ -161,7 +161,7 @@ module.exports = {
 
     if (query["options"] == "delete") {
       var number = query["number"];
-        if (!gtftools.betweenInt(number, 1, setups["events"].length + 1)) {
+        if (!require(gtf.MATH).betweenInt(number, 1, setups["events"].length + 1)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your event setups.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
@@ -335,7 +335,7 @@ module.exports = {
       var difficulty = {90:"Beginner", 70:"Amateur", 50: "Professional", 30: "Expert", 10:"Extreme"}[racesettings["difficulty"]]
       var laps = typeof racesettings["laps"] === "string" ? "N/A" : racesettings["laps"]
       var time = typeof racesettings["laps"] !== "string" ? "N/A" : racesettings["laps"]
-      var credits = gtftools.numFormat(require(gtf.RACE).calculatecredits(racesettings, {modearg:"custom"}, userdata["customracetemp"]["finalgrid"])[0]["credits"])
+      var credits = require(gtf.MATH).numFormat(require(gtf.RACE).calculatecredits(racesettings, {modearg:"custom"}, userdata["customracetemp"]["finalgrid"])[0]["credits"])
       return ["__**🏁 Go Race**__", 
            "__**Track:**__ " + "`" + racesettings["track"]["name"] + "`", 
         "__**Laps:**__ " + "`" + laps + "`",
@@ -564,10 +564,10 @@ module.exports = {
           
           pageargs["list"] = require(gtf.CARS).find(args).map(i => {
           var fpp = require(gtf.PERF).perf(i, "DEALERSHIP")["fpp"];
-      var cost = require(gtf.MARKETPLACE).costcalc(i, fpp);
+      var cost = require(gtf.CARS).costcalc(i, fpp);
       var name = i["name"];
       var year = i["year"];
-      var numbercost = (i["carcostm"] == 0) ? "❌" : gtftools.numFormat(cost)
+      var numbercost = (i["carcostm"] == 0) ? "❌" : require(gtf.MATH).numFormat(cost)
       return name + " " + year + " **" + fpp + emote.fpp + "**"
           })
         pageargs["selector"] = "number"

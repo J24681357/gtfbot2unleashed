@@ -8,7 +8,6 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
-
 module.exports.trackparams = function (params) {
   var track = new Object();
   var min = params.min;
@@ -75,7 +74,7 @@ module.exports.trackparams = function (params) {
 module.exports.drawtrack = async function (track, callback) {
 
   var rint = 1
-  //var rint = gtftools.randomInt(1,2)
+  //var rint = require(gtf.MATH).randomInt(1,2)
   console.log(track)
   if (track.location == "Grass") {
   var url = 'https://raw.githubusercontent.com/J24681357/gtfbot/raw/master/images/coursemaker/backgrounds' + '/grass' + rint.toString() + '.png'
@@ -91,18 +90,18 @@ module.exports.drawtrack = async function (track, callback) {
   } else {
     var url = ""
   }
-  
+
   var Canvas = require("@napi-rs/canvas");
-  
-  var { request } = require("undici") 
+
+  var { request } = require("undici")
   if (url.length != 0) {
   const { body } = await request(url);
   const background = await Canvas.loadImage(await body.arrayBuffer())
   }
-  
+
   var canvas = Canvas.createCanvas(2000, 2000);
   var ctx = canvas.getContext("2d");
-  
+
   var total = 0;
 
   var x = 0;
@@ -153,7 +152,7 @@ module.exports.drawtrack = async function (track, callback) {
     if (track.layout == "sprint") {
       p1 = i % track.points;
       p2 = (i + 1) % track.points;
-      if (gtftools.betweenInt(p1, 0, 20) || gtftools.betweenInt(p2, 0, 20)) {
+      if (require(gtf.MATH).betweenInt(p1, 0, 20) || require(gtf.MATH).betweenInt(p2, 0, 20)) {
         continue;
       }
     } else {
@@ -184,7 +183,7 @@ module.exports.drawtrack = async function (track, callback) {
   if (track.layout == "sprint") {
     var i = 21;
   } else {
-    var i = gtftools.randomInt(2, track.points - 5);
+    var i = require(gtf.MATH).randomInt(2, track.points - 5);
   }
   var p1 = i % track.points;
   var p2 = (i + 1) % track.points;
@@ -201,9 +200,9 @@ module.exports.drawtrack = async function (track, callback) {
 
   async function trimCanvas(c) {
     var ctx = c.getContext("2d")
-       
+
     pixels = ctx.getImageData(0, 0, c.width, c.height)
-      
+
       l = pixels.data.length
       i;
       bound = {
@@ -249,7 +248,7 @@ module.exports.drawtrack = async function (track, callback) {
     // Calculate the height and width of the content
     var trimHeight = bound.bottom - bound.top;
     trimWidth = bound.right - bound.left;
-      
+
     ctx.globalCompositeOperation='destination-over';
       if (url.length != 0) {
       ctx.drawImage(background, 0, 0, 1024, 1024);
@@ -259,15 +258,15 @@ module.exports.drawtrack = async function (track, callback) {
     trimmed.height = trimHeight;
     copy = Canvas.createCanvas(trimWidth, trimHeight)
     copy2 = copy.getContext("2d")
-    
+
     copy2.putImageData(trimmed, 0, 0);
 
     // Return trimmed canvas
     return copy;
   }
-  
+
    var image = await trimmedcanvas.encode("png")
-  
+
   var course = { name: "", image: image, location: track.location, layout: track.layout, surface: track.surface, type: "Course Maker - " + track.surface, length: total, lengthkm: Math.round(total * 1.609 * 100) / 100 };
   callback(course)
 };
@@ -305,24 +304,6 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
     dbo.collection("CUSTOMCOURSES").deleteOne({ id: userdata["id"]});
   });
 };
-
-module.exports.clearcourses = function (userdata) {
-  var { MongoClient, ServerApiVersion } = require('mongodb');
-
-MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-
-  MongoClient.connect(function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("GTFitness");
-     dbo
-      .collection("CUSTOMCOURSES")
-      .find({ id: userdata["id"] })
-      .forEach(row => {
-        dbo.collection("CUSTOMCOURSES").replaceOne({id: userdata["id"]}, { id: userdata["id"] , courses:[]});
-      });
-  });
-};
-
 module.exports.deletecourse = function (index, coursedata, userdata) {
 delete coursedata[index]
 coursedata = coursedata.filter(function(val) { return val !== null})
@@ -337,7 +318,6 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
     dbo.collection("CUSTOMCOURSES").replaceOne({ id: userdata["id"] }, {id:userdata["id"], courses:coursedata});
   });
 };
-
 module.exports.renamecourse = function (index, name, coursedata, userdata) {
 coursedata[index]["name"] = name.toString()
 
@@ -351,7 +331,6 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
     dbo.collection("CUSTOMCOURSES").replaceOne({ id: userdata["id"] }, {id:userdata["id"], courses:coursedata});
   });
 };
-
 module.exports.savecourse = function (course, userdata) {
   var coursedata = "";
   var found = false;
@@ -373,6 +352,22 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         coursedata["courses"].push(course)
         dbo.collection("CUSTOMCOURSES").replaceOne({ id: userdata["id"] }, coursedata);
         found = true;
+      });
+  });
+};
+module.exports.clearcourses = function (userdata) {
+  var { MongoClient, ServerApiVersion } = require('mongodb');
+
+MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+  MongoClient.connect(function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("GTFitness");
+     dbo
+      .collection("CUSTOMCOURSES")
+      .find({ id: userdata["id"] })
+      .forEach(row => {
+        dbo.collection("CUSTOMCOURSES").replaceOne({id: userdata["id"]}, { id: userdata["id"] , courses:[]});
       });
   });
 };

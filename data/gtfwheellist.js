@@ -75,6 +75,30 @@ module.exports.find = function (args) {
   return final.sort((x, y) => x["cost"] - y["cost"]);
 };
 
+module.exports.installwheels = function(part, userdata) {
+  var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["ID"]
+
+  var installedpart = userdata["garage"][stats.currentcarnum(userdata) - 1]["rims"];
+
+  installedpart["current"] = part["make"] + " " + part["name"];
+  if (part["name"] == "Default") {
+      installedpart["current"] = part["name"];
+      installedpart["list"] = []
+  }
+  for (var i = 0; i < installedpart["tuning"].length; i++) {
+    if (part["name"] == "Default") {
+      installedpart["tuning"][i] = -999;
+    } else {
+    installedpart["tuning"][i] = 0;
+    }
+  }
+
+  if (!installedpart["list"].includes(part["make"] + " " + part["name"]) && part["name"] != "Default") {
+    userdata["garage"][stats.currentcarnum(userdata) - 1]["rims"]["list"] = [part["make"] + " " + part["name"]]
+  }
+
+  userdata["garage"][stats.currentcarnum(userdata) - 1]["rims"] = installedpart;
+};
 module.exports.checkwheelsavail = function (part, gtfcar) {
   if (part["name"] == "Default") {
     if (gtfcar["rims"]["current"] == part["name"]) {
@@ -82,7 +106,7 @@ module.exports.checkwheelsavail = function (part, gtfcar) {
     } else {
       return ["", ""]
     }
-    
+
   }
   if (gtfcar["rims"]["list"].includes(part["make"] + " " + part["name"])) {
       if (gtfcar["rims"]["current"] == (part["make"] + " " + part["name"])) {
@@ -93,5 +117,3 @@ module.exports.checkwheelsavail = function (part, gtfcar) {
   }
   return ["", ""];
 };
-
-///////////////////////////////////////////////////////////////////////////////////////////////

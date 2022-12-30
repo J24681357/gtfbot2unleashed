@@ -57,9 +57,9 @@ module.exports.totalplaytime = function (userdata, type) {
 };
 module.exports.addplaytime = function (number, userdata) {
   userdata["totalplaytime"] = parseFloat(userdata["totalplaytime"]);
-  
+
   userdata["totalplaytime"] = userdata["totalplaytime"] + parseFloat(number);
-  
+
 };
 //RACEMULTI
 module.exports.racemulti = function (userdata) {
@@ -75,7 +75,7 @@ module.exports.addracemulti = function (number, userdata) {
     userdata["racemulti"] = 1;
   }
 };
-
+///EXP
 module.exports.exp = function (userdata) {
   if (userdata["exp"] >= 999999) {
     userdata["exp"] = 999999;
@@ -93,7 +93,7 @@ module.exports.addexp = function (number, userdata) {
 module.exports.level = function (userdata) {
   return userdata["level"];
 };
-module.exports.levelup = function (number, userdata) {
+module.exports.addlevel = function (number, userdata) {
   if (number == 0) {
     return;
   } else {
@@ -111,12 +111,6 @@ module.exports.setlevel = function (number, userdata) {
 module.exports.racedetails = function (userdata) {
   return userdata["racedetails"];
 };
-
-/*
-module.exports.numcarpurchase = function (userdata) {
-  return userdata["numcarpurchase"];
-};
-*/
 
 module.exports.lastonline = function (userdata) {
   return userdata["lastonline"];
@@ -182,7 +176,7 @@ module.exports.currentcarmain = function (userdata) {
   } else {
     var carcondition = require(gtf.CONDITION).condition(gtfcar)
     return (
-      "`" + userdata["currentcar"] + "` " + carcondition["emote"] + " `" + carcondition["health"] + "%`" + " " + require(gtf.CARS).shortname(gtfcar["name"]) + 
+      "`" + userdata["currentcar"] + "` " + carcondition["emote"] + " `" + carcondition["health"] + "%`" + " " + require(gtf.CARS).shortname(gtfcar["name"]) +
 " " + "**" + gtfcar["fpp"] + emote.fpp +
       emote.tire +
       gtfcar["perf"]["tires"]["current"]
@@ -199,6 +193,28 @@ module.exports.currentcarnum = function (userdata) {
   }
   return userdata["currentcar"];
 };
+module.exports.setcurrentcar = function (number, filter, userdata) {
+  if (number <= 0 || isNaN(number) || number === undefined || number > userdata["garage"].length) {
+    return "Invalid";
+  } else {
+    var car = Array.isArray(filter) ? stats.garage(userdata).filter(x => filter.map(f => f(x)).every(x => x === true))[number - 1] : stats.garage(userdata).filter(x => filter["function"](x, filter["args"]))[number - 1];
+    var id = car["id"];
+    if (userdata["settings"]["GARAGESORT"] == "Recently Used") {
+      userdata["garage"].some((item, index) => item["id"] == id && userdata["garage"].unshift(userdata["garage"].splice(index, 1)[0]));
+    }
+    id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
+    if (userdata["settings"]["GARAGESORT"] == "Recently Used") {
+      userdata["currentcar"] = 1;
+    } else {
+      userdata["currentcar"] = id;
+    }
+  }
+};
+module.exports.updatecurrentcar = function (car, userdata) {
+  var garage = stats.garage(userdata);
+  garage[userdata["currentcar"]] = car;
+  userdata["garage"] = garage;
+};
 ///MESSAGES
 module.exports.messages = function (userdata) {
   return userdata["messages"]
@@ -209,7 +225,100 @@ module.exports.addmessage = function (name, message, userdata) {
   }
   userdata["messages"][name]["ids"].push(message["id"])
 }
+module.exports.checkmessages = function(command, callback, msg, userdata) {
+  if (["dw", "dw4", "rcar", "rtrack", "rcourse", "gtf", "sr"].indexOf(command) + 1) {
+    return next()
+  }
 
+  userdata["tutorial"] == "Complete" ? next() : callback()
+
+  function next() {
+    var name = command.name
+    var commandmessages = gtfuser.messages[name]
+    if (typeof commandmessages === 'undefined') {
+      callback()
+      return
+    } else {
+    var embed = new EmbedBuilder();
+    var user = msg.author.username;
+    var avatar = msg.author.displayAvatarURL();
+
+    //embed.setColor(0x800080);
+    embed.setAuthor({name: user, iconURL: avatar});
+    var message = {}
+    for (var x = 0; x < commandmessages.length; x++) {
+        if (stats.triggermessage(name, commandmessages[x], userdata)) {
+          if (commandmessages[x]["emote"].length == 0) {
+            var character = ""
+          } else {
+        var character = {"igorf":emote.igorf + " __**Igor Fraga**__:", "jimmyb": emote.jimmyb + " __**Jimmy Broadbent**__:"}[commandmessages[x]["emote"]]
+          }
+        embed.setDescription(character + " " + commandmessages[x]["messages"].join("\n\n"));
+        message = commandmessages[x]
+        break;
+        }
+    }
+
+  if (Object.keys(message).length == 0) {
+    return callback()
+  }
+
+  var emojilist = [
+  { emoji: "",
+  emoji_name: "",
+  name: 'OK',
+  extra: " ",
+  button_id: 0,
+  }]
+   var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
+      require(gtf.DISCORD).send(msg, {embeds: [embed], components:buttons}, acceptmessage)
+   function acceptmessage(msg) {
+    function accept() {
+      stats.addmessage(name, message, userdata)
+      stats.save(userdata)
+      msg.delete({})
+      callback()
+    }
+
+    var functionlist = [accept]
+      gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
+  }
+    }
+  }
+
+
+
+}
+module.exports.triggermessage = function(name, message, userdata) {
+  if (typeof userdata["messages"][name] === 'undefined') {
+    return true
+  }
+  if (userdata["messages"][name]["ids"].includes(message["id"])) {
+
+    return false
+  }
+  if (message["required"][0].length == 0) {
+    return true
+  }
+
+  if (message["required"].every(function(x) {
+    var value = userdata[x[0]]
+    if (value.constructor === Array) {
+      value = value.length
+    }
+    var booleans = {
+      ">": value > x[2],
+      "<": value < x[2],
+      "==": value == x[2],
+      ">=": value >= x[2],
+      "<=": value <= x[2]
+    }
+    return booleans[x[1]]
+  })) {
+    return true
+  }
+
+}
 ///DAILY
 module.exports.dailyworkout = function (userdata) {
   return userdata["dailyworkout"]
@@ -217,6 +326,7 @@ module.exports.dailyworkout = function (userdata) {
 module.exports.setdailyworkout = function (bool, userdata) {
   userdata["dailyworkout"]["done"] = bool;
 };
+
 module.exports.achievements = function (userdata) {
   return userdata["achievements"];
 };
@@ -261,144 +371,16 @@ module.exports.garagesort = function (userdata, sort) {
 
   return userdata["garage"];
 };
-
-///GIFTS
-module.exports.gifts = function (userdata) {
-  return userdata["gifts"];
-};
-module.exports.addgift = function (gift, userdata) {
-  userdata["stats"]["numgifts"]++;
-  if (gift["inventory"]) {
-   gift["id"] = userdata["stats"]["numgifts"]
-   userdata["gifts"].unshift(gift);
-   stats.save(userdata);
+module.exports.checkgarageerror = function (embed, msg, userdata) {
+  if (stats.garage(userdata).length >= require(gtf.GTF).garagelimit) {
+    require(gtf.EMBED).alert({ name: "❌ Garage Full", description: "You have reached your garage limit of " + require(gtf.GTF).garagelimit + " or above.\nSell one of your cars using **/garage - Sell Car** in order to add more cars to your garage.", embed: "", seconds: 7 }, msg, userdata);
+    return true;
   } else {
-     stats.redeemgift(gift["name"], gift, embed, msg, userdata)
+    return false;
   }
-};
-module.exports.redeemgift = function (title, gift, embed, msg, userdata) {
-  var description = "";
-  if (gift["type"] == "CREDITS") {
-    stats.addcredits(parseInt(gift["item"]), userdata);
-    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
-    description = "**Credits: +" + gtftools.numFormat(gift["item"]) + emote.credits + "**";
-    require(gtf.EMBED).alert({ name: title, description: description, embed: "", seconds: 0 }, msg, userdata);
-    stats.save(userdata);
-  } 
-  else if (gift["type"] == "RANDOMCAR") {
-    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
-    delete gift["id"];
-    var prizes = require(gtf.CARS).random(gift["item"], 4).map(function(x) {
-      x = {id: -1, 
-           type:"CAR", 
-           name: x["name"] + " " + x["year"], 
-           item: x, author: "GT FITNESS", inventory: false 
-          }
-      return x
-    })
-    require(gtf.MARKETPLACE).fourgifts(title, "**" + title + "**", prizes, embed, msg, userdata);
-  } 
-  else if (gift["type"] == "CAR") {
-    var car = gift["item"];
-    var ocar = require(gtf.CARS).find({ makes: [car["make"]], fullname: [car["name"] + " " + car["year"]] })[0];
-    stats.addcar(car, "SORT", userdata);
-    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
-    stats.save(userdata);
-
-    description = "**" + car["name"] + " " + car["year"] + " acquired.\nAdded to your garage.**";
-    embed.setImage(ocar["image"][0]);
-    require(gtf.EMBED).alert({ name: title, description: description, embed: embed, seconds: 0 }, msg, userdata);
-  }
-  else if (gift["type"] == "ITEM") {
-    stats.additem(gift["item"], userdata);
-    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
-    description = "**Item: " + gift["item"] + "**";
-    require(gtf.EMBED).alert({ name: title, description: description, embed: "", seconds: 0 }, msg, userdata);
-    stats.save(userdata);
-  }
-};
-module.exports.cleargifts = function (userdata) {
-  userdata["gifts"] = [];
-};
-///ITEMS
-module.exports.items = function (userdata) {
-  return userdata["items"];
-};
-module.exports.additem = function (item, userdata) {
-   userdata["items"].unshift(item);
-};
-module.exports.checkitem = function(item, embed, userdata) {
-  return userdata["items"].includes(item)
 }
-  
-module.exports.careerraces = function (userdata) {
-  return userdata["careerraces"];
-};
-
-module.exports.garagecount = function (userdata) {
-  return userdata["garage"].length;
-};
-
-///SPONSER
-module.exports.sponsor = function (userdata) {
-  return userdata["sponsor"];
-};
-module.exports.addsponsor = function (sponsor, userdata) {
-  userdata["sponsor"] = {
-    name: sponsor["name"],
-    level: 0,
-  };
-};
-module.exports.resetsponsor = function (userdata) {
-  userdata["sponsor"] = {
-    name: "None",
-    level: 0,
-  };
-};
-
-
-
-
-
-
-//////
-//Starts at 1
-
-module.exports.setcurrentcar = function (number, filter, userdata) {
-  if (number <= 0 || isNaN(number) || number === undefined || number > userdata["garage"].length) {
-    return "Invalid";
-  } else {
-    var car = Array.isArray(filter) ? stats.garage(userdata).filter(x => filter.map(f => f(x)).every(x => x === true))[number - 1] : stats.garage(userdata).filter(x => filter["function"](x, filter["args"]))[number - 1];
-    var id = car["id"];
-    if (userdata["settings"]["GARAGESORT"] == "Recently Used") {
-      userdata["garage"].some((item, index) => item["id"] == id && userdata["garage"].unshift(userdata["garage"].splice(index, 1)[0]));
-    }
-    id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
-    if (userdata["settings"]["GARAGESORT"] == "Recently Used") {
-      userdata["currentcar"] = 1;
-    } else {
-      userdata["currentcar"] = id;
-    }
-  }
-};
-
-module.exports.favoritecar = function (number, bool, filter, userdata) {
-  if (number <= 0 || isNaN(number) || number === undefined || number > userdata["garage"].length) {
-    return "Invalid";
-  } else {
-    var car = Array.isArray(filter) ? stats.garage(userdata).filter(x => filter.map(f => f(x)).every(p => p === true))[number - 1] : stats.garage(userdata).filter(x => filter["function"](x, filter["args"]))[number - 1];
-    var id = car["id"];
-    id = stats.garage(userdata).findIndex(x => x["id"] == id);
-    userdata["garage"][id]["favorite"] = bool;
-  }
-};
-
-
-module.exports.seasonalcheck = function (userdata) {
-  return userdata["seasonalcheck"];
-};
-
-module.exports.view = function (gtfcar, embed, userdata) {
+//GARAGECARS
+module.exports.viewcar = function (gtfcar, embed, userdata) {
   var ocar = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]]  })
   var garage = stats.garage(userdata);
   var perf = require(gtf.PERF).perf(gtfcar, "GARAGE");
@@ -432,25 +414,24 @@ module.exports.view = function (gtfcar, embed, userdata) {
     stats.mileageunits(userdata) +
     "\n" +
     "**" +
-    gtftools.numFormat(perf["fpp"]) +
+    require(gtf.MATH).numFormat(perf["fpp"]) +
     emote.fpp +
     " | " +
-    gtftools.numFormat(perf["power"]) +
+    require(gtf.MATH).numFormat(perf["power"]) +
     " hp" +
     " | " +
-    gtftools.numFormat(perf["weight"]) +
+    require(gtf.MATH).numFormat(perf["weight"]) +
     " lbs" +
     " | " +
-    ocar["drivetrain"] + 
-    " | " + 
+    ocar["drivetrain"] +
+    " | " +
     ocar["engine"] +
     "**" +
     "\n";
 
   return cardetails;
 };
-
-module.exports.view2 = function (gtfcar, userdata) {
+module.exports.viewtuning = function (gtfcar, userdata) {
   if (gtfcar["perf"]["transmission"]["current"] == "Default") {
     var trans1 = "Default";
   } else {
@@ -512,7 +493,6 @@ module.exports.view2 = function (gtfcar, userdata) {
 
   return cardetails;
 };
-
 module.exports.viewcarcondition = function (gtfcar, userdata) {
   var carcondition = require(gtf.CONDITION).condition(gtfcar)
   var cardetails =
@@ -528,66 +508,10 @@ module.exports.viewcarcondition = function (gtfcar, userdata) {
   return cardetails;
 };
 
-module.exports.updatecurrentcarclean = function (length, userdata) {
-  var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
-  var rnumber = gtftools.randomInt(1, 5);
-  var clean = parseInt(userdata["garage"][stats.currentcarnum(userdata) - 1]["clean"]);
-  clean = clean - rnumber;
-
-  if (clean <= 0) {
-    clean = 0;
-  }
-
-  userdata["garage"][stats.currentcarnum(userdata) - 1]["clean"] = clean;
-
-  id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
-  userdata["currentcar"] = id;
-};
-
-module.exports.updatecurrentcaroil = function (length, userdata) {
-  var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
-  var number = (length / 600) * 100;
-  var oil = parseInt(userdata["garage"][stats.currentcarnum(userdata) - 1]["oil"]);
-  oil = oil - number;
-
-  if (oil <= 0) {
-    oil = 0;
-  }
-
-  userdata["garage"][stats.currentcarnum(userdata) - 1]["clean"] = clean;
-
-  id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
-  userdata["currentcar"] = id;
-};
-
-module.exports.updatedamage = function (racesettings, car, userdata) {
-  console.log(car["damage"])
-    var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
-  var length = racesettings["distance"]["km"]
-  var damage = car["damage"]
-  
- ///CLEAN
-  var rclean = require(gtf.MATH).round(gtftools.randomInt(1, 5) * (length/45), 2);
-  require(gtf.CONDITION).updatecondition(-rclean, "clean", userdata)
-
-  ////OIL
-  var roil = require(gtf.MATH).round(length/6, 2);
-
-  require(gtf.CONDITION).updatecondition(-roil, "oil", userdata)
-
-  while (damage >= 0) {
-    var d = gtftools.randomInt(2,5)
-    var select = ["engine", "transmission", "suspension", "body"][gtftools.randomInt(0,3)]
-    require(gtf.CONDITION).updatecondition(-d, select, userdata)
-    damage = damage - d
-  }
-}
-
 module.exports.updatefpp = function (gtfcar, userdata) {
   var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
   userdata["garage"][stats.currentcarnum(userdata) - 1]["fpp"] = require(gtf.PERF).perf(gtfcar, "GARAGE")["fpp"];
 }
-
 module.exports.carimage = function (gtfcar) {
   if (gtfcar["livery"]["current"] != "Default") {
     return parseInt(gtfcar["livery"]["current"].split(" ").slice(-1)[0])
@@ -598,13 +522,12 @@ module.exports.carimage = function (gtfcar) {
     return parseInt(gtfcar["perf"]["aerokits"]["current"].split(" ")[1]);
   }
 };
-
 module.exports.loadcarimage = async function (gtfcar, embed, userdata, callback) {
 
 var { request } = require('undici');
 var Canvas = require("@napi-rs/canvas");
 var color = ""
-  
+
 if (!gtfcar["color"]["current"].includes("Default")) {
   if (gtfcar["color"]["current"].includes("Special")) {
     color = "./images/gtauto/paint/special/" + gtfcar["color"]["current"].split(" ").slice(1).join(" ") + ".png"
@@ -619,14 +542,14 @@ var rim = gtfcar["rims"]["current"]
 if (!gtfcar["rims"]["current"].includes("Default")) {
    var wheel = require(gtf.WHEELS).find({fullname: gtfcar["rims"]["current"]})[0]["make"]
   wheel = "./images/gtauto/wheels/" + wheel + ".png"
-  
+
 }
- 
+
 var link = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["name"]] })["image"][stats.carimage(gtfcar)]
-  
+
   const { body } = await request(link);
 	const image = await Canvas.loadImage(await body.arrayBuffer());
-  
+
   var width = image.naturalWidth
   var height = image.naturalHeight
   if (width >= 2000) {
@@ -642,7 +565,7 @@ var link = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["na
   var image2 = await Canvas.loadImage(color)
   var position1 = 0
   var position2 = height - (height/4)
-    
+
   context.drawImage(image2, position1, position2, height/4, height/4);
   context.globalAlpha = 1;
   context.strokeRect(position1, position2, height/4, height/4);
@@ -655,17 +578,289 @@ var link = require(gtf.CARS).get({ make: [gtfcar["make"]], fullname: [gtfcar["na
   context.drawImage(image3, position1, position2, (height/4) * (4/3), height/4);
   context.strokeRect(position1, position2, (height/4) * (4/3), height/4);
   }
-        
+
   const attachment = new AttachmentBuilder(await canvas.encode('png'), {name: "image.png"})
   await callback(attachment)
 }
 
+module.exports.removecar = function (car, num, sell, userdata) {
+  stats.addcredits(sell, userdata);
+
+  var prevcarid = stats.currentcar(userdata)["id"];
+  var removedcarid = car["id"];
+  var pi;
+  var ri;
+
+  for (var i = 0; i < userdata["garage"].length; i++) {
+    if (stats.garage(userdata)[i]["id"] == removedcarid) {
+      ri = i;
+    }
+  }
+
+  var garage = stats.garage(userdata).filter(x => x["id"] != num);
+  userdata["garage"] = garage;
+
+  for (var i = 0; i < userdata["garage"].length; i++) {
+    if (userdata["garage"][i]["id"] == prevcarid) {
+      pi = i;
+    }
+  }
+
+  if (ri <= pi) {
+    userdata["currentcar"]--;
+  }
+};
+module.exports.removecars = function (start, end, userdata) {
+  var count = end - start + 1;
+  var total = 0;
+  var car = "";
+
+  var i = 0;
+  while (i < count) {
+    car = stats.garage(userdata)[start - 1];
+    total += require(gtf.PERF).perf(car, "GARAGE")["sell"];
+
+    stats.removecar(car, car["id"], require(gtf.PERF).perf(car, "GARAGE")["sell"], userdata);
+
+    i++;
+  }
+  return total;
+};
+
+///GIFTS
+module.exports.gifts = function (userdata) {
+  return userdata["gifts"];
+};
+module.exports.addgift = function (gift, userdata) {
+  userdata["stats"]["numgifts"]++;
+  if (gift["inventory"]) {
+   gift["id"] = userdata["stats"]["numgifts"]
+   userdata["gifts"].unshift(gift);
+   stats.save(userdata);
+  } else {
+     stats.redeemgift(gift["name"], gift, embed, msg, userdata)
+  }
+};
+module.exports.redeemgift = function (title, gift, embed, msg, userdata) {
+  var description = "";
+  if (gift["type"] == "CREDITS") {
+    stats.addcredits(parseInt(gift["item"]), userdata);
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    description = "**Credits: +" + require(gtf.MATH).numFormat(gift["item"]) + emote.credits + "**";
+    require(gtf.EMBED).alert({ name: title, description: description, embed: "", seconds: 0 }, msg, userdata);
+    stats.save(userdata);
+  }
+  else if (gift["type"] == "RANDOMCAR") {
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    delete gift["id"];
+    var prizes = require(gtf.CARS).random(gift["item"], 4).map(function(x) {
+      x = {id: -1,
+           type:"CAR",
+           name: x["name"] + " " + x["year"],
+           item: x, author: "GT FITNESS", inventory: false
+          }
+      return x
+    })
+    require(gtf.GTF).fourgifts(title, "**" + title + "**", prizes, embed, msg, userdata);
+  }
+  else if (gift["type"] == "CAR") {
+    var car = gift["item"];
+    var ocar = require(gtf.CARS).find({ makes: [car["make"]], fullname: [car["name"] + " " + car["year"]] })[0];
+    require(gtf.CARS).addcar(car, "SORT", userdata);
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    stats.save(userdata);
+
+    description = "**" + car["name"] + " " + car["year"] + " acquired.\nAdded to your garage.**";
+    embed.setImage(ocar["image"][0]);
+    require(gtf.EMBED).alert({ name: title, description: description, embed: embed, seconds: 0 }, msg, userdata);
+  }
+  else if (gift["type"] == "ITEM") {
+    stats.additem(gift["item"], userdata);
+    userdata["gifts"] = userdata["gifts"].filter(x => x["id"] !== gift["id"]);
+    description = "**Item: " + gift["item"] + "**";
+    require(gtf.EMBED).alert({ name: title, description: description, embed: "", seconds: 0 }, msg, userdata);
+    stats.save(userdata);
+  }
+};
+module.exports.cleargifts = function (userdata) {
+  userdata["gifts"] = [];
+};
+///ITEMS
+module.exports.items = function (userdata) {
+  return userdata["items"];
+};
+module.exports.additem = function (item, userdata) {
+   userdata["items"].unshift(item);
+};
+module.exports.checkitem = function(item, embed, userdata) {
+  return userdata["items"].includes(item)
+}
+
+///CAREER
+module.exports.careerraces = function (userdata) {
+  return userdata["careerraces"];
+};
+module.exports.updatecareerrace = function (racesettings, place, userdata) {
+ var eventid = racesettings['eventid'].toLowerCase();
+
+  if (racesettings["championship"]) {
+    var prevplace = userdata["careerraces"][eventid][0];
+    var i = 1
+    while (i < userdata["careerraces"][eventid].length) {
+      var prevplace = userdata["careerraces"][eventid][i - 1];
+      console.log(userdata["careerraces"][eventid][i - 1])
+  if (prevplace == 0) {
+     userdata["careerraces"][eventid][i - 1] = place
+  } else {
+    if (parseInt(place.split(/[A-Z]/gi)[0]) <= parseInt(prevplace.split(/[A-Z]/gi)[0])) {
+      userdata["careerraces"][eventid][i - 1] = place;
+    }
+  }
+      i++
+    }
+  } else {
+
+  var prevplace = userdata["careerraces"][eventid][racesettings["raceid"] - 1];
+  if (prevplace == 0) {
+     userdata["careerraces"][eventid][racesettings["raceid"] - 1] = place
+  } else {
+    if (parseInt(place.split(/[A-Z]/gi)[0]) <= parseInt(prevplace.split(/[A-Z]/gi)[0])) {
+      userdata["careerraces"][eventid][racesettings["raceid"] - 1] = place;
+    }
+  }
+
+  }
+};
+module.exports.checkcareerevent = function (event, place, userdata) {
+  var total = event["eventlength"]
+  var count = 0;
+  var i = 0;
+  var eventid = event["eventid"].toLowerCase();
+
+  var count = userdata["careerraces"][eventid].filter(function(x) {
+    if (x == 0) {
+      return false
+    } else if (x == "✅") {
+      return false
+    } else {
+      return (x.split(/[A-Z]/gi)[0] <= place.split(/[A-Z]/gi)[0])
+    }
+  }).length
+  console.log(count)
+
+  if (count >= total) {
+    return true;
+  } else {
+    return false;
+  }
+};
+module.exports.completeevent = function (event, userdata) {
+  var eventid = event["eventid"].toLowerCase();
+  var events = userdata["careerraces"][eventid];
+
+  for (var i = 0; i < events.length; i++) {
+    userdata["careerraces"][eventid][i] = "✅";
+  }
+};
+///LICENSE
+module.exports.license = function (userdata) {
+  return userdata["license"]
+}
+module.exports.updatelicensetest = function (racesettings, place, userdata) {
+ var eventid = racesettings['eventid'].replace("LICENSE", "").toLowerCase();
+
+  var prevplace = userdata["licenses"][eventid][0];
+  if (prevplace == 0) {
+     userdata["licenses"][eventid][0] = place
+  } else {
+    if (parseInt(place.split(/[A-Z]/gi)[0]) <= parseInt(prevplace.split(/[A-Z]/gi)[0])) {
+      userdata["licenses"][eventid][0] = place;
+    }
+  }
+
+};
+module.exports.checklicensetests = function (option, place, userdata) {
+  option = option.toLowerCase()
+  var total = 7
+  if (option.includes("ic")) {
+    total = 5
+  }
+  var count = 0;
+  var i = 0;
+  var licenses = Object.fromEntries(Object.entries(userdata["licenses"]).filter(([key]) => key.includes(option)))
+
+  var count = Object.keys(licenses).filter(function(x) {
+    if (licenses[x][0] == 0) {
+      return false
+    } else if (licenses[x][0] == "✅") {
+      return false
+    } else {
+      return (licenses[x][0].split(/[A-Z]/gi)[0] <= place.split(/[A-Z]/gi)[0])
+    }
+  }).length
+  console.log(count)
+
+  if (count >= total) {
+    return true;
+  } else {
+    return false;
+  }
+};
+module.exports.checklicense = function (license, embed, msg, userdata) {
+  license = license.toLowerCase()
+  var ranks = {"c": 0, "n": 0, "b":1, "a":2, "ic":3, "ib":4, "ia":5, "s": 6}
+  if (ranks[license] <= ranks[stats.license(userdata).toLowerCase()]) {
+    return true;
+  } else {
+    if (embed != "") {
+    require(gtf.EMBED).alert({ name: "❌ " + "License " + license.toUpperCase() + " Required", description: "🔒 Your license does not meet the requirements." + "\n\n" + "**License "+ stats.license(userdata) +  " -> " + "License " + license.toUpperCase()  + "**", embed: "", seconds: 10 }, msg, userdata);
+    }
+    return false;
+  }
+};
+module.exports.completelicense = function (option, userdata) {
+  userdata["license"] = option.toUpperCase()
+}
+///SPONSER
+module.exports.sponsor = function (userdata) {
+  return userdata["sponsor"];
+};
+module.exports.addsponsor = function (sponsor, userdata) {
+  userdata["sponsor"] = {
+    name: sponsor["name"],
+    license: "N", level: 0,
+  };
+};
+module.exports.resetsponsor = function (userdata) {
+  userdata["sponsor"] = {
+    name: "None",
+    license: "N", level: 0,
+  };
+};
+
+//////
+module.exports.favoritecar = function (number, bool, filter, userdata) {
+  if (number <= 0 || isNaN(number) || number === undefined || number > userdata["garage"].length) {
+    return "Invalid";
+  } else {
+    var car = Array.isArray(filter) ? stats.garage(userdata).filter(x => filter.map(f => f(x)).every(p => p === true))[number - 1] : stats.garage(userdata).filter(x => filter["function"](x, filter["args"]))[number - 1];
+    var id = car["id"];
+    id = stats.garage(userdata).findIndex(x => x["id"] == id);
+    userdata["garage"][id]["favorite"] = bool;
+  }
+};
+
+module.exports.seasonalcheck = function (userdata) {
+  return userdata["seasonalcheck"];
+};
+
+///DRIVER
 module.exports.loadavatarimage = async function (embed, userdata, callback) {
 var Canvas = require("@napi-rs/canvas");
 var { request } = require('undici');
 var visor = await Canvas.loadImage("./images/gtauto/driver/visor.png")
 var helmet = await Canvas.loadImage("./images/gtauto/driver/helmet.png")
-  
+
 var helmetcolorimage = await Canvas.loadImage("./images/gtauto/paint/" + userdata["driver"]["helmetcolor"] + ".png")
 var visorcolorimage = await Canvas.loadImage("./images/gtauto/paint/" + userdata["driver"]["visorcolor"] + ".png")
 
@@ -678,10 +873,10 @@ if (userdata["driver"]["helmetlogo1"].length == 0) {
   if (logoimage.naturalHeight > logoimage.naturalWidth) {
      var ratio = logoimage.naturalWidth / logoimage.naturalHeight
   } else {
-  var ratio = logoimage.naturalHeight / logoimage.naturalWidth 
+  var ratio = logoimage.naturalHeight / logoimage.naturalWidth
   }
 }
-  
+
 if (userdata["driver"]["helmetlogo2"].length == 0) {
   var logourl2 = ""
 } else {
@@ -691,18 +886,18 @@ if (userdata["driver"]["helmetlogo2"].length == 0) {
   if (logoimage2.naturalHeight > logoimage2.naturalWidth) {
      var ratio = logoimage2.naturalWidth / logoimage2.naturalHeight
   } else {
-  var ratio = logoimage2.naturalHeight / logoimage2.naturalWidth 
+  var ratio = logoimage2.naturalHeight / logoimage2.naturalWidth
   }
 }
-  
+
 var width = helmet.naturalWidth
 var height = helmet.naturalHeight
 var helmetcanvas = await Canvas.createCanvas(width, height)
 var visorcanvas = await Canvas.createCanvas(width, height)
-  
+
 var helmetctx = helmetcanvas.getContext('2d');
 var visorctx = visorcanvas.getContext('2d');
-  
+
 var canvas = await Canvas.createCanvas(width, height)
 var ctx = canvas.getContext('2d');
 
@@ -725,165 +920,12 @@ ctx.drawImage(logoimage, 270, 20, width/5, (width/5) * ratio);
   if (logourl2.length != 0) {
 ctx.drawImage(logoimage2, 640, 370, width/3.5, (width/3.5) * ratio);
   }
-        
+
   const attachment = new AttachmentBuilder(await canvas.encode('png'), {name: "image.png"})
   await callback(attachment)
 }
 
-module.exports.addcar = function (car, arg, userdata) {
-  var fullname = car["name"] + " " + car["year"];
-
-  if (arg != "LOAN") {
-    if (stats.garagecount(userdata) == 0) {
-      stats.setcurrentcar(1, undefined, userdata);
-      userdata["currentcar"]++;
-    }
-  }
-  car["condition"] = 100
-
-  var tires = { current: car["tires"], list: [car["tires"]], tuning: [0, 0, 0] };
-  if (car["tires"].includes("Racing")) {
-    tires["list"].push("Racing: Intermediate");
-    tires["list"].push("Racing: Heavy Wet");
-  }
-  if (car["tires"].includes("Dirt")) {
-    tires["list"].push("Rally: Snow");
-    tires["list"].push("Racing: Hard");
-    tires["list"].push("Racing: Intermediate");
-    tires["list"].push("Racing: Heavy Wet");
-  }
-  if (car["tires"].includes("Snow")) {
-    tires["list"].push("Rally: Dirt");
-    tires["list"].push("Racing: Hard");
-    tires["list"].push("Racing: Intermediate");
-    tires["list"].push("Racing: Heavy Wet");
-  }
-  var engine = { current: "Default", list: [], tuning: [-999, -999, -999] };
-  var trans = { current: "Default", list: [], tuning: [-999, -999, -999] };
-  var susp = { current: "Default", list: [], tuning: [-999, -999, -999] };
-  var weight = { current: "Default", list: [], tuning: [-999, -999, -999] };
-  var turbo = { current: "Default", list: [], tuning: [-999, -999, -999] };
-  var brakes = { current: "Default", list: [], tuning: [-999, -999, -999] };
-  var aerokits = { current: "Default", list: [], tuning: [-999, -999, -999] };
-
-  var condition = {oil:car["condition"], clean:car["condition"], engine:car["condition"], transmission: car["condition"], suspension:car["condition"], body:car["condition"]}
-
-  var fpp = require(gtf.PERF).perf(car, "DEALERSHIP")["fpp"];
-  var sell = require(gtf.MARKETPLACE).sellcalc(car, "DEALERSHIP");
-  if (arg != "LOAN") {
-    userdata["stats"]["numcarpurchases"]++;
-    var id1 = userdata["stats"]["numcarpurchases"];
-  } else {
-    var id1 = 0;
-  }
-  var newcar = {
-    id: id1,
-    name: fullname,
-    make: car["make"],
-    year: car["year"],
-    color: { current: "Default" },
-    livery: { current: "Default"},
-    fpp: fpp,
-    perf: {
-      engine: engine,
-      transmission: trans,
-      suspension: susp,
-      tires: tires,
-      weightreduction: weight,
-      turbo: turbo,
-      aerokits: aerokits,
-      brakes: brakes,
-      nitrous: { current: "Default", tuning: [-999, -999, -999]},
-      items: []
-    },
-    rims: { current: "Default", list: [], tuning: [-999, -999, -999] },
-    condition: condition,
-    totalmileage: 0
-  };
-  newcar["fpp"] = require(gtf.PERF).perf(newcar, "GARAGE")["fpp"];
-  
-
-  if (arg == "ITEM" || arg == "LOAN") {
-    return newcar;
-  } else {
-    userdata["garage"].push(newcar);
-    if (arg == "SORT") {
-      userdata["garage"] = stats.garagesort(userdata);
-    }
-    stats.save(userdata);
-    return;
-  }
-};
-
-/*
-module.exports.updatecurrentcarfpp(car, userdata) {
-  var id = car["id"]
-  var
-   var clean = parseInt(userdata["garage"][stats.currentcarnum(userdata) - 1]["clean"])
-   clean = clean - rnumber
-
-  if (clean <= 0) {
-    clean = 0
-  }
-
-  userdata["garage"][stats.currentcarnum(userdata) - 1]["clean"] = clean
-
-}
-*/
-
-module.exports.updatecareerrace = function (racesettings, place, userdata) {
- var eventid = racesettings['eventid'].toLowerCase();
-  
-  if (racesettings["championship"]) {
-    var prevplace = userdata["careerraces"][eventid][0];
-    var i = 1
-    while (i < userdata["careerraces"][eventid].length) {
-      var prevplace = userdata["careerraces"][eventid][i - 1];
-      console.log(userdata["careerraces"][eventid][i - 1])
-  if (prevplace == 0) {
-     userdata["careerraces"][eventid][i - 1] = place
-  } else {
-    if (parseInt(place.split(/[A-Z]/gi)[0]) <= parseInt(prevplace.split(/[A-Z]/gi)[0])) {
-      userdata["careerraces"][eventid][i - 1] = place;
-    }
-  }
-      i++
-    }
-  } else {
-  
-  var prevplace = userdata["careerraces"][eventid][racesettings["raceid"] - 1];
-  if (prevplace == 0) {
-     userdata["careerraces"][eventid][racesettings["raceid"] - 1] = place
-  } else {
-    if (parseInt(place.split(/[A-Z]/gi)[0]) <= parseInt(prevplace.split(/[A-Z]/gi)[0])) {
-      userdata["careerraces"][eventid][racesettings["raceid"] - 1] = place;
-    }
-  }
-
-  }
-};
-
-module.exports.updatelicensetest = function (racesettings, place, userdata) {
- var eventid = racesettings['eventid'].replace("LICENSE", "").toLowerCase();
-  
-  var prevplace = userdata["licenses"][eventid][0];
-  if (prevplace == 0) {
-     userdata["licenses"][eventid][0] = place
-  } else {
-    if (parseInt(place.split(/[A-Z]/gi)[0]) <= parseInt(prevplace.split(/[A-Z]/gi)[0])) {
-      userdata["licenses"][eventid][0] = place;
-    }
-  }
-     
-};
-
-module.exports.checkcar = function (carname, userdata) {
-  if (userdata["garage"].some(x => x["name"] === carname)) {
-    return " ✅";
-  } else {
-    return "";
-  }
-};
+///RACEINPROGRESS
 module.exports.getraceprogress = function (racesettings, raceid, userdata) {
   eventid = racesettings["eventid"].toLowerCase();
 
@@ -893,80 +935,14 @@ module.exports.getraceprogress = function (racesettings, raceid, userdata) {
     return "`" + userdata["careerraces"][eventid][raceid - 1] + "`";
   }
 };
-
-module.exports.checkcareerevent = function (event, place, userdata) {
-  var total = event["eventlength"]
-  var count = 0;
-  var i = 0;
-  var eventid = event["eventid"].toLowerCase();
-  
-  var count = userdata["careerraces"][eventid].filter(function(x) {
-    if (x == 0) {
-      return false
-    } else if (x == "✅") {
-      return false
-    } else {
-      return (x.split(/[A-Z]/gi)[0] <= place.split(/[A-Z]/gi)[0])
-    }
-  }).length
-  console.log(count)
-
-  if (count >= total) {
-    return true;
-  } else {
-    return false;
-  }
+module.exports.clearraceinprogress = function (userdata) {
+  userdata["raceinprogress"] = { active: false, messageid: "", channelid: "", expire: 0, gridhistory: [], msghistory: [] };
+};
+module.exports.raceinprogressstat = function (userdata) {
+  return userdata["raceinprogress"];
 };
 
-module.exports.checklicensetests = function (option, place, userdata) {
-  option = option.toLowerCase()
-  var total = 7
-  if (option.includes("ic")) {
-    total = 5
-  }
-  var count = 0;
-  var i = 0;
-  var licenses = Object.fromEntries(Object.entries(userdata["licenses"]).filter(([key]) => key.includes(option)))
-  
-  var count = Object.keys(licenses).filter(function(x) {
-    if (licenses[x][0] == 0) {
-      return false
-    } else if (licenses[x][0] == "✅") {
-      return false
-    } else {
-      return (licenses[x][0].split(/[A-Z]/gi)[0] <= place.split(/[A-Z]/gi)[0])
-    }
-  }).length
-  console.log(count)
-
-  if (count >= total) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-module.exports.license = function (userdata) {
-  return userdata["license"]
-}
-
-module.exports.checklicense = function (license, embed, msg, userdata) {
-  license = license.toLowerCase()
-  var ranks = {"c": 0, "n": 0, "b":1, "a":2, "ic":3, "ib":4, "ia":5, "s": 6}
-  if (ranks[license] <= ranks[stats.license(userdata).toLowerCase()]) {
-    return true;
-  } else {
-    if (embed != "") {
-    require(gtf.EMBED).alert({ name: "❌ " + "License " + license.toUpperCase() + " Required", description: "🔒 Your license does not meet the requirements." + "\n\n" + "**License "+ stats.license(userdata) +  " -> " + "License " + license.toUpperCase()  + "**", embed: "", seconds: 10 }, msg, userdata);
-    }
-    return false;
-  }
-};
-
-module.exports.completelicense = function (option, userdata) {
-  userdata["license"] = option.toUpperCase()
-}
-
+///MISC
 module.exports.checkachievements = function (member, userdata) {
   var roles = [
     ["B License", 20000],
@@ -989,17 +965,6 @@ module.exports.checkachievements = function (member, userdata) {
         }
       }
     }
-  }
-};
-
-
-
-module.exports.completeevent = function (event, userdata) {
-  var eventid = event["eventid"].toLowerCase();
-  var events = userdata["careerraces"][eventid];
-
-  for (var i = 0; i < events.length; i++) {
-    userdata["careerraces"][eventid][i] = "✅";
   }
 };
 
@@ -1042,73 +1007,17 @@ module.exports.eventstatus = function (eventid, userdata) {
     }
   }
   }
-  
+
 };
 
-module.exports.removecar = function (car, num, sell, userdata) {
-  stats.addcredits(sell, userdata);
 
-  var prevcarid = stats.currentcar(userdata)["id"];
-  var removedcarid = car["id"];
-  var pi;
-  var ri;
 
-  for (var i = 0; i < userdata["garage"].length; i++) {
-    if (stats.garage(userdata)[i]["id"] == removedcarid) {
-      ri = i;
-    }
-  }
 
-  var garage = stats.garage(userdata).filter(x => x["id"] != num);
-  userdata["garage"] = garage;
-
-  for (var i = 0; i < userdata["garage"].length; i++) {
-    if (userdata["garage"][i]["id"] == prevcarid) {
-      pi = i;
-    }
-  }
-
-  if (ri <= pi) {
-    userdata["currentcar"]--;
-  }
-};
-
-module.exports.removecars = function (start, end, userdata) {
-  var count = end - start + 1;
-  var total = 0;
-  var car = "";
-
-  var i = 0;
-  while (i < count) {
-    car = stats.garage(userdata)[start - 1];
-    total += require(gtf.PERF).perf(car, "GARAGE")["sell"];
-
-    stats.removecar(car, car["id"], require(gtf.PERF).perf(car, "GARAGE")["sell"], userdata);
-
-    i++;
-  }
-  return total;
-};
-
-module.exports.updatecurrentcar = function (car, userdata) {
-  var garage = stats.garage(userdata);
-  garage[userdata["currentcar"]] = car;
-  userdata["garage"] = garage;
-};
-
-module.exports.clearraceinprogress = function (userdata) {
-  userdata["raceinprogress"] = { active: false, messageid: "", channelid: "", expire: 0, gridhistory: [], msghistory: [] };
-};
-
-module.exports.raceinprogressstat = function (userdata) {
-  return userdata["raceinprogress"];
-};
-
-module.exports.inlobbystat = function (userdata) {
+//INLOBBY
+module.exports.inlobby = function (userdata) {
   return userdata["inlobby"];
 };
-
-module.exports.inlobby = function (bool, mid, userdata) {
+module.exports.setinlobby = function (bool, mid, userdata) {
   if (bool === "undefined") {
   } else {
     userdata["inlobby"][0] = bool;
@@ -1120,7 +1029,7 @@ module.exports.inlobby = function (bool, mid, userdata) {
   return [bool, mid];
 };
 
-
+///MISC
 module.exports.main = function (userdata) {
   userdata["count"]++;
   userdata["mileage"] = require(gtf.MATH).round(userdata["mileage"], 2)
@@ -1149,10 +1058,10 @@ module.exports.main = function (userdata) {
   }
   userdata["lastonline"] = currdate;
   stats.addracemulti(-100, userdata);
-  //emote.dailyworkout + "x" + stats.racemulti(userdata) + " " 
+  //emote.dailyworkout + "x" + stats.racemulti(userdata) + " "
 
-  return gifts + gtftools.numFormat(userdata["credits"]) + " " + emote.credits + " " +  
-    "Lv." + userdata["level"] + " " + emote.exp + " " + gtftools.numFormat(userdata["exp"]) + "  " + emote.dailyworkoutman + gtftools.numFormat(stats.mileageuser(userdata)) + units + levelup;
+  return gifts + require(gtf.MATH).numFormat(userdata["credits"]) + " " + emote.credits + " " +
+    "Lv." + userdata["level"] + " " + emote.exp + " " + require(gtf.MATH).numFormat(userdata["exp"]) + "  " + emote.dailyworkoutman + require(gtf.MATH).numFormat(stats.mileageuser(userdata)) + units + levelup;
 };
 
 /////RACES//////
@@ -1173,7 +1082,7 @@ module.exports.createracehistory = function (racesettings, racedetails, finalgri
     } else {
   userdata["raceinprogress"]["tirehistory"].push(racesettings["driver"]["car"]["perf"]["tires"]["current"].slice())
     }
-    
+
   for (var i = 0; i < 20; i++) {
     userdata["raceinprogress"]["msghistory"].push(JSON.parse(JSON.stringify(message)))
     message = require(gtf.RACEEX).updategrid(racesettings, racedetails, finalgrid, checkpoint, timeinterval, i, message, embed, msg, userdata)
@@ -1186,11 +1095,9 @@ module.exports.createracehistory = function (racesettings, racedetails, finalgri
     } else {
   userdata["raceinprogress"]["tirehistory"].push(racesettings["driver"]["car"]["perf"]["tires"]["current"].slice())
     }
-  } 
+  }
   finalgrid = userdata["raceinprogress"]["gridhistory"][0]
 }
-    
-
 
 module.exports.resumerace = function (userdata, client) {
   if (userdata["racedetails"].length == 0) {
@@ -1236,111 +1143,15 @@ module.exports.resumerace = function (userdata, client) {
       if (userdata["raceinprogress"]["championshipnum"] >= 1) {
  console.log(userdata["id"] + ": Championship Resumed");
       } else {
-        
+
       console.log(userdata["id"] + ": Race Resumed");
       }
-      
+
 require(dir + "functions/races/f_races_2").startsession(racesettings, racedetails, finalgrid, [true], embed, msg, userdata);
     });
     return true;
   }
 };
-
-module.exports.checkmessages = function(command, callback, msg, userdata) {
-  if (["dw", "dw4", "rcar", "rtrack", "rcourse", "gtf", "sr"].indexOf(command) + 1) {
-    return next()
-  }
-
-  userdata["tutorial"] == "Complete" ? next() : callback()
-  
-  function next() {
-    var name = command.name
-    var commandmessages = gtfuser.messages[name]
-    if (typeof commandmessages === 'undefined') {
-      callback()
-      return
-    } else {
-    var embed = new EmbedBuilder();
-    var user = msg.author.username;
-    var avatar = msg.author.displayAvatarURL();
-
-    //embed.setColor(0x800080);
-    embed.setAuthor({name: user, iconURL: avatar});
-    var message = {}
-    for (var x = 0; x < commandmessages.length; x++) {
-        if (stats.triggermessage(name, commandmessages[x], userdata)) {
-          if (commandmessages[x]["emote"].length == 0) {
-            var character = ""
-          } else {
-        var character = {"igorf":emote.igorf + " __**Igor Fraga**__:", "jimmyb": emote.jimmyb + " __**Jimmy Broadbent**__:"}[commandmessages[x]["emote"]]
-          }
-        embed.setDescription(character + " " + commandmessages[x]["messages"].join("\n\n")); 
-        message = commandmessages[x]
-        break;
-        }
-    }
-
-  if (Object.keys(message).length == 0) {
-    return callback()
-  }
-    
-  var emojilist = [
-  { emoji: "", 
-  emoji_name: "", 
-  name: 'OK', 
-  extra: " ",
-  button_id: 0,
-  }]
-   var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
-      require(gtf.DISCORD).send(msg, {embeds: [embed], components:buttons}, acceptmessage)
-   function acceptmessage(msg) {
-    function accept() {
-      stats.addmessage(name, message, userdata)
-      stats.save(userdata)
-      msg.delete({})
-      callback()
-    }
-    
-    var functionlist = [accept]
-      gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
-  }
-    }
-  }
-
- 
- 
-}
-
-module.exports.triggermessage = function(name, message, userdata) {
-  if (typeof userdata["messages"][name] === 'undefined') {
-    return true
-  }
-  if (userdata["messages"][name]["ids"].includes(message["id"])) {
-    
-    return false
-  }
-  if (message["required"][0].length == 0) {
-    return true
-  }
-  
-  if (message["required"].every(function(x) {
-    var value = userdata[x[0]]
-    if (value.constructor === Array) {
-      value = value.length
-    }
-    var booleans = {
-      ">": value > x[2],
-      "<": value < x[2],
-      "==": value == x[2],
-      ">=": value >= x[2],
-      "<=": value <= x[2]
-    }
-    return booleans[x[1]]
-  })) {
-    return true
-  }
-  
-}
 
 module.exports.save = function (userdata, condition) {
   if (userdata === undefined) {
@@ -1381,7 +1192,7 @@ module.exports.load = function (collection, userdata, callback) {
  var { MongoClient, ServerApiVersion } = require('mongodb');
 
 MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-  
+
   var results = {}
   var find = collection == "SEASONALS" ? {} : { id: userdata["id"] }
 

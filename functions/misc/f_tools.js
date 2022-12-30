@@ -8,23 +8,6 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
-module.exports.randomInt = function (min, max) {
-  return Math.floor(min + Math.random() * (max + 1 - min));
-};
-
-module.exports.randomIntSeed = function (min, max, seed) {
-  const Random = require('yy-random')
-  Random.seed(seed)
-  return Random.range(min, max)
-};
-
-module.exports.betweenInt = function (number, min, max) {
-  if (isNaN(number)) {
-    return false;
-  }
-  return parseInt(number) >= min && parseInt(number) <= max;
-};
-
 module.exports.shuffle = function (array) {
   let currentIndex = array.length,
     randomIndex;
@@ -38,7 +21,7 @@ module.exports.shuffle = function (array) {
   return array;
 };
 
-module.exports.removeDups = function (names) {
+module.exports.unique = function (names) {
   let unique = {};
   names.forEach(function (i) {
     if (!unique[i]) {
@@ -64,61 +47,6 @@ module.exports.interval = function interval(func, wait, times) {
   })(wait, times);
 
   setTimeout(interv, wait);
-};
-
-module.exports.lengthalpha = function (fpp, weather, track) {
-  var offroad = 1;
-  if (track["type"].includes("Dirt") || track["type"].includes("Snow")) {
-    offroad = 0.85;
-  }
-  if (typeof weather === "string") {
-    weather = parseInt(weather.split(" ").pop());
-    var weatherx = weather / 100;
-  } else {
-    var weatherx = parseFloat(weather["wetsurface"]);
-    if (weatherx != 0) {
-      weatherx = weatherx / 100;
-    }
-  }
-
-  var percentage = fpp / 1100;
-  percentage = (195 - 70) * percentage + 90;
-  return (percentage - weatherx * 40) * offroad;
-};
-
-module.exports.formpage = function (args, userdata) {
-  if (userdata["settings"]["MENUSELECT"] == 1) {
-    args["numbers"] = true;
-  }
-  var list = [];
-  var listnumber = "";
-  var pagetotal = Math.ceil(args["list"].length / args["rows"]);
-  var x = 0;
-  var page = args["page"];
-  page = page * args["rows"];
-  while (x < args["rows"] && args["list"][x + page] !== undefined) {
-    if (args["numbers"]) {
-      listnumber = "`" + (x + 1 + page).toString() + ".` ";
-    }
-    if (!args["numbers"]) {
-      listnumber = "";
-    }
-
-    list.push(listnumber + args["list"][x + page]);
-    x++;
-  }
-
-  if (list == "") {
-    if (args["page"] < 0) {
-      args["page"]++;
-      return;
-    }
-    if (args["page"] > pagetotal) {
-      args["page"]--;
-      return;
-    }
-  }
-  return list;
 };
 
 module.exports.toEmoji = function (text) {
@@ -161,6 +89,40 @@ module.exports.toEmoji = function (text) {
   return list[text.toLowerCase()];
 };
 
+module.exports.formpage = function (args, userdata) {
+  if (userdata["settings"]["MENUSELECT"] == 1) {
+    args["numbers"] = true;
+  }
+  var list = [];
+  var listnumber = "";
+  var pagetotal = Math.ceil(args["list"].length / args["rows"]);
+  var x = 0;
+  var page = args["page"];
+  page = page * args["rows"];
+  while (x < args["rows"] && args["list"][x + page] !== undefined) {
+    if (args["numbers"]) {
+      listnumber = "`" + (x + 1 + page).toString() + ".` ";
+    }
+    if (!args["numbers"]) {
+      listnumber = "";
+    }
+
+    list.push(listnumber + args["list"][x + page]);
+    x++;
+  }
+
+  if (list == "") {
+    if (args["page"] < 0) {
+      args["page"]++;
+      return;
+    }
+    if (args["page"] > pagetotal) {
+      args["page"]--;
+      return;
+    }
+  }
+  return list;
+};
 module.exports.formpages = async function (args, embed, msg, userdata) {
   var list = args["list"];
   var currentpagelength = args["text"].length;
@@ -444,7 +406,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
       var b = (value == "No car.") ? 0 : 1
       embed.setFields([{ name: stats.main(userdata), value: value }]);
       console.log(b)
-      
+
       buttons[b].components[0].setLabel(args["page"] + 1 + "/" + Math.ceil(args["list"].length / args["rows"]).toString());
       if (userdata["settings"]["MENUSELECT"] == 1) {
         buttons.map(function (button, i) {
@@ -506,7 +468,7 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
       var value = stats.currentcarmain(userdata)
       var b = (value == "No car.") ? 0 : 1
       embed.setFields([{ name: stats.main(userdata), value: value }]);
-      
+
       buttons[b].components[0].setLabel(args["page"] + 1 + "/" + Math.ceil(args["list"].length / args["rows"]).toString());
       if (userdata["settings"]["MENUSELECT"] == 1) {
         buttons.map(function (button, i) {
@@ -615,7 +577,6 @@ module.exports.formpages = async function (args, embed, msg, userdata) {
     gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata);
   }
 };
-
 module.exports.emojilist = function (list) {
   var nlist = "";
   for (var index = 0; index < list.length; index++) {
@@ -624,7 +585,6 @@ module.exports.emojilist = function (list) {
   }
   return nlist;
 };
-
 module.exports.index = function (list, item) {
   item = JSON.stringify(item);
   var index = 0;
@@ -635,50 +595,24 @@ module.exports.index = function (list, item) {
   }
   return -1;
 };
-// OFFSET PST 16
 
-module.exports.removereactions = function (list, msg) {
-  var i = 0;
-  filter(i);
-  function filter(i) {
-    var emoji = msg.reactions.cache.find(r => r.emoji.name === list[i]);
-    if (emoji == null) {
-      increase();
+module.exports.setupcommands = function (embed, results, query, pageargs, msg, userdata) {
+  var embed = new EmbedBuilder();
+  embed.setColor(userdata["settings"]["COLOR"]);
+  var user = msg.guild.members.cache.get(userdata["id"]);
+  embed.setAuthor({ name: user.user.username, iconURL: user.user.displayAvatarURL() });
+  var results = "";
+  if (Object.keys(pageargs["query"]).length == 0) {
+    if (pageargs["command"] == "arcade") {
+      pageargs["query"] = { league: "list" };
+    } else if (pageargs["command"] == "debug" || pageargs["command"] == "home" || pageargs["command"] == "gtf" || pageargs["command"] == "rcar" || pageargs["command"] == "rcourse" || pageargs["command"] == "rtrack") {
+      pageargs["query"] = {};
     } else {
-      emoji.remove(gtf.USERID);
-      increase();
+      pageargs["query"] = { options: "list" };
     }
   }
-
-  function increase() {
-    i++;
-    if (i == list.length) {
-      return;
-    } else {
-      setTimeout(function () {
-        filter(i);
-      }, 2000);
-    }
-  }
-
-  gtftools.interval(
-    function () {
-      for (var index = 0; index < list.length; index++) {
-        var emoji = msg.reactions.cache.find(r => r.emoji.name === list[index]);
-        if (emoji == null) {
-          continue;
-        } else {
-          emoji.remove(gtf.USERID);
-        }
-      }
-    },
-    1000 * list.length,
-    1
-  );
-};
-
-module.exports.numFormat = function (number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  query = pageargs["query"];
+  return [embed, results, query, pageargs];
 };
 
 module.exports.preparemenu = function (name, menulist, emojilist, msg, userdata) {
@@ -708,25 +642,6 @@ module.exports.preparemenu = function (name, menulist, emojilist, msg, userdata)
   }
   menu.addComponents(options);
   return menu;
-};
-
-module.exports.setupcommands = function (embed, results, query, pageargs, msg, userdata) {
-  var embed = new EmbedBuilder();
-  embed.setColor(userdata["settings"]["COLOR"]);
-  var user = msg.guild.members.cache.get(userdata["id"]);
-  embed.setAuthor({ name: user.user.username, iconURL: user.user.displayAvatarURL() });
-  var results = "";
-  if (Object.keys(pageargs["query"]).length == 0) {
-    if (pageargs["command"] == "arcade") {
-      pageargs["query"] = { league: "list" };
-    } else if (pageargs["command"] == "debug" || pageargs["command"] == "home" || pageargs["command"] == "gtf" || pageargs["command"] == "rcar" || pageargs["command"] == "rcourse" || pageargs["command"] == "rtrack") {
-      pageargs["query"] = {};
-    } else {
-      pageargs["query"] = { options: "list" };
-    }
-  }
-  query = pageargs["query"];
-  return [embed, results, query, pageargs];
 };
 
 module.exports.preparebuttons = function (emojilist, msg, userdata) {
@@ -860,340 +775,6 @@ module.exports.createbuttons = function (buttons, emojilist, functionlist, msg, 
       }
     }
   }
-};
-
-module.exports.createreactions = function (emojilist, msg, userdata) {
-  var i = 0;
-  var id = userdata["id"];
-  var reactid = stats.count(userdata);
-  var l = require("discord.js-rate-limiter").RateLimiter;
-  var rateLimiteradd = new l(1, 1500);
-  increase(i);
-
-  function increase() {
-    if (i == emojilist.length) {
-      return;
-    } else {
-      setTimeout(function () {
-        filter(i - 1);
-      }, 1200);
-    }
-    i++;
-  }
-
-  function filter(i) {
-    var emote = emojilist[i][0];
-    if (emote.includes("<:")) {
-    }
-    var name = emojilist[i][1];
-    var func = emojilist[i][2];
-    if (reactid != stats.count(userdata)) {
-      return;
-    }
-    msg.react(emote).then(function () {
-      var Filter1 = (reaction, user) => reaction.emoji.name === name && id === user.id;
-
-      const filter11 = msg.createReactionCollector({ Filter1, timer: 60 * 1000, dispose: true });
-
-      filter11.on("collect", r => {
-        next(r);
-      });
-
-      /* filter11.on("remove", r => {
-        next(r);
-      });*/
-      filter11.on("end", r => {
-        filter11.stop();
-      });
-      function next(r) {
-        var limited = rateLimiteradd.take(msg.author.id);
-        if (limited) {
-          console.log("Rate Limit");
-          return;
-        }
-        go(r);
-      }
-      function go(r) {
-        const notbot = r.users.cache.filter(clientuser => clientuser.id == id).first();
-
-        if (true) {
-          return;
-        }
-        if (typeof emojilist[i][3] !== "undefined") {
-          if (emojilist[i][3] == "Once") {
-            if (reactid != stats.count(userdata)) {
-              return;
-            }
-            stats.addcount(userdata);
-          }
-        }
-        if (typeof emojilist[i][3] !== "undefined") {
-          if (!isNaN(emojilist[i][3])) {
-            return func(emojilist[i][3]);
-          } else {
-            return func();
-          }
-        }
-        return func();
-      }
-    });
-
-    increase();
-  }
-};
-
-module.exports.checkcarlist = async function (gtfcars) {
-  var fs = require("fs");
-  var newcars = [];
-  var fppupdate = [];
-
-  var index = 0;
-  var makes = Object.keys(gtfcars);
-
-  for (var make = 0; make < makes.length; make++) {
-    var group = [];
-    for (var i = 0; i < gtfcars[makes[make]].length; i++) {
-      var car = gtfcars[makes[make]][i];
-      var perf = require(gtf.PERF).perf(car, "DEALERSHIP");
-
-      var totalimages = car["image"].length;
-      var makee = car["make"].replace(/ /gi, "").toLowerCase();
-      var name = car["name"].replace(/ /gi, "").toLowerCase();
-
-      for (var j = 0; j < totalimages; j++) {
-        if (!car["image"][j].includes("raw.githubusercontent.com") && !car["image"][j].includes("github.com")) {
-          if (j >= 1) {
-            newcars.push(car["name"] + " " + car["year"] + " - " + j);
-          } else {
-            newcars.push(car["name"] + " " + car["year"]);
-          }
-          var oldcar = JSON.parse(JSON.stringify(car));
-          await downloadimage2(oldcar, oldcar["image"][j], j);
-          if (j >= 1) {
-            var extra = "-" + j.toString();
-          } else {
-            var extra = "";
-          }
-          var urll = "https://raw.githubusercontent.com/J24681357/gtfbot/master/" + "images/cars/" + makee + "/" + name + "" + car["year"] + extra + ".png";
-          car["image"][j] = urll;
-        }
-        delete car["id"];
-      }
-      group.push(car);
-    }
-    group = group.sort((a, b) => a["name"].toString().localeCompare(b["name"]));
-    gtfcars[makes[make]] = group;
-  }
-  fs.writeFile("./jsonfiles/gtfcarlist.json", JSON.stringify(gtfcars), function (err) {
-    if (err) {
-      console.log(err);
-    }
-  });
-  if (newcars.length == 0) {
-    console.log("No new cars.");
-  }
-  fs.writeFile("./jsonfiles/newcars.json", JSON.stringify(newcars), function (err) {
-    if (err) {
-      console.log(err);
-    }
-  });
-
-  /*
-  function downloadimage(oldcar, imagelink, j) {
-    var type = "error";
-
-    var download = function (uri, filename, callback) {
-      request.head(uri, function (err, res, body) {
-        if (res === undefined) {
-          console.log("The image may not be available for " + uri);
-          return;
-        }
-        if (res.headers["content-type"] === undefined) {
-          console.log("The image may not be available for " + uri);
-          return;
-        }
-        var type = res.headers["content-type"].toLowerCase();
-        var file = filename.split("/");
-        file.pop();
-        if (j >= 1) {
-          var extra = (filename = filename + "-" + j.toString() + ".png");
-        } else {
-          filename = filename + ".png";
-        }
-
-        var shell = require("shelljs");
-        shell.mkdir("-p", file.join("/"));
-        console.log(filename + " " + "image saved.");
-        if (!type.includes("image")) {
-          console.log("The image may not be available for " + uri);
-        }
-
-        setTimeout(function () {
-          request(uri).pipe(fs.createWriteStream(filename)).on("close", callback);
-        }, 2500);
-      });
-    };
-    var name = oldcar["name"].replace(/ /gi, "").toLowerCase();
-    var make = oldcar["make"].replace(/ /gi, "").toLowerCase();
-    download(imagelink, "./images/cars/" + make + "/" + name + "" + oldcar["year"], function () {});
-  }
-  */
-  async function downloadimage2(oldcar, imagelink, j) {
-    var { request } = require("undici");
-    var type = "error";
-    var name = oldcar["name"].replace(/ /gi, "").toLowerCase();
-    var make = oldcar["make"].replace(/ /gi, "").toLowerCase();
-    var download2 = async function (uri, filename, callback) {
-      try {
-        var { statusCode, headers, trailers, body } = await request(uri);
-        body = await body.arrayBuffer();
-      } catch (error) {
-        console.log("The image may not be available for " + uri);
-        return;
-      }
-
-      if (headers === undefined) {
-        console.log("The image may not be available for " + uri);
-        return;
-      }
-      if (headers["content-type"] === undefined) {
-        console.log("The image may not be available for " + uri);
-        return;
-      }
-
-      var type = headers["content-type"].toLowerCase();
-      var file = filename.split("/");
-      file.pop();
-      if (j >= 1) {
-        var extra = (filename = filename + "-" + j.toString() + ".png");
-      } else {
-        filename = filename + ".png";
-      }
-
-      var shell = require("shelljs");
-      shell.mkdir("-p", file.join("/"));
-      console.log(filename + " " + "image saved.");
-      if (!type.includes("image")) {
-        console.log("The image may not be available for " + uri);
-      }
-      fs.writeFileSync(filename, body);
-    };
-
-    await download2(imagelink, "./images/cars/" + make + "/" + name + "" + oldcar["year"], function () {});
-
-    //download2(imagelink, "", function () {});
-  }
-};
-
-module.exports.checktracklist = async function (tracks) {
-  var x = {};
-  var i = 0;
-
-  tracks = Object.keys(tracks).map(function (key) {
-    return [key, tracks[key]];
-  });
-  tracks = tracks.sort((a, b) => a[1]["name"].toString().localeCompare(b[1]["name"]));
-
-  for (i; i < tracks.length; i++) {
-    tracks[i][1]["image"] = "https://raw.githubusercontent.com/J24681357/gtfbot/master/" + "images/tracks/" + tracks[i][1]["name"].replace(/ /gi, "").toLowerCase() + ".png";
-    x[(i + 1).toString()] = tracks[i][1];
-    //await downloadimage2(tracks[i][1], tracks[i][1]["image"], 0);
-  }
-
-  console.log("Track List Updated");
-  require("fs").writeFile("./jsonfiles/gtftracklist.json", JSON.stringify(x), function (err) {
-    if (err) {
-      console.log(err);
-    }
-  });
-
-  async function downloadimage2(oldtrack, imagelink, j) {
-    var { request } = require("undici");
-    var fs = require("fs");
-    var type = "error";
-    var name = oldtrack["name"].replace(/ /gi, "").toLowerCase();
-    var download2 = async function (uri, filename, callback) {
-      try {
-        var { statusCode, headers, trailers, body } = await request(uri);
-        body = await body.arrayBuffer();
-      } catch (error) {
-        console.log("The image may not be available for " + uri);
-        return;
-      }
-
-      if (headers === undefined) {
-        console.log("The image may not be available for " + uri);
-        return;
-      }
-      if (headers["content-type"] === undefined) {
-        console.log("The image may not be available for " + uri);
-        return;
-      }
-
-      var type = headers["content-type"].toLowerCase();
-      var file = filename.split("/");
-      file.pop();
-      if (j >= 1) {
-        var extra = (filename = filename + "-" + j.toString() + ".png");
-      } else {
-        filename = filename + ".png";
-      }
-
-      var shell = require("shelljs");
-      shell.mkdir("-p", file.join("/"));
-      console.log(filename + " " + "image saved.");
-      if (!type.includes("image")) {
-        console.log("The image may not be available for " + uri);
-      }
-      fs.writeFileSync(filename, body);
-    };
-
-    await download2(imagelink, "./images/tracks/" + name, function () {});
-
-    //download2(imagelink, "", function () {});
-  }
-};
-
-module.exports.checksponsorslist = function (gtfcars, gtfwheels) {
-  var fs = require("fs");
-  var sponsors = {};
-
-  var makes = require(gtf.CARS).list("makes");
-  var makesfilter = makes
-    .filter(function (x) {
-      var list = require(gtf.CARS).find({ make: [x], types: ["Production", "Aftermarket"] });
-      return list.length >= 5;
-    })
-    .map(function (x) {
-      sponsors[x.toLowerCase()] = {
-        name: x,
-        level: 10,
-        type: "Cars",
-        require: [x],
-        levels: [1000, 2500, 5000],
-        percent: 10,
-        bonus: "credits",
-      };
-    });
-
-  var wheelmakes = require(gtf.WHEELS).list("makes");
-  wheelmakes.map(function (x) {
-    sponsors[x.toLowerCase()] = {
-      name: x,
-      level: 5,
-      type: "Rims",
-      require: [x],
-      levels: [700, 1500, 3000],
-      percent: 5,
-      bonus: "credits",
-    };
-  });
-
-  fs.writeFile("./jsonfiles/gtfsponsors.json", JSON.stringify(sponsors), function (err) {
-    if (err) {
-      console.log(err);
-    }
-  });
 };
 
 module.exports.querymap = function (args) {

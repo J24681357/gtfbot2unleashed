@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "course",
   title: "GTF Course Maker",
-  level: 11,
+  license: "N", level: 11,
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   availinmaint: false,
@@ -73,7 +73,7 @@ module.exports = {
       }
       if (query["options"] == "view") {
         var number = query["number"];
-        if (!gtftools.betweenInt(number, 1, coursestats.length)) {
+        if (!require(gtf.MATH).betweenInt(number, 1, coursestats.length)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your course list.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
@@ -120,7 +120,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
       if (query["options"] == "rename") {
         var number = query["number"];
         var newname = query["name"]
-        if (!gtftools.betweenInt(number, 1, coursestats.length)) {
+        if (!require(gtf.MATH).betweenInt(number, 1, coursestats.length)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your course list.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
@@ -128,7 +128,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
           require(gtf.EMBED).alert({ name: "❌ Invalid Name", description: "No name has been inputted.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
-        if (!gtftools.betweenInt(newname.length, 3, 30)) {
+        if (!require(gtf.MATH).betweenInt(newname.length, 3, 30)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid Name", description: "Name must be between 3 and 30 characters. (" + newname.length + ")", embed: "", seconds: 0 }, msg, userdata);
             return;
         }
@@ -156,7 +156,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
       }
       if (query["options"] == "delete") {
         var number = query["number"];
-        if (!gtftools.betweenInt(number, 1, coursestats.length + 1)) {
+        if (!require(gtf.MATH).betweenInt(number, 1, coursestats.length + 1)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your course list.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
@@ -213,11 +213,11 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         var type = "circuit";
         var location = "Grass"
         var surface = "Tarmac"
-        var name = "Generic Track " + "#" + gtftools.randomInt(0,9).toString() + gtftools.randomInt(0,9).toString() + gtftools.randomInt(0,9).toString() + gtftools.randomInt(0,9).toString() 
+        var name = "Generic Track " + "#" + require(gtf.MATH).randomInt(0,9).toString() + require(gtf.MATH).randomInt(0,9).toString() + require(gtf.MATH).randomInt(0,9).toString() + require(gtf.MATH).randomInt(0,9).toString() 
 
         if ("name" in query) {
           name = query["name"].toString();
-          if (!gtftools.betweenInt(name.length, 3, 30)) {
+          if (!require(gtf.MATH).betweenInt(name.length, 3, 30)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid Name", description: "Name must be between 3 and 30 characters. (" + name.length + ")", embed: "", seconds: 0 }, msg, userdata);
             return;
           }
@@ -225,7 +225,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         if ("allsegments" in query) {
           /// 0 - 20
           allsegment = parseFloat(query["allsegments"]);
-          if (!gtftools.betweenInt(allsegment, 2, 20)) {
+          if (!require(gtf.MATH).betweenInt(allsegment, 2, 20)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Segment lengths must be between 2 and 20.", embed: "", seconds: 0 }, msg, userdata);
             return;
           }
@@ -236,7 +236,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         if ("maxsegment" in query) {
           maxsegment = parseFloat(query["maxsegment"]);
           if (allsegment.toString().length != 0) {
-            if (!gtftools.betweenInt(maxsegment, 2, 20)) {
+            if (!require(gtf.MATH).betweenInt(maxsegment, 2, 20)) {
               require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Maximum segment length must be between 2 and 20.", embed: "", seconds: 0 }, msg, userdata);
               return;
             }
@@ -247,7 +247,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
           minsegment = parseFloat(query["minsegment"]);
 
           if (allsegment.toString().length != 0) {
-            if (!gtftools.betweenInt(minsegment, 2, 20)) {
+            if (!require(gtf.MATH).betweenInt(minsegment, 2, 20)) {
               require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Mininum segment length must be between 2 and 20.", embed: "", seconds: 0 }, msg, userdata);
               return;
             }
@@ -256,7 +256,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         if ("curviness" in query) {
           /// 0.0 - 1.0
           curviness = parseFloat(query["curviness"]);
-          if (!gtftools.betweenInt(curviness, 0, 1)) {
+          if (!require(gtf.MATH).betweenInt(curviness, 0, 1)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Curviness value must be between 0 and 1.", embed: "", seconds: 0 }, msg, userdata);
             return;
           }
@@ -264,7 +264,7 @@ var buttons = gtftools.preparebuttons(emojilist, msg, userdata);
         if ("maxangle" in query) {
           /// 50-150
           maxangle = parseFloat(query["maxangle"]);
-          if (!gtftools.betweenInt(maxangle, 50, 150)) {
+          if (!require(gtf.MATH).betweenInt(maxangle, 50, 150)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Max Angle value must be between 50 and 150.", embed: "", seconds: 0 }, msg, userdata);
             return;
           }

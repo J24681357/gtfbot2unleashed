@@ -9,7 +9,7 @@ var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
 module.exports.startsession = function (racesettings, racedetails, finalgrid, checkpoint, embed, msg, userdata) {
-   
+
   var index = 0;
   var showcar = "";
   var racelength = 0;
@@ -28,7 +28,7 @@ module.exports.startsession = function (racesettings, racedetails, finalgrid, ch
   embed.setTitle("__" + racesettings["title"] + "__")
   embed.setColor(userdata["settings"]["COLOR"])
   embed.setAuthor({name: msg.guild.members.cache.get(userdata["id"]).user.username, iconURL: msg.guild.members.cache.get(userdata["id"]).user.displayAvatarURL()});
-  
+
   msg.removeAttachments()
   //stats.updatefpp(racesettings["driver"]["car"])
   //racesettings["driver"]["car"] = stats.currentcar(userdata)
@@ -69,7 +69,7 @@ module.exports.startsession = function (racesettings, racedetails, finalgrid, ch
   userdata["raceinprogress"]["weatherhistory"].push(JSON.parse(JSON.stringify(racesettings["weather"])))
   var weatheri = racesettings["weather"]
   for (var i = 0; i < 20; i++) {
-    weatheri = require(gtf.WEATHER).advanceweather(weatheri, racesettings["distance"]["km"]) 
+    weatheri = require(gtf.WEATHER).advanceweather(weatheri, racesettings["distance"]["km"])
     userdata["raceinprogress"]["weatherhistory"].push(JSON.parse(JSON.stringify(weatheri)))
   }
   if (racesettings["mode"] == "CAREER" || racesettings["mode"] == "LICENSE") {
@@ -81,33 +81,33 @@ module.exports.startsession = function (racesettings, racedetails, finalgrid, ch
     let arcade1 = require(gtf.RACEEX).arcaderacelength(racesettings, racedetails, finalgrid, checkpoint, embed, msg, userdata);
     showcar = arcade1[0];
     racelength = arcade1[1];
-} 
+}
   else if (racesettings["mode"] == "DRIFT") {
     racesettings["sectors"] = racesettings["originalsectors"];
     racesettings["points"] = 0;
     let drift1 = require(gtf.RACEEX).driftracelength(racesettings, racedetails, finalgrid, checkpoint, embed, msg, userdata);
     showcar = drift1[0];
     racelength = drift1[1];
-  } 
+  }
   else if (racesettings["mode"] == "SSRX") {
     let ssrx1 = require(gtf.RACEEX).speedtestracelength(racesettings, racedetails, finalgrid, checkpoint, embed, msg, userdata);
     showcar = ssrx1[0];
     racelength = ssrx1[1];
-  } 
+  }
   else if (racesettings["mode"] == "DUEL") {
     let duel1 = require(gtf.RACEEX).duelracelength(racesettings, racedetails, finalgrid, checkpoint, embed, msg, userdata);
     showcar = duel1[0];
     racelength = duel1[1];
-  } 
+  }
   else if (racesettings["mode"] == "ONLINE") {
     let online1 = require(gtf.RACEEX).onlineracelength(racesettings, racedetails, finalgrid, checkpoint, embed, msg, userdata);
     showcar = online1[0];
     racelength = online1[1];
   }
-    
+
   if (racesettings["type"] == "TIME") {
     racelength = parseInt(racesettings["laps"].split("m")[0]) * (60*1000)
-  } 
+  }
 }
 if (racesettings["type"] == "TIMETRIAL") {
       let tt1 = require(gtf.RACEEX).timetrialracelength(racesettings, racedetails, finalgrid, checkpoint, stats.level(userdata), embed, msg, userdata);
@@ -115,7 +115,7 @@ if (racesettings["type"] == "TIMETRIAL") {
       racelength = tt1[1];
 }
 /////////////
-    
+
   ///RACEINPROGRESS
   if (!checkpoint[0]) {
     var currenttime = new Date().getTime();
@@ -124,10 +124,10 @@ if (racesettings["type"] == "TIMETRIAL") {
       userdata["raceinprogress"]["active"] = true
       userdata["raceinprogress"]["messageid"] = msg.id
       userdata["raceinprogress"]["channelid"] = msg.channel.id
-      userdata["raceinprogress"]["expire"] = totaltime      
+      userdata["raceinprogress"]["expire"] = totaltime
       } else {
     userdata["raceinprogress"] = {active:true, channelid: msg.channel.id, messageid:msg.id, expire:totaltime, tirehistory: [], gridhistory: [], timehistory: [], weatherhistory: userdata["raceinprogress"]["weatherhistory"],
-    msghistory: [],championshipnum:0}; 
+    msghistory: [],championshipnum:0};
     }
     if (racesettings["mode"] == "ONLINE") {
         require(gtf.LOBBY).updateusersraceinprogress(finalgrid, totaltime, msg)
@@ -138,12 +138,12 @@ if (racesettings["type"] == "TIMETRIAL") {
    var timeinterval = racelength / 20
   if (timeinterval <= 2000) {
     timeinterval = 2000
-  } 
+  }
 
 
   stats.createracehistory(racesettings, racedetails, finalgrid, checkpoint, timeinterval, message, embed, msg, userdata)
-    
-  } 
+
+  }
   else {
     function flagstartrace() {
           if (userdata["raceinprogress"]["active"]) {
@@ -152,7 +152,7 @@ if (racesettings["type"] == "TIMETRIAL") {
     }
     var functionlist = [flagstartrace]
     gtftools.createbuttons(buttons, emojilist, functionlist, msg, userdata)
-    
+
     var totaltime = userdata["raceinprogress"]["expire"];
     var currenttime = userdata["raceinprogress"]["start"];
     resumerace = "";
@@ -168,12 +168,12 @@ if (racesettings["type"] == "TIMETRIAL") {
   }
 
   stats.save(userdata);
-    
+
   var results = function (index) {
-    return lights[index][0] + lights[index][1] + lights[index][2] + lights[index][3] + ready[index] + lights[index][3] + lights[index][2] + lights[index][1] + lights[index][0] 
+    return lights[index][0] + lights[index][1] + lights[index][2] + lights[index][3] + ready[index] + lights[index][3] + lights[index][2] + lights[index][1] + lights[index][0]
   };
   index++;
-  
+
   if (!checkpoint[0]) {
   gtftools.interval(
     function () {
@@ -190,16 +190,16 @@ if (racesettings["type"] == "TIMETRIAL") {
         return
       }
      if (index == 2) {
-       
+
         if (racesettings["type"] == "TIMETRIAL") {
               starttime = ""
        } else {
         starttime = message + "\n" + userdata["raceinprogress"]["timehistory"][0]["hour"] + ":" + userdata["raceinprogress"]["timehistory"][0]["minutes"] + " " + racesettings["weather"]["emoji"] + "💧" + racesettings["weather"]["wetsurface"] + "%" + " | " + "⏳" +  require(gtf.DATETIME).getFormattedTime(racelength) + " minutes" + emote.tire + "**" + userdata["raceinprogress"]["tirehistory"][0].split(" ").map(x => x[0]).join("") + "**" + resumerace;
-          
+
        }
       }
       embed.setDescription(results(index) + starttime);
-      
+
       require(gtf.DISCORD).edit(msg, {content: "ㅤ", embeds: [embed], components:buttons })
 
       index++;
@@ -208,7 +208,7 @@ if (racesettings["type"] == "TIMETRIAL") {
     2
   );
     }
-    
+
   var timeleft = totaltime - currenttime;
   var timedivide = racelength / (start.length - 1);
   var timeinterval = racelength / 20
@@ -233,7 +233,7 @@ if (racesettings["type"] == "TIMETRIAL") {
           }
       }
          userdata["raceinprogress"]["expire"] = "EXIT"
-          
+
           function repeat(msg) {
 
             let tt1 = require(gtf.RACEEX).timetrialracelength(racesettings, racedetails, finalgrid, checkpoint, stats.level(userdata), embed, msg, userdata);
@@ -245,7 +245,7 @@ if (racesettings["type"] == "TIMETRIAL") {
           }
 
         }
-        
+
         //////ending race
     if (racesettings["championship"]) {
         userdata["raceinprogress"]["active"] = false
@@ -253,7 +253,7 @@ if (racesettings["type"] == "TIMETRIAL") {
         userdata["raceinprogress"] = {active:false, messageid: "", channelid: "", expire:0, gridhistory: [], tirehistory: [], timehistory: userdata["raceinprogress"]["timehistory"], weatherhistory: userdata["raceinprogress"]["weatherhistory"], msghistory: [],  championshipnum:0}
     }
     /////
-        
+
         setTimeout(() => msg.delete(),2000 );
 
         stats.removeracedetails(userdata);
@@ -278,8 +278,8 @@ if (racesettings["type"] == "TIMETRIAL") {
         }
 
         if ( (racesettings["mode"] == "CAREER" || racesettings["mode"] == "LICENSE" || racesettings["mode"] == "ONLINE") && racesettings["type"] != "TIMETRIAL") {
-       
-          embed.setDescription(results2 + "\n\n" + racedetails.split("\n\n")[0] + "\n\n" + require(gtf.ANNOUNCER).emote(racesettings["title"]) + " `" + require(gtf.ANNOUNCER).say({name1:"race-results-winner", name2:[finalgrid.slice().sort((x, y) => y["score"] - x["score"])[0]["name"].split(" ").slice(0,-1).join(" "), 
+
+          embed.setDescription(results2 + "\n\n" + racedetails.split("\n\n")[0] + "\n\n" + require(gtf.ANNOUNCER).emote(racesettings["title"]) + " `" + require(gtf.ANNOUNCER).say({name1:"race-results-winner", name2:[finalgrid.slice().sort((x, y) => y["score"] - x["score"])[0]["name"].split(" ").slice(0,-1).join(" "),
           finalgrid.slice().sort((x, y) => y["score"] - x["score"])[0]["drivername"]][userdata["settings"]["GRIDNAME"]], "racesettings":racesettings}) + "`");
         } else {
           embed.setDescription(results2 + "\n\n" + racedetails.split("\n\n")[0]);
@@ -350,7 +350,7 @@ if (racesettings["type"] == "TIMETRIAL") {
     });
     count++
   }
-//////// 
+////////
 
 emojilist.push({
     emoji: emote.tracklogo,
@@ -368,14 +368,14 @@ emojilist.push({
       button_id: count
     });
     count++
-        
+
   buttons = gtftools.preparebuttons(emojilist, msg, userdata);
-        
-require(gtf.DISCORD).send(msg, {content:ping + " **FINISH**",embeds: [embed], components:buttons}, race2func) 
+
+require(gtf.DISCORD).send(msg, {content:ping + " **FINISH**",embeds: [embed], components:buttons}, race2func)
 
 function race2func(msg) {
           require(gtf.RACEEX).createfinalbuttons(racesettings, racedetails, finalgrid,  checkpoint, results2, buttons, emojilist, embed, msg, userdata);
-  
+
           if (racesettings["mode"] == "CAREER") {
          var complete = stats.checkcareerevent(racesettings, "1st", userdata);
                 if (complete) {
@@ -406,14 +406,14 @@ function race2func(msg) {
     };
 
     var progress = setInterval(function () {
-      
+
       check();
-      if (userdata["raceinprogress"]["expire"] <= new Date().getTime() || !userdata["raceinprogress"]["active"]) { 
+      if (userdata["raceinprogress"]["expire"] <= new Date().getTime() || !userdata["raceinprogress"]["active"]) {
         clearInterval(progress);
         return
       }
       var indexv = Math.floor(((new Date().getTime() -userdata["raceinprogress"]["start"])/(totaltime-userdata["raceinprogress"]["start"])) * userdata["raceinprogress"]["gridhistory"].length)
-      
+
         if (racesettings["type"] != "TIMETRIAL") {
       message = userdata["raceinprogress"]["msghistory"][indexv]
       finalgrid = userdata["raceinprogress"]["gridhistory"][indexv]
@@ -434,7 +434,7 @@ function race2func(msg) {
           gap = ""
         }
         var name = [require(gtf.CARS).shortname(x["name"]), x["drivername"]][userdata["settings"]["GRIDNAME"]]
-      
+
         if ( racesettings["mode"] == "ONLINE") {
           name = require(gtf.CARS).shortname(x["name"]) + " `" + x["drivername"] + "`"
           return x["position"] + ". " + gap + name
@@ -456,35 +456,35 @@ function race2func(msg) {
           icon = emote.driftflag;
         }
         racesettings["points"] += drift1[0];
-        embed.setDescription(results3 + "\n" + icon + " **" + gtftools.numFormat(racesettings["points"]) + "pts**" + "\n\n" + + racetime["hour"] + ":" + racetime["minutes"] + " " + raceweather["emoji"] + "💧" + raceweather["wetsurface"] + "%" + " | " + "⏳" +  require(gtf.DATETIME).getFormattedTime(totaltime - new Date().getTime()) + " minutes" + showcar + emote.tire + "**" + racetires.split(" ").map(x => x[0]).join("") + "**" + resumerace);
-      } 
+        embed.setDescription(results3 + "\n" + icon + " **" + require(gtf.MATH).numFormat(racesettings["points"]) + "pts**" + "\n\n" + + racetime["hour"] + ":" + racetime["minutes"] + " " + raceweather["emoji"] + "💧" + raceweather["wetsurface"] + "%" + " | " + "⏳" +  require(gtf.DATETIME).getFormattedTime(totaltime - new Date().getTime()) + " minutes" + showcar + emote.tire + "**" + racetires.split(" ").map(x => x[0]).join("") + "**" + resumerace);
+      }
       if (racesettings["type"] == "TIMETRIAL" && userdata["raceinprogress"]["expire"] != "EXIT") {
         var lap = ""
         var bestlap = ""
         if (finalgrid[0]["laps"].length >= 1) {
-          
-        if (finalgrid[0]["laps"].filter(function(x) {return x["best"] == true && x["medal"] != "FAIL"}).length >= 1) { 
+
+        if (finalgrid[0]["laps"].filter(function(x) {return x["best"] == true && x["medal"] != "FAIL"}).length >= 1) {
         var bestlapobject = finalgrid[0]["laps"].filter(function(x) {return x["best"] == true && x["medal"] != "FAIL"})[0]
       bestlap = emote.tracklogo + "__**Best:**__ " + bestlapobject["medalemote"] + " "+ require(gtf.DATETIME).getFormattedLapTime(bestlapobject["time"]) + " `Lap " + bestlapobject["lapnum"] + "`"
         var laps = finalgrid[0]["laps"].map(function(x,index) {
           if (x["best"] && x["medal"] != "FAIL") {
             return "__**Lap " + (index + 1) + ":**__ " + x["medalemote"] + " " + require(gtf.DATETIME).getFormattedLapTime(x["time"]) + " ⭐"
           }
-          return  "__**Lap " + (index + 1) + ":**__ " + x["medalemote"] + " " + require(gtf.DATETIME).getFormattedLapTime(x["time"]) 
+          return  "__**Lap " + (index + 1) + ":**__ " + x["medalemote"] + " " + require(gtf.DATETIME).getFormattedLapTime(x["time"])
           }).reverse().slice(0,5).join("\n")
         } else {
           var laps = "__**Lap 1:**__ "
-        } 
+        }
         } else {
         var laps = "__**Lap 1:**__ "
         }
-        var timeprizes = ["**" + emote.goldmedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][0]["time"] * 1000), emote.silvermedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][1]["time"] * 1000) + " ", 
+        var timeprizes = ["**" + emote.goldmedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][0]["time"] * 1000), emote.silvermedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][1]["time"] * 1000) + " ",
                           emote.bronzemedal + " " + require(gtf.DATETIME).getFormattedLapTime(racesettings["positions"][2]["time"] * 1000) + "**"]
         embed.setDescription(results3 + "\n" + timeprizes.join(" ") + "\n" + bestlap + "\n\n" + laps + "\n" + showcar + emote.tire + "**" + userdata["raceinprogress"]["tirehistory"][0].split(" ").map(x => x[0]).join("") + "**" + resumerace);
       }
       stats.save(userdata);
-      
-   
+
+
       msg.edit({embeds: [embed], components:buttons}).catch(function () {
         clearInterval(progress);
         console.log("Session has ended. (Message is not there.)");
@@ -507,9 +507,7 @@ function race2func(msg) {
       }
 
     }, timeinterval);
-    
+
   }, startracetime);
   }
 };
-
-

@@ -12,9 +12,9 @@ module.exports = {
   name: "rtrack",
   title: "GT Fitness Track Randomizer",
   cooldown: 3,
-  level: 0,
+  license: "N", level: 0,
   channels: ["gtf-mode", "testing", "gtf-test-mode"],
-  aliases: ["rt", "dwtrack"],
+  license: "N", aliases: ["rt", "dwtrack"],
 
   delete: false,
   requirecar: false,
@@ -93,7 +93,7 @@ module.exports = {
     /*if (car["image"].length >= 2) {
       var choose = ["A", "A", "B", "B","B", "B","B","B","B", "B"]
       if (choose[Math.floor(Math.random() * choose.length)] == "A") {
-        imagestyle = gtftools.randomInt(1, car["image"].length - 1)
+        imagestyle = require(gtf.MATH).randomInt(1, car["image"].length - 1)
         extra = " | `⭐" + imagestyle + "`" 
       } else {
         imagestyle = 0

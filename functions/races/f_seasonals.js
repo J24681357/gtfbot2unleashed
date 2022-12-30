@@ -1,10 +1,11 @@
-var stats = require("../../functions/profile/f_stats");
-var emote = require("../../index");
-var gtftools = require("../../functions/misc/f_tools");
+var dir = "../../"
+var stats = require(dir + "functions/profile/f_stats");
+var emote = require(dir + "index");
+var gtftools = require(dir + "functions/misc/f_tools");
 
 const {  Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, SelectMenuBuilder } = require("discord.js");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-var gtf = require("../../files/directories");
+var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
 module.exports.changeseasonals = function (force) {
@@ -13,7 +14,7 @@ module.exports.changeseasonals = function (force) {
   var { MongoClient, ServerApiVersion } = require('mongodb');
 
 MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-  
+
  setInterval(function () {
     MongoClient.connect(function (err, db) {
       if (err) throw err;
@@ -39,9 +40,9 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
             var seasonals3 = require(gtf.SEASONAL).randomseasonalb(3, 750, 500);
 
             var extra = JSON.parse(fs.readFileSync("./jsonfiles/gtfseasonalsextra.json", "utf8"));
-               
+
   if (Object.keys(extra).length == 0) {
-    
+
             row = {
               id: "1234567",
               races: { seasonals, seasonals2, seasonals3 },
@@ -61,7 +62,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
     }
   });
   }
-               
+
           }
           dbo.collection("SEASONALS").replaceOne({ id: "1234567" }, row);
         }
@@ -101,18 +102,18 @@ module.exports.randomseasonalb = function (number, fpplimit, lowerfpp) {
   var countries = []
 
   var cartypes = [
-    ["Production", "Aftermarket"], 
-["Production", "Aftermarket"], 
-["Production", "Aftermarket"], 
-["Production", "Aftermarket"], 
-["Production", "Aftermarket"], 
-["Production", "Aftermarket"], 
+    ["Production", "Aftermarket"],
+["Production", "Aftermarket"],
+["Production", "Aftermarket"],
+["Production", "Aftermarket"],
+["Production", "Aftermarket"],
+["Production", "Aftermarket"],
 ["Production", "Aftermarket"],
 ["Race Car: GT4"],
 ["Race Car: GT3", "Race Car: GTE", "Race Car: Group 5", "Race Car: GT2","Race Car: GT1"],
 ["Race Car: GT500", "Race Car: GT300"],
-["Race Car: LMP", "Race Car: Historic", "Race Car: Group C"]] 
-  
+["Race Car: LMP", "Race Car: Historic", "Race Car: Group C"]]
+
 
   var cartype = cartypes[Math.floor(Math.random() * cartypes.length)]
 
@@ -123,16 +124,16 @@ module.exports.randomseasonalb = function (number, fpplimit, lowerfpp) {
   var bop = false
 
   if (cartype[0].includes("Production")) {
-  finalfpp = Math.ceil(gtftools.randomInt(lowerfpp, fpplimit) / 10) * 10;
+  finalfpp = Math.ceil(require(gtf.MATH).randomInt(lowerfpp, fpplimit) / 10) * 10;
   var makes = require(gtf.CARS).list("makes");
   var countries = require(gtf.CARS).list("countries");
-  if (gtftools.randomInt(1,4) <= 2) {   
+  if (require(gtf.MATH).randomInt(1,4) <= 2) {
   var makesfilter = makes.filter(function(x) {
     var list = require(gtf.CARS).find({ make: [x], types: types })
     return list.length >= 3 && list.some(y => require(gtf.PERF).perf(y, "DEALERSHIP")["fpp"] <= finalfpp)
   })
 
-  if (makesfilter.length == 0 || gtftools.randomInt(1,3) == 1) {
+  if (makesfilter.length == 0 || require(gtf.MATH).randomInt(1,3) == 1) {
     rmake = []
   } else {
     rmake = [makesfilter[Math.floor(Math.random() * makesfilter.length)]]
@@ -145,13 +146,13 @@ module.exports.randomseasonalb = function (number, fpplimit, lowerfpp) {
   })
     console.log(countriesfilter)
 
-  if (countriesfilter.length == 0 || gtftools.randomInt(1,3) == 1) {
+  if (countriesfilter.length == 0 || require(gtf.MATH).randomInt(1,3) == 1) {
   } else {
     rcountry = [countriesfilter[Math.floor(Math.random() * countriesfilter.length)]]
   }
   lowerfpp = finalfpp - 100
   }
-    
+
   }
 
   if (cartype[0].includes("Race Car")) {
@@ -164,25 +165,25 @@ module.exports.randomseasonalb = function (number, fpplimit, lowerfpp) {
   var difficulty
   if (number == 1) {
     var eventid = "seasonal" + "-" + number;
-    var grid = gtftools.randomInt(6, 11);
+    var grid = require(gtf.MATH).randomInt(6, 11);
     var startingprize = 3000;
-    var tracksnum = gtftools.randomInt(3,5);
+    var tracksnum = require(gtf.MATH).randomInt(3,5);
     var limit = 8.0;
     difficulty = 70
   }
   if (number == 2) {
     var eventid = "seasonal" + "-" + number;
-    var grid = gtftools.randomInt(12, 16);
+    var grid = require(gtf.MATH).randomInt(12, 16);
     var startingprize = 5000;
-    var tracksnum = gtftools.randomInt(3,5);
+    var tracksnum = require(gtf.MATH).randomInt(3,5);
     var limit = 13.0;
     difficulty = 50
   }
   if (number == 3) {
     var eventid = "seasonal" + "-" + number;
-    var grid = gtftools.randomInt(16, 20);
+    var grid = require(gtf.MATH).randomInt(16, 20);
     var startingprize = 10000;
-    var tracksnum = gtftools.randomInt(3,5);
+    var tracksnum = require(gtf.MATH).randomInt(3,5);
     var limit = 20.0;
     difficulty = 30
   }
@@ -211,27 +212,27 @@ module.exports.randomseasonalb = function (number, fpplimit, lowerfpp) {
   }
   date = month + day + year;
 if (cartype[0].includes("Production")) {
-  if (gtftools.randomInt(0, 1) == 1) {
+  if (require(gtf.MATH).randomInt(0, 1) == 1) {
   var prizec = ["CREDITS", { id: -1, name: " ", item: positions[0]["credits"] * tracksnum }];
   } else {
     var c = require(gtf.CARS).random({ upperfpp: finalfpp + 100, lowerfpp: finalfpp - 150 }, 1)[0];
     var prizec = ["RANDOMCAR", { id: -1, make: [c["make"]], fullname: [c["name"] + " " + c["year"]] }];
   }
 } else {
-   if (gtftools.randomInt(0, 1) == 1) {
+   if (require(gtf.MATH).randomInt(0, 1) == 1) {
   var prizec = ["CREDITS", { id: -1, name: " ", item: positions[0]["credits"] * tracksnum }];
   } else {
     var prizec = ["RANDOMCAR", { id: -1, types: [cartype[0]]}];
   }
 }
-  var rtimeint = gtftools.randomInt(0, 1);
+  var rtimeint = require(gtf.MATH).randomInt(0, 1);
   if (rtimeint == 0) {
     time = "Day";
   } else {
     time = "Night";
   }
-  var rweather = ["Clear", "Partly Cloudy", "Overcast"][gtftools.randomInt(0, 2)]
- 
+  var rweather = ["Clear", "Partly Cloudy", "Overcast"][require(gtf.MATH).randomInt(0, 2)]
+
 
   var event = {
     title: "Seasonal Event " + number,
@@ -249,7 +250,7 @@ if (cartype[0].includes("Production")) {
     championship: false,
     grid: grid,
     difficulty: difficulty,
-    
+
     fpplimit: finalfpp,
     upperfpp: finalfpp,
     lowerfpp: lowerfpp,

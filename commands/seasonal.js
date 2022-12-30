@@ -12,8 +12,8 @@ module.exports = {
   name: "seasonal",
   title: "Seasonal Events",
   cooldown: 3,
-  level: 13,
-  aliases: ["seasonals"],
+  license: "N", level: 13,
+  license: "N", aliases: ["seasonals"],
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   delete: false,
@@ -132,7 +132,7 @@ module.exports = {
       if (query["options"] == "select") {
       query["number"] = parseInt(query["number"])
 
-      if (!gtftools.betweenInt(query["number"], 1, Object.keys(races["races"]).length)) {
+      if (!require(gtf.MATH).betweenInt(query["number"], 1, Object.keys(races["races"]).length)) {
            require(gtf.EMBED).alert({ name: "❌ Invaild ID", description: "This event ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
            return
       }

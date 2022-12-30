@@ -9,8 +9,8 @@ var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
 module.exports.condition = function (gtfcar) {
-  var conditions = [gtfcar["condition"]["oil"], 
-                    gtfcar["condition"]["engine"], 
+  var conditions = [gtfcar["condition"]["oil"],
+                    gtfcar["condition"]["engine"],
                     gtfcar["condition"]["transmission"],
                     gtfcar["condition"]["suspension"] ,gtfcar["condition"]["body"]].map(function(x) {
    if (x <= 0) {
@@ -29,11 +29,11 @@ module.exports.condition = function (gtfcar) {
   if (conditionavg < 45) {
     icon = emote.carworn
     name = "Worn"
-  } 
+  }
   if (conditionavg < 20) {
     icon = emote.carbad
     name = "Bad"
-  } 
+  }
   if (conditionavg <= 5) {
     icon = emote.cardead
     name = "Wreaked"
@@ -48,7 +48,6 @@ module.exports.condition = function (gtfcar) {
   emote: icon
   }
 }
-
 module.exports.updatecondition = function(number, condition, userdata) {
   var conditionlist = userdata["garage"][stats.currentcarnum(userdata) - 1]["condition"];
 
@@ -70,4 +69,41 @@ module.exports.updatecondition = function(number, condition, userdata) {
   userdata["garage"][stats.currentcarnum(userdata) - 1]["condition"] = conditionlist
 
   userdata["garage"][stats.currentcarnum(userdata) - 1]["fpp"] = require(gtf.PERF).perf(userdata["garage"][stats.currentcarnum(userdata) - 1], "GARAGE")["fpp"];
+}
+module.exports.updatecurrentcarclean = function (length, userdata) {
+  var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
+  var rnumber = require(gtf.MATH).randomInt(1, 5);
+  var clean = parseInt(userdata["garage"][stats.currentcarnum(userdata) - 1]["clean"]);
+  clean = clean - rnumber;
+
+  if (clean <= 0) {
+    clean = 0;
+  }
+
+  userdata["garage"][stats.currentcarnum(userdata) - 1]["clean"] = clean;
+
+  id = stats.garage(userdata).findIndex(x => x["id"] == id) + 1;
+  userdata["currentcar"] = id;
+};
+module.exports.updatedamage = function (racesettings, car, userdata) {
+  console.log(car["damage"])
+    var id = userdata["garage"][stats.currentcarnum(userdata) - 1]["id"];
+  var length = racesettings["distance"]["km"]
+  var damage = car["damage"]
+
+ ///CLEAN
+  var rclean = require(gtf.MATH).round(require(gtf.MATH).randomInt(1, 5) * (length/45), 2);
+  require(gtf.CONDITION).updatecondition(-rclean, "clean", userdata)
+
+  ////OIL
+  var roil = require(gtf.MATH).round(length/6, 2);
+
+  require(gtf.CONDITION).updatecondition(-roil, "oil", userdata)
+
+  while (damage >= 0) {
+    var d = require(gtf.MATH).randomInt(2,5)
+    var select = ["engine", "transmission", "suspension", "body"][require(gtf.MATH).randomInt(0,3)]
+    require(gtf.CONDITION).updatecondition(-d, select, userdata)
+    damage = damage - d
+  }
 }

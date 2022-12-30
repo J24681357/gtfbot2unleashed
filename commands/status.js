@@ -12,7 +12,7 @@ module.exports = {
   name: "status",
   title: "Session Status",
   cooldown: 5,
-  level: 0,
+  license: "N", level: 0,
   roles: [],
   channels: ["testing", "gtf-mode", "gtf-demo"],
 

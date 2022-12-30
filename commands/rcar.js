@@ -12,9 +12,9 @@ module.exports = {
   name: "rcar",
   title: "GT Fitness Car Randomizer",
   cooldown: 5,
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode", "gtf-demo"],
-  aliases: ["rc", "rcar"],
+  license: "N", aliases: ["rc", "rcar"],
 
   delete: false,
   requirecar: false,
@@ -66,7 +66,7 @@ module.exports = {
     if (car["image"].length >= 2) {
       var choose = ["A", "B", "B", "B","B", "B","B","B","B", "B"]
       if (choose[Math.floor(Math.random() * choose.length)] == "A") {
-        imagestyle = gtftools.randomInt(1, car["image"].length - 1)
+        imagestyle = require(gtf.MATH).randomInt(1, car["image"].length - 1)
         extra = " | `⭐" + imagestyle + "`" 
       } else {
         imagestyle = 0
@@ -84,7 +84,7 @@ module.exports = {
         bar[i] = progress;
       }
     }
-    embed.setDescription(emote.gtflogo + " **" + car["name"] + " " + car["year"] + "** " + gtftools.toEmoji(car["country"]) + " `" + car["type"] + "`\n" + gtftools.numFormat(car["power"]) + " hp | " + gtftools.numFormat(car["weight"]) + " lbs | " + car["drivetrain"] + " | " + car["engine"] + " " + extra + "\n" + "**Performance:** " + bar.join(""));
+    embed.setDescription(emote.gtflogo + " **" + car["name"] + " " + car["year"] + "** " + gtftools.toEmoji(car["country"]) + " `" + car["type"] + "`\n" + require(gtf.MATH).numFormat(car["power"]) + " hp | " + require(gtf.MATH).numFormat(car["weight"]) + " lbs | " + car["drivetrain"] + " | " + car["engine"] + " " + extra + "\n" + "**Performance:** " + bar.join(""));
     embed.setImage(car["image"][imagestyle]);
 
       var emojilist = [

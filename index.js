@@ -277,7 +277,7 @@ try {
         }
 
         if (command.requirecar) {
-          if (stats.garagecount(userdata) == 0) {
+          if (stats.garage(userdata).length == 0) {
             require(gtf.EMBED).alert({ name: "❌ No Car", description: "You do not have a current car.", embed: "", seconds: 0 }, msg, userdata);
             return;
           }
@@ -407,8 +407,8 @@ client.login(process.env.SECRET).then(function () {
     var index1 = 0;
   
     setTimeout(function () {
-      //gtftools.checkcarlist(gtfcars);
-      //gtftools.checktracklist(gtftracks);
+      //require(gtf.CARS).audit()(gtfcars);
+      //require(gtf.TRACKS).audit()(gtftracks);
     
   //gtftools.checksponsorslist(gtfcars,gtfwheels,gtfpaints);
       updatebotstatus();

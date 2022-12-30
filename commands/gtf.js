@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "gtf",
   title: "GTF Facts",
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode", "gtf-demo"],
   
   availinmaint: true, 

@@ -12,8 +12,8 @@ module.exports = {
   name: "replay",
   title: "Replay Theater",
   cooldown: 3,
-  level: 0,
-  aliases: ["r", "replays"],
+  license: "N", level: 0,
+  license: "N", aliases: ["r", "replays"],
   channels: ["gtf-mode", "testing", "gtf-demo"],
 
   delete: false,
@@ -97,7 +97,7 @@ module.exports = {
       }
       if (query["options"] == "delete") {
         var number = query["number"];
-        if (!gtftools.betweenInt(number, 1, replaystats.length + 1)) {
+        if (!require(gtf.MATH).betweenInt(number, 1, replaystats.length + 1)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your replay theater.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
@@ -125,7 +125,7 @@ module.exports = {
       }
       if (query["options"] == "load") {
         var number = query["number"];
-        if (!gtftools.betweenInt(number, 1, replaystats.length + 1)) {
+        if (!require(gtf.MATH).betweenInt(number, 1, replaystats.length + 1)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist in your replay theater.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }

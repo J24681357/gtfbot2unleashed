@@ -75,7 +75,7 @@ text = text.replace(/\(adjgood\)|\(adjbad\)|\(sverbtobe\)|\(pverbtobe\)/gi, func
   start = start[Math.floor(Math.random() * start.length)]
   end = end[Math.floor(Math.random() * end.length)]
   
-  if (gtftools.randomInt(1,2) == 1) {
+  if (require(gtf.MATH).randomInt(1,2) == 1) {
     var final = start + text + punc
     return final.charAt(0).toUpperCase() + final.slice(1)
   } else {

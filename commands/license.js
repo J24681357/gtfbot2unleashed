@@ -11,8 +11,8 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "license",
   title: "License Center",
-  level: 0,
-  aliases: ["c"],
+  license: "N", level: 0,
+  license: "N", aliases: ["c"],
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   availinmaint: false,
@@ -179,7 +179,7 @@ module.exports = {
     //
 
     var number = parseInt(query["number"])
-      if (!gtftools.betweenInt(number, 1, Object.keys(licenses).length) && !isNaN(number)) {
+      if (!require(gtf.MATH).betweenInt(number, 1, Object.keys(licenses).length) && !isNaN(number)) {
           require(gtf.EMBED).alert({ name: "❌ Invaild ID", description: "This event ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
           return
       }

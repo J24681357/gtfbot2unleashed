@@ -73,7 +73,7 @@ module.exports.intro = function (userdata, command, msg) {
           id: userid,
           credits: 15000,
           exp: 0,
-          level: 1,
+          license: "N", level: 1,
           license: "N",
           mileage: 0,
           totalmileage: 0,
@@ -111,7 +111,7 @@ module.exports.intro = function (userdata, command, msg) {
           },
           sponsor: {
             name: "None",
-            level: 0,
+            license: "N", level: 0,
             exp: 0,
            },
           
@@ -130,7 +130,7 @@ module.exports.intro = function (userdata, command, msg) {
         userdata["tutorial"] = "Complete";
         /*
         var car = require(gtf.CARS).random({lowerfpp: 280, upperfpp: 300}, 1)[0]
-        stats.addcar(car, "SORT", userdata);
+        require(gtf.CARS).addcar(car, "SORT", userdata);
         */
 
         var { MongoClient, ServerApiVersion } = require('mongodb');

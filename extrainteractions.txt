@@ -19,10 +19,130 @@ S 30.000
 curl -I https://discordapp.com/api/v7/gateway
 
 
+module.exports.removereactions = function (list, msg) {
+  var i = 0;
+  filter(i);
+  function filter(i) {
+    var emoji = msg.reactions.cache.find(r => r.emoji.name === list[i]);
+    if (emoji == null) {
+      increase();
+    } else {
+      emoji.remove(gtf.USERID);
+      increase();
+    }
+  }
+
+  function increase() {
+    i++;
+    if (i == list.length) {
+      return;
+    } else {
+      setTimeout(function () {
+        filter(i);
+      }, 2000);
+    }
+  }
+
+  gtftools.interval(
+    function () {
+      for (var index = 0; index < list.length; index++) {
+        var emoji = msg.reactions.cache.find(r => r.emoji.name === list[index]);
+        if (emoji == null) {
+          continue;
+        } else {
+          emoji.remove(gtf.USERID);
+        }
+      }
+    },
+    1000 * list.length,
+    1
+  );
+};
+
+module.exports.createreactions = function (emojilist, msg, userdata) {
+  var i = 0;
+  var id = userdata["id"];
+  var reactid = stats.count(userdata);
+  var l = require("discord.js-rate-limiter").RateLimiter;
+  var rateLimiteradd = new l(1, 1500);
+  increase(i);
+
+  function increase() {
+    if (i == emojilist.length) {
+      return;
+    } else {
+      setTimeout(function () {
+        filter(i - 1);
+      }, 1200);
+    }
+    i++;
+  }
+
+  function filter(i) {
+    var emote = emojilist[i][0];
+    if (emote.includes("<:")) {
+    }
+    var name = emojilist[i][1];
+    var func = emojilist[i][2];
+    if (reactid != stats.count(userdata)) {
+      return;
+    }
+    msg.react(emote).then(function () {
+      var Filter1 = (reaction, user) => reaction.emoji.name === name && id === user.id;
+
+      const filter11 = msg.createReactionCollector({ Filter1, timer: 60 * 1000, dispose: true });
+
+      filter11.on("collect", r => {
+        next(r);
+      });
+
+      /* filter11.on("remove", r => {
+        next(r);
+      });*/
+      filter11.on("end", r => {
+        filter11.stop();
+      });
+      function next(r) {
+        var limited = rateLimiteradd.take(msg.author.id);
+        if (limited) {
+          console.log("Rate Limit");
+          return;
+        }
+        go(r);
+      }
+      function go(r) {
+        const notbot = r.users.cache.filter(clientuser => clientuser.id == id).first();
+
+        if (true) {
+          return;
+        }
+        if (typeof emojilist[i][3] !== "undefined") {
+          if (emojilist[i][3] == "Once") {
+            if (reactid != stats.count(userdata)) {
+              return;
+            }
+            stats.addcount(userdata);
+          }
+        }
+        if (typeof emojilist[i][3] !== "undefined") {
+          if (!isNaN(emojilist[i][3])) {
+            return func(emojilist[i][3]);
+          } else {
+            return func();
+          }
+        }
+        return func();
+      }
+    });
+
+    increase();
+  }
+};
+
  /*
 async function a() {
 var Canvas = require("@napi-rs/canvas");
-var colornames = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Grey"] 
+var colornames = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Grey"]
 for (var i = 0; i < colornames.length; i++) {
   var colorname = colornames[i]
 var colorimage = "./images/gtauto/paint/" + colorname + ".png"
@@ -38,16 +158,16 @@ var context = await canvas.getContext('2d');
    context.fillRect(0, 0, width, height);
    context.globalAlpha = 0.5;
    */
- 
+
    context.fillStyle = "black";
    context.fillRect(0, 0, width, height);
    context.globalAlpha = 0.5;
 
-    
-  
+
+
 context.drawImage(await Canvas.loadImage(colorimage), 0, 0, width, height);
   context.globalAlpha = 1;
-        
+
   var file = await canvas.encode('png')
   console.log("Saved")
     fs.writeFile("./images/gtauto/paint/Dark " + colornames[i] + ".png", file, function (err) {
@@ -145,7 +265,7 @@ client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({
         {
             "name": "Suit Livery",
             "value": "suit"
-        }, 
+        },
          {
             "name": "Helmet Livery",
             "value": "helmet"
@@ -202,7 +322,7 @@ client.api.applications(gtf.USERID).guilds(gtf.SERVERID).commands.post({
             "name": "❗ Menu",
             "value": "list"
       },
-      
+
           {
             "name": "Car Manufacturers",
             "value": "1"

@@ -14,7 +14,7 @@ module.exports.checklevel = function (level, embed, msg, userdata) {
   if (currentlevel >= level || level == 0) {
     return true;
   } else {
-    require(gtf.EMBED).alert({ name: "❌ " + "Level " + level + " Required", description: "🔒 Your level does not meet the requirements." + "\n\n" + "**Level: Lv." + currentlevel + emote.exp + " -> " + "Lv." + level + "**", embed: "", seconds: 10 }, msg, userdata);
+    require(gtf.EMBED).alert({ name: "❌ " + "Level " + level + " Required", description: "🔒 Your level does not meet the requirements." + "\n\n" + "**license: "N", level: Lv." + currentlevel + emote.exp + " -> " + "Lv." + level + "**", embed: "", seconds: 10 }, msg, userdata);
     return false;
   }
 };
@@ -64,7 +64,7 @@ module.exports.islevelup = function (userdata) {
       break;
     }
   }
-  stats.levelup(levelup, userdata);
+  stats.addlevel(levelup, userdata);
   var bool = (levelup >= 1)
   return [bool, levelup, leveldetails.slice(0, 5).join("\n")];
 };

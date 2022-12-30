@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "daily",
   title: "GTF Daily Workout",
-  level: 4,
+  license: "N", level: 4,
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   availinmaint: false,
@@ -46,7 +46,7 @@ module.exports = {
       return;
     }
 
-    if (require(gtf.EMBED).checkgarageerror(embed, msg, userdata)) {
+    if (stats.checkgarageerror(embed, msg, userdata)) {
       return;
     }
     if (stats.mileage(userdata) < 42.10) {
@@ -66,15 +66,15 @@ module.exports = {
     var car2 = require(gtf.CARS).random({upperfpp:500, types:["Production"]}, 1)[0];
       prizes.push( {
       id: -1, type:"CAR", name: car2["name"] + " " + car2["year"], item: car2, author: "DAILY WORKOUT", inventory: false });
-    var credits = 1000 * gtftools.randomInt(5, 10)
-    var credits2 = 1000 * gtftools.randomInt(15, 50)
+    var credits = 1000 * require(gtf.MATH).randomInt(5, 10)
+    var credits2 = 1000 * require(gtf.MATH).randomInt(15, 50)
     
     prizes.push({
-      id: -1, type: "CREDITS", name: gtftools.numFormat(credits) + emote.credits, item: credits, author: "DAILY WORKOUT", inventory: false });
+      id: -1, type: "CREDITS", name: require(gtf.MATH).numFormat(credits) + emote.credits, item: credits, author: "DAILY WORKOUT", inventory: false });
     prizes.push({
-      id: -1, type: "CREDITS", name: gtftools.numFormat(credits2) + emote.credits, item: credits2, author: "DAILY WORKOUT", inventory: false });
+      id: -1, type: "CREDITS", name: require(gtf.MATH).numFormat(credits2) + emote.credits, item: credits2, author: "DAILY WORKOUT", inventory: false });
     prizes = gtftools.shuffle(prizes)
 
-    require(gtf.MARKETPLACE).fourgifts("GTF Daily Workout", results, prizes, embed, msg, userdata);
+    require(gtf.GTF).fourgifts("GTF Daily Workout", results, prizes, embed, msg, userdata);
   }
 };

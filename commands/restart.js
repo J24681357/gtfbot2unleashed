@@ -12,8 +12,8 @@ module.exports = {
   name: "restart",
   title: "GTF Bot Restarter",
   cooldown: 3,
-  level: 0,
-  aliases: ["re"],
+  license: "N", level: 0,
+  license: "N", aliases: ["re"],
   channels: ["gtf-mode", "testing"],
 
   delete: false,
@@ -21,7 +21,7 @@ module.exports = {
   usedduringrace: true,
   usedinlobby: true,
   description: ["!restart - (ADMIN ONLY) Restarts the GT Fitness Bot."],
-  level: 0,
+  license: "N", level: 0,
   execute(msg, query, userdata) {
     var [embed, results, query, pageargs] = gtftools.setupcommands(embed, results, query, {
       text: "",

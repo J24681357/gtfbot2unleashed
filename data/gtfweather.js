@@ -70,9 +70,9 @@ module.exports.find = function (args) {
     if (count == total) {
       if (wkey["wet"]) {
         if (wkey["name"] == "Storm") {
-          wkey["wetsurface"] = gtftools.randomInt(50, 100);
+          wkey["wetsurface"] = require(gtf.MATH).randomInt(50, 100);
         } else {
-        wkey["wetsurface"] = gtftools.randomInt(5, 100);
+        wkey["wetsurface"] = require(gtf.MATH).randomInt(5, 100);
         }
       } else {
         wkey["wetsurface"] = 0;
@@ -116,7 +116,7 @@ module.exports.advanceweather = function (weather, length) {
   if (weather["weatherchange"] == 0) {
     return weather
   }
-  var rnum = gtftools.randomInt(0,99)
+  var rnum = require(gtf.MATH).randomInt(0,99)
  
   if (rnum < weather["weatherchange"]) {
     if (weather["name"] == "Clear") {
@@ -130,14 +130,14 @@ module.exports.advanceweather = function (weather, length) {
       weather = require(gtf.WEATHER).random({name: ["Partly Cloudy", "Overcast", "Rain"]}, 1)[0]
       
     }
-    if (weather["name"] == "Rain" && gtftools.randomInt(1,2) == 1) {
+    if (weather["name"] == "Rain" && require(gtf.MATH).randomInt(1,2) == 1) {
       weather = require(gtf.WEATHER).random({name: ["Overcast" ,"Overcast"]}, 1)[0]
     }
     weather["wetsurface"] = owetsurface
    weather["weatherchange"] = oweatherchange
   }
   if (owetsurface == 0 && weather["name"] == "Rain") {
-    weather["wetsurface"] = gtftools.randomInt(5,15)
+    weather["wetsurface"] = require(gtf.MATH).randomInt(5,15)
   } else {
     if (weather["name"] == "Rain") {
     weather["wetsurface"] = parseInt(weather["wetsurface"] + Math.abs(rnorm({mean: (20 * (0.25 * length) ), dev:3})))

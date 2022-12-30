@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "driver",
   title: "🎨 GTF Auto - Driving Gear",
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing"],
 
   availinmaint: false,

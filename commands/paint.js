@@ -12,7 +12,7 @@ module.exports = {
   name: "paint",
   title: "🎨 GTF Auto - Paints",
   cooldown: 3,
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   delete: false,
@@ -142,7 +142,7 @@ module.exports = {
       var select = select.map(function (x, i) {
       var cond = require(gtf.PAINTS).checkpaintsavail(x, gtfcar);
       var name = x["type"] + " " + x["name"] 
-      return "**" + gtftools.numFormat(Math.round(x["cost"])) + "**" + emote.credits + " " + name + " " + cond;
+      return "**" + require(gtf.MATH).numFormat(Math.round(x["cost"])) + "**" + emote.credits + " " + name + " " + cond;
     });
     }
     embed.setTitle("🎨 " + "__" + type + " Paints (" + select.length + " Items)__");
@@ -161,7 +161,7 @@ module.exports = {
     var number = query["number"];
     
 
-   if (!gtftools.betweenInt(number, 1, select.length + 1)) {
+   if (!require(gtf.MATH).betweenInt(number, 1, select.length + 1)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
             return
           }

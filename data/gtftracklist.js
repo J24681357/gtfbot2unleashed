@@ -145,3 +145,73 @@ module.exports.random = function (args, num) {
   }
   return rlist;
 };
+
+module.exports.audit = async function () {
+  var tracks = require(gtf.LISTS).gtftracklist;
+  var x = {};
+  var i = 0;
+
+  tracks = Object.keys(tracks).map(function (key) {
+    return [key, tracks[key]];
+  });
+  tracks = tracks.sort((a, b) => a[1]["name"].toString().localeCompare(b[1]["name"]));
+
+  for (i; i < tracks.length; i++) {
+    tracks[i][1]["image"] = "https://raw.githubusercontent.com/J24681357/gtfbot/master/" + "images/tracks/" + tracks[i][1]["name"].replace(/ /gi, "").toLowerCase() + ".png";
+    x[(i + 1).toString()] = tracks[i][1];
+    //await downloadimage2(tracks[i][1], tracks[i][1]["image"], 0);
+  }
+
+  console.log("Track List Updated");
+  require("fs").writeFile("./jsonfiles/gtftracklist.json", JSON.stringify(x), function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+
+  async function downloadimage2(oldtrack, imagelink, j) {
+    var { request } = require("undici");
+    var fs = require("fs");
+    var type = "error";
+    var name = oldtrack["name"].replace(/ /gi, "").toLowerCase();
+    var download2 = async function (uri, filename, callback) {
+      try {
+        var { statusCode, headers, trailers, body } = await request(uri);
+        body = await body.arrayBuffer();
+      } catch (error) {
+        console.log("The image may not be available for " + uri);
+        return;
+      }
+
+      if (headers === undefined) {
+        console.log("The image may not be available for " + uri);
+        return;
+      }
+      if (headers["content-type"] === undefined) {
+        console.log("The image may not be available for " + uri);
+        return;
+      }
+
+      var type = headers["content-type"].toLowerCase();
+      var file = filename.split("/");
+      file.pop();
+      if (j >= 1) {
+        var extra = (filename = filename + "-" + j.toString() + ".png");
+      } else {
+        filename = filename + ".png";
+      }
+
+      var shell = require("shelljs");
+      shell.mkdir("-p", file.join("/"));
+      console.log(filename + " " + "image saved.");
+      if (!type.includes("image")) {
+        console.log("The image may not be available for " + uri);
+      }
+      fs.writeFileSync(filename, body);
+    };
+
+    await download2(imagelink, "./images/tracks/" + name, function () {});
+
+    //download2(imagelink, "", function () {});
+  }
+};

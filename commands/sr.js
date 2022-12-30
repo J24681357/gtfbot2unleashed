@@ -12,9 +12,9 @@ module.exports = {
   name: "sr",
   title: "Sportsmanship Rating",
   cooldown: 3,
-  level: 0,
+  license: "N", level: 0,
   delete: false,
-  aliases: ["srating"],
+  license: "N", aliases: ["srating"],
   channels: ["gtf-mode", "testing", "bot-mode"],
 
   requireuserdata: false,

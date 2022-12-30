@@ -11,7 +11,7 @@ var gtf = require(dir + "files/directories");
 module.exports = {
   name: "car",
   title: "GTF Car Dealerships",
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   availinmaint: false,
@@ -44,7 +44,7 @@ module.exports = {
       userdata
     );
     //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //      //
-   
+
     var searchname = "";
     if (query["options"] == "search") {
       query["options"] = "select";
@@ -174,20 +174,20 @@ module.exports = {
     }
 
     if (query["options"] == "select" || query["options"] == "selectused") {
-      
+
       if (typeof query["manufacturer"] !== "undefined" || typeof query["country"] !== "undefined" || typeof query["type"] !== "undefined" || typeof query["drivetrain"] !== "undefined" || typeof query["engine"] !== "undefined" || typeof query["special"] !== "undefined") {
         var term = { makes: query["manufacturer"], countries: query["country"], types: query["type"], drivetrains: query["drivetrain"], engines: query["engine"], special: query["special"], upperfpp: query["fpplimit"], sort: sort };
 
         if (searchname.length != 0) {
           term["fullname"] = [searchname];
         }
-        
+
         if (query["options"] == "selectused") {
           var list = require(gtf.CARS).find({uppercostm: 30, upperyear: 2012, sort: sort})
           var indexes = []
           var day = require(gtf.DATETIME).getCurrentDay()
           var seed = 1
-          for (var num = 0; num < 20; num++) { indexes.push(gtftools.randomIntSeed(0, list.length, (num+1000) + day))
+          for (var num = 0; num < 20; num++) { indexes.push(require(gtf.MATH).randomIntSeed(0, list.length, (num+1000) + day))
           }
           list = list.filter(function(x,i) {
             if (indexes.includes(i)) {
@@ -197,12 +197,12 @@ module.exports = {
             }
           }).map(function(x) {
             seed = x["id"] + day
-            var discount = [10,20,30,40,50,60][gtftools.randomIntSeed(0,5, seed)]
+            var discount = [10,20,30,40,50,60][require(gtf.MATH).randomIntSeed(0,5, seed)]
             x["discount"] = discount
             return x
           })
         } else if (query["options"] == "selectrecommended") {
-          
+
         } else {
           var list = require(gtf.CARS).find(term);
         }
@@ -226,13 +226,13 @@ module.exports = {
         var special = query["special"].length == 0 ? "" : query["special"][0];
 
         if (require(gtf.GTF).invitationlist.includes(make)) {
-          if (!stats.checklicense("IC", embed, msg, userdata)) {          
+          if (!stats.checklicense("IC", embed, msg, userdata)) {
             return
           } else {
             if (!stats.checkitem(make + " Invitation", "", userdata)) {
               console.log("OK")
               require(dir + "commands/license").execute(msg, {options: make.toLowerCase(), number: 1}, userdata);
-              return 
+              return
             }
           }
         }
@@ -240,19 +240,19 @@ module.exports = {
         var carlist = [];
         for (var i = 0; i < list.length; i++) {
           var fpp = require(gtf.PERF).perf(list[i], "DEALERSHIP")["fpp"];
-          var cost = require(gtf.MARKETPLACE).costcalc(list[i], fpp);
+          var cost = require(gtf.CARS).costcalc(list[i], fpp);
           var make = list[i]["make"]
           var name = list[i]["name"];
           var year = list[i]["year"];
           var image = list[i]["image"][0];
-          var numbercost = list[i]["carcostm"] == 0 ? "❌ " : gtftools.numFormat(cost) + emote.credits + " ";
+          var numbercost = list[i]["carcostm"] == 0 ? "❌ " : require(gtf.MATH).numFormat(cost) + emote.credits + " ";
           numbercost = (require(gtf.GTF).invitationlist.includes(make) && !stats.checkitem(make + " Invitation", "", userdata)) ? "✉ " : numbercost
           var discount = list[i]["discount"] == 0 ? "" : "`⬇ " + list[i]["discount"] + "%" + "` ";
-          carlist.push(discount + "**" + numbercost + "**" + name + " " + year + " **" + fpp + emote.fpp + "**" + stats.checkcar(name + " " + year, userdata));
+          carlist.push(discount + "**" + numbercost + "**" + name + " " + year + " **" + fpp + emote.fpp + "**" + require(gtf.CARS).checkcar(name + " " + year, userdata));
           pageargs["image"].push(image);
         }
         if (query["number"] !== undefined) {
-          if (!gtftools.betweenInt(query["number"], 1, total)) {
+          if (!require(gtf.MATH).betweenInt(query["number"], 1, total)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid Number", description: "This number does not exist in the " + make + " dealership.", embed: "", seconds: 3 }, msg, userdata);
             return;
           } else {
@@ -266,15 +266,15 @@ module.exports = {
               require(gtf.EMBED).alert({ name: "❌ Car Unavailable", description: "You cannot purchase this car.", embed: "", seconds: 3 }, msg, userdata);
               return;
             }
-           
+
         if (require(gtf.GTF).invitationlist.includes(item["make"])) {
-          if (!stats.checklicense("IC", embed, msg, userdata)) {          
+          if (!stats.checklicense("IC", embed, msg, userdata)) {
             return
           } else {
             if (!stats.checkitem(item["make"] + " Invitation", "", userdata)) {
-            
+
               require(dir + "commands/license").execute(msg, {options: item["make"].toLowerCase(), number: 1}, userdata);
-              return 
+              return
             }
           }
         }
@@ -286,7 +286,7 @@ module.exports = {
           embed.setTitle("__All (" + carlist.length + " Cars) (" + userdata["settings"]["DEALERSORT"] + ")__");
         } else if (query["options"] == "selectused") {
           embed.setTitle("__GTF Dealership: Discounts" + searchname + make + type + drivetrain + engine + special + " (" + userdata["settings"]["DEALERSORT"] + ")__");
-        } else { 
+        } else {
           var emot = gtftools.toEmoji(list[0]["country"]) + " ";
           if (type.length == 0 || drivetrain.length == 0 || engine.length == 0 || special.length == 0 || searchname.length == 0) {
             emot = "";

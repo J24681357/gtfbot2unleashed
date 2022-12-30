@@ -12,7 +12,7 @@ module.exports = {
   name: "rcourse",
   title: "Random GTF Course Maker",
   cooldown: 0,
-  level: 0,
+  license: "N", level: 0,
   channels: ["testing", "gtf-mode", "gtf-demo"],
 
   delete: false,
@@ -57,7 +57,7 @@ module.exports = {
     if ("allsegments" in query) {
       /// 0 - 20
       allsegment = parseFloat(query["allsegments"]);
-      if (!gtftools.betweenInt(allsegment, 2, 20)) {
+      if (!require(gtf.MATH).betweenInt(allsegment, 2, 20)) {
         require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Segment lengths must be between 2 and 20.", embed: "", seconds: 0 }, msg, userdata);
         return;
       }
@@ -68,7 +68,7 @@ module.exports = {
     if ("maxsegment" in query) {
       maxsegment = parseFloat(query["maxsegment"]);
       if (allsegment.toString().length != 0) {
-        if (!gtftools.betweenInt(maxsegment, 2, 20)) {
+        if (!require(gtf.MATH).betweenInt(maxsegment, 2, 20)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Maximum segment length must be between 2 and 20.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
@@ -79,7 +79,7 @@ module.exports = {
       minsegment = parseFloat(query["minsegment"]);
 
       if (allsegment.toString().length != 0) {
-        if (!gtftools.betweenInt(minsegment, 2, 20)) {
+        if (!require(gtf.MATH).betweenInt(minsegment, 2, 20)) {
           require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Mininum segment length must be between 2 and 20.", embed: "", seconds: 0 }, msg, userdata);
           return;
         }
@@ -88,7 +88,7 @@ module.exports = {
     if ("curviness" in query) {
       /// 0.0 - 1.0
       curviness = parseFloat(query["curviness"]);
-      if (!gtftools.betweenInt(curviness, 0, 1)) {
+      if (!require(gtf.MATH).betweenInt(curviness, 0, 1)) {
         require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Curviness value must be between 0 and 1.", embed: "", seconds: 0 }, msg, userdata);
         return;
       }
@@ -96,7 +96,7 @@ module.exports = {
     if ("maxangle" in query) {
       /// 50-150
       maxangle = parseFloat(query["maxangle"]);
-      if (!gtftools.betweenInt(maxangle, 50, 150)) {
+      if (!require(gtf.MATH).betweenInt(maxangle, 50, 150)) {
         require(gtf.EMBED).alert({ name: "❌ Invalid Arguments", description: "Max Angle value must be between 50 and 150.", embed: "", seconds: 0 }, msg, userdata);
         return;
       }

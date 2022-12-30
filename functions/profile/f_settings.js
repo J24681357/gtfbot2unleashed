@@ -254,7 +254,7 @@ module.exports.settingsmenu = function (query, pageargs, embed, msg, userdata) {
       return "SUCCESS";
   }
   
-  if (!gtftools.betweenInt(query["number"], 1, pageargs["list"].length + 1)) {
+  if (!require(gtf.MATH).betweenInt(query["number"], 1, pageargs["list"].length + 1)) {
     if (typeof query["number"] !== "undefined") {
       require(gtf.EMBED).alert({ name: "⚠ Invalid Number", description: "Invalid arguments.", embed: "", seconds: 3 }, msg, userdata);
       return

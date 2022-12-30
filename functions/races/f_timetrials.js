@@ -1,10 +1,11 @@
-var stats = require("../../functions/profile/f_stats");
-var emote = require("../../index");
-var gtftools = require("../../functions/misc/f_tools");
+var dir = "../../"
+var stats = require(dir + "functions/profile/f_stats");
+var emote = require(dir + "index");
+var gtftools = require(dir + "functions/misc/f_tools");
 
 const {  Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBuilder, AttachmentBuilder, ButtonBuilder, SelectMenuBuilder } = require("discord.js");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-var gtf = require("../../files/directories");
+var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
 
 module.exports.changetimetrials = function (force) {
@@ -22,7 +23,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
         .forEach(row => {
           if (timetrialcheck(row) || force) {
             if (row["count"].length >= 3) {
-              
+
             console.log("Time Trials has been changed.");
             var timetrials = require(gtf.TIMETRIAL).randomtimetrial(1);
             var timetrials2 = require(gtf.TIMETRIAL).randomtimetrial(2);
@@ -62,7 +63,7 @@ MongoClient = new MongoClient(process.env.MONGOURL, { useNewUrlParser: true, use
 };
 
 module.exports.randomtimetrial = function (number) {
-  
+
 var rcar = require(gtf.CARS).random({ types: ["Production"] }, 1)[0];
 var track = require(gtf.TRACKS).random({ types: ["Tarmac"] }, 1)[0]
 var raceprep = {
@@ -72,12 +73,12 @@ var raceprep = {
         car: rcar,
         trackselect: "SELECT",
         track: track,
-        players: [{ place: 1, 
-        position: 1, 
-        name: rcar["name"] + " " + rcar["year"], 
+        players: [{ place: 1,
+        position: 1,
+        name: rcar["name"] + " " + rcar["year"],
         drivername: "Player",
         user: true,
-        fpp: require(gtf.PERF).perf(rcar, "DEALERSHIP")["fpp"], 
+        fpp: require(gtf.PERF).perf(rcar, "DEALERSHIP")["fpp"],
         oscore: 0,
         score: 0,
         points: 0 }],
@@ -139,10 +140,10 @@ module.exports.formleaderboard = function (list, full, msg, userdata) {
   list = list.map(function(x, index) {
     if (index == 0) {
       var place = emote.goldmedal
-    } 
+    }
     if (index == 1) {
       var place = emote.silvermedal
-    } 
+    }
     if (index == 2) {
       var place = emote.bronzemedal
     } else {
@@ -150,7 +151,7 @@ module.exports.formleaderboard = function (list, full, msg, userdata) {
     }
     var username = msg.guild.members.cache.get(x["userid"]).user.username
     if (x["userid"] == userdata["id"]) {
-      player = place + "." + " `" + require(gtf.DATETIME).getFormattedLapTime(x["time"]) + "` " + username 
+      player = place + "." + " `" + require(gtf.DATETIME).getFormattedLapTime(x["time"]) + "` " + username
     }
     return place + "." +" `" + require(gtf.DATETIME).getFormattedLapTime(x["time"]) + "` " + username
   })

@@ -12,7 +12,7 @@ module.exports = {
   name: "tune",
   title: "GTF Auto - Tuning Shop",
   cooldown: 3,
-  level: 4,
+  license: "N", level: 4,
   channels: ["testing", "gtf-mode", "gtf-test-mode"],
 
   delete: false,
@@ -109,13 +109,13 @@ module.exports = {
       }
       
       if (typeof query["number"] === 'undefined') {
-      var list = ["**" + gtftools.numFormat(costs[0]) + emote.credits + "** " + "__**Car Wash**__ " + "`💧" + gtfcar["condition"]["clean"] + "%`",
-        "**" + gtftools.numFormat(costs[1]) + emote.credits + "** " + "__**Oil Change**__ " + "`" + gtfcar["condition"]["oil"] + "%`",
-        "**" + gtftools.numFormat(costs[2]) + emote.credits + "** " + "__**Engine Repair**__ " + "`" + gtfcar["condition"]["engine"] + "%`" ,
-        "**" + gtftools.numFormat(costs[3]) + emote.credits + "** " + "__**Transmission Repair**__ " + "`" + gtfcar["condition"]["transmission"] + "%`",
-        "**" + gtftools.numFormat(costs[4]) + emote.credits + "** " + "__**Suspension Repair**__ " + "`" + gtfcar["condition"]["suspension"] + "%`", 
-        "**" + gtftools.numFormat(costs[5]) + emote.credits + "** " + "__**Body Damage Repair**__ " + "`" + gtfcar["condition"]["body"] + "%`" + "/n", 
-        "**" + gtftools.numFormat(Math.round(require(gtf.MATH).sum(costs))) + emote.credits + "** " + "__**Apply All**__"]
+      var list = ["**" + require(gtf.MATH).numFormat(costs[0]) + emote.credits + "** " + "__**Car Wash**__ " + "`💧" + gtfcar["condition"]["clean"] + "%`",
+        "**" + require(gtf.MATH).numFormat(costs[1]) + emote.credits + "** " + "__**Oil Change**__ " + "`" + gtfcar["condition"]["oil"] + "%`",
+        "**" + require(gtf.MATH).numFormat(costs[2]) + emote.credits + "** " + "__**Engine Repair**__ " + "`" + gtfcar["condition"]["engine"] + "%`" ,
+        "**" + require(gtf.MATH).numFormat(costs[3]) + emote.credits + "** " + "__**Transmission Repair**__ " + "`" + gtfcar["condition"]["transmission"] + "%`",
+        "**" + require(gtf.MATH).numFormat(costs[4]) + emote.credits + "** " + "__**Suspension Repair**__ " + "`" + gtfcar["condition"]["suspension"] + "%`", 
+        "**" + require(gtf.MATH).numFormat(costs[5]) + emote.credits + "** " + "__**Body Damage Repair**__ " + "`" + gtfcar["condition"]["body"] + "%`" + "/n", 
+        "**" + require(gtf.MATH).numFormat(Math.round(require(gtf.MATH).sum(costs))) + emote.credits + "** " + "__**Apply All**__"]
       pageargs["list"] = list;
       if (userdata["settings"]["TIPS"] == 0) {
       pageargs["footer"] = "❓ **Test**"
@@ -236,7 +236,7 @@ module.exports = {
       if (cond[0].includes("✅")) {
       return cond[0] + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp;
       } else {
-         return "**" + gtftools.numFormat(x["cost"]) + "**" + emote.credits + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp + cond[0];
+         return "**" + require(gtf.MATH).numFormat(x["cost"]) + "**" + emote.credits + " " + x["type"] + " " + x["name"] + " " + cond[1] + emote.fpp + cond[0];
       }
       }
     })
@@ -274,7 +274,7 @@ module.exports = {
       lowerweight: 0})
     }
     
-    if (!gtftools.betweenInt(number, 1, select.length)) {
+    if (!require(gtf.MATH).betweenInt(number, 1, select.length)) {
             require(gtf.EMBED).alert({ name: "❌ Invalid ID", description: "This ID does not exist.", embed: "", seconds: 3 }, msg, userdata);
             return
     }

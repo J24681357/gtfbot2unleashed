@@ -7,131 +7,144 @@ const { Client, GatewayIntentBits, Partials, Discord, EmbedBuilder, ActionRowBui
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 var gtf = require(dir + "files/directories");
 ////////////////////////////////////////////////////
-var gtfuser = require(dir + "index");
 var fs = require("fs");
 
-module.exports.message = function (client, title, text, color, image, channelid, reactions, number) {
+module.exports.message = function(client, title, text, color, image, channelid, elist, number) {
   var server = client.guilds.cache.get(gtf.SERVERID);
   var channel = server.channels.cache.get(channelid);
   var embed = new EmbedBuilder();
   var description = text;
 
-  if (typeof channel == "undefined") {
-    channel.send("Invalid");
+
+  if (typeof channel == 'undefined') {
+    channel.send({content: 'Invalid'});
     return;
   }
 
-  channel.messages.fetch().then(msg => {
+  var elist = [...elist]
+  next(elist)
+
+ function next(elist) {
+
+    channel.messages.fetch().then(msg => {
+
     var arr = Array.from(msg.entries()).reverse();
 
-    if (typeof arr[number - 1] === "undefined") {
+    if (typeof arr[number - 1] === 'undefined') {
       embed.setTitle(title);
       embed.setDescription(description);
       if (color.length != 0) {
         embed.setColor(color);
       }
-      if (typeof image !== "undefined") {
+      if (typeof image !== 'undefined') {
         if (image.length != 0) {
           embed.setThumbnail(image);
         }
       }
-      channel.send({ embeds: [embed] });
+      channel.send({embeds: [embed]});
       return;
     }
 
-    channel.messages.fetch({ message: arr[number - 1][0] }).then(msg => {
+
+    channel.messages.fetch(arr[number - 1][0]).then(msg => {
+
       if (msg == undefined) {
         embed.setTitle(title);
         embed.setDescription(description);
         if (color.length != 0) {
           embed.setColor(color);
         }
-        if (typeof image !== "undefined") {
+        if (typeof image !== 'undefined') {
           if (image.length != 0) {
             embed.setThumbnail(image);
           }
         }
-        channel.send({ embeds: [embed] });
+        channel.send({embeds: [embed]});
         return;
       }
 
       var otitle = msg.embeds[0].title;
       var odescription = msg.embeds[0].description;
+      var ocolor = msg.embeds[0].color
 
-      if (odescription === undefined || otitle === undefined) {
+      if (odescription === undefined || otitle === undefined || ocolor === undefined) {
         embed.setTitle(title);
         embed.setDescription(description);
         if (color.length != 0) {
           embed.setColor(color);
         }
-        if (typeof image !== "undefined") {
+        if (typeof image !== 'undefined') {
           if (image.length != 0) {
             embed.setThumbnail(image);
           }
         }
-        msg.edit({ embeds: [embed] });
+        msg.edit({embeds: [embed]});
         return;
       }
 
-      if (JSON.stringify(odescription) !== JSON.stringify(description) || JSON.stringify(otitle) !== JSON.stringify(title)) {
+      if (JSON.stringify(odescription) !== JSON.stringify(description) || JSON.stringify(otitle) !== JSON.stringify(title) || JSON.stringify(ocolor) !== parseInt(color, 16)) {
         embed.setTitle(title);
         embed.setDescription(description);
         if (color.length != 0) {
           embed.setColor(color);
         }
-        if (typeof image !== "undefined") {
+        if (typeof image !== 'undefined') {
           if (image.length != 0) {
             embed.setThumbnail(image);
           }
         }
-        msg.edit({ embeds: [embed] });
+          msg.edit({embeds: [embed]});
       }
       var time = 0;
-      if (reactions.length != 0) {
-        if (msg.reactions.cache.size < reactions.length) {
-          time = 3000 * (reactions.length + 1);
-          var i = 0;
-          gtftools.interval(
-            function () {
-              msg.react(reactions[i][0]);
-              i++;
-            },
-            3000,
-            reactions.length
-          );
-        }
+      embed.setTitle(title);
+      embed.setDescription(description);
 
-        setTimeout(function () {
-          var filters = function (index) {
-            var filterzero = (reaction, user) => reaction.emoji.name === reactions[index][0];
-            const filter11 = msg.createReactionCollector({ filterzero, timer: 1000 });
-
-            filter11.on("collect", r => {
-              try {
-                for (const user of r.users.cache.values()) {
-                  if (user.id == gtf.USERID) {
-                    continue;
-                  }
-                  r.users.remove(user).then(x => function () {});
-                  var useri = msg.guild.members.cache.get(user.id);
-                  var role = msg.guild.roles.cache.find(r => r.name === reactions[index][1]);
-
-                  if (useri.roles.cache.find(r => r.name === reactions[index][1])) {
-                    useri.roles.remove(role).catch(console.error);
-                  } else {
-                    useri.roles.add(role).catch(console.error);
-                  }
-                }
-              } catch (error) {
-                console.error(error);
-              }
-            });
-          };
-          for (var i = 0; i < reactions.length; i++) {
-            filters(i);
-          }
-        }, time);
+      if (elist.length != 0) {
+        var buttons = gtftools.preparebuttonsn(elist, msg);
+      } else {
+        var buttons = []
       }
-    });
-  });
-};
+
+       msg.edit({embeds:[embed], components: buttons}).then(msg => {
+         var functionlist = []
+
+         for (var i = 0; i < elist.length; i++) {
+           functionlist.push(function(val) {
+             var useri = msg.guild.members.cache.get(val["id"]);
+                    var role = msg.guild.roles.cache.find(r => r.name === elist[val["value"]]["value"]);
+                    /*
+                    if (useri.guild.roles.cache.some(r => r.name === "Consoles ")) {
+                    } else {
+                      useri.roles.add(msg.guild.roles.cache.find(r => r.name === "Consoles ===============================")).catch(console.error)
+                    }
+                    if (useri.guild.roles.cache.some(r => r.name === "Games ")) {
+                    } else {
+                      useri.roles.add(msg.guild.roles.cache.find(r => r.name === "Games ================================")).catch(console.error)
+                    }
+                    if (useri.guild.roles.cache.some(r => r.name === "Settings ")) {
+                    } else {
+                      useri.roles.add(msg.guild.roles.cache.find(r => r.name === "Settings ================================")).catch(console.error)
+                    }
+                    if (useri.guild.roles.cache.some(r => r.name === "GTF Items ")) {
+                    } else {
+                      useri.roles.add(msg.guild.roles.cache.find(r => r.name === "GTF Items ==============================")).catch(console.error)
+                    }
+                    */
+
+
+                    if (useri.roles.cache.find(r => r.name === elist[val["value"]]["value"])) {
+                      require(gtf.DISCORD).role(msg, useri, role, "REMOVE")
+                    } else {
+                      require(gtf.DISCORD).role(msg, useri, role, "ADD")
+                    }
+         })
+         }
+        if (elist.length != 0) {
+        gtftools.createbuttonsn(buttons, elist, functionlist, msg)
+      }
+
+    })
+  })
+})
+ }
+}
